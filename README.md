@@ -1,2 +1,6 @@
 # coder_fair
-![Initial design](./design_assets/sample_screen1.png)
+
+<img src="./design_assets/Login.png" alt="drawing" width="200"/>
+<img src="./design_assets/Main%20Screen.png" alt="drawing" width="200"/>
+<img src="./design_assets/View%20All.png" alt="drawing" width="200"/>
+<img src="./design_assets/Fan%20Page.png" alt="drawing" width="200"/>
