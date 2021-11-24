@@ -25,7 +25,7 @@ class HomeScreen extends GetView<HomeController> {
                       child: Column(
                         children: [
                           Obx(() => CarouselSlider.builder(
-                              itemCount: 4,
+                              itemCount: 5,
                               itemBuilder: (BuildContext c, int v, int x) =>
                                   FractionallySizedBox(
                                     heightFactor: 2.25.sp,
