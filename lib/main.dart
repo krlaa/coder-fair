@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'constants/app_colors.dart';
-import 'screens/login_screen.dart';
+import 'controllers/home_controller.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,10 +12,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: mainBg),
-      title: 'TCS Tampa CF',
-      home: LoginScreen(),
+    return ResponsiveSizer(
+      builder: (_, __, ___) => GetMaterialApp(
+        onInit: () {
+          Get.put(HomeController());
+        },
+        theme: ThemeData(scaffoldBackgroundColor: mainBg),
+        title: 'TCS Tampa CF',
+        home: HomeScreen(),
+      ),
     );
   }
 }

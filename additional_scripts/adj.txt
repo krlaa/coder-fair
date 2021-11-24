@@ -1,0 +1,900 @@
+password
+pop up
+right-click
+node
+concatenate
+log in
+icon
+paste
+algorithm
+remote
+pointer
+execute
+log on
+routine
+mainframe
+cursor
+palette
+suite
+net
+refresh
+machine-readable
+avatar
+access time
+encode
+store
+select
+graphical user interface
+file
+module
+kilobyte
+bill of fare
+storage
+programming
+compiler
+cache
+infect
+artificial intelligence
+browser
+dialog box
+channel
+programmer
+laptop
+pull-down menu
+megabyte
+user-friendly
+button
+disk drive
+process
+build
+panel
+bit
+print out
+hard disk
+widget
+login
+dictionary
+backup
+list box
+link
+rootkit
+cookie
+systems engineering
+clear
+path
+patch
+telnet
+utility
+bookmark
+deliver
+log out
+pin
+computerist
+partition
+resident
+image
+double click
+retrieve
+bus
+chat
+hang
+subdirectory
+toolbar
+antiviral
+ransomware
+basic
+filter
+archive
+mouse
+user
+script
+email
+documentation
+disk
+machine code
+hit
+shift
+back
+electronic
+home
+subroutine
+microcomputer
+default
+notebook computer
+personal computer
+core
+batch file
+assembler
+workstation
+address book
+plug and play
+touchscreen
+kilobit
+computernik
+delete
+statement
+on-screen
+jump
+motherboard
+key
+wire
+left-click
+baud
+data processing
+subnotebook
+dropout
+username
+assembly language
+computer language
+tag
+parity
+interrupt
+view
+register
+offload
+puter
+dummy
+back-end
+call up
+maximize
+log off
+type
+internet
+file server
+help
+on-line
+port
+debug
+defrag
+migration
+off-line
+invoke
+character
+palmtop
+multitasking
+capture
+call
+hyperlink
+benchmark
+keylogger
+post
+step
+analog computer
+loop
+comp
+menu–driven
+virtual
+cut
+render
+pull-down
+mac
+nest
+write-protect
+zone
+tutorial
+argument
+online [or] on-line
+bespoke
+open
+laptop computer
+on-line [or] online
+index
+file manager
+install
+frame
+error
+optimize
+platform
+retrofit
+Quant
+mobile
+escape
+mobility
+dongle
+interrogate
+informatics
+package
+batch processing
+home screen
+thread
+cyberbabe
+quit
+skin
+Linux
+vapourware
+lisp
+serial
+parallel
+abort
+bioinformatics
+hotlink
+wine list
+box
+redline
+firewall
+procedure
+fire sth up
+read
+option
+swap
+low-resolution
+syntax
+clipboard
+speech recognition software
+up
+concordance
+entry
+mailbox
+decompression
+cyberspace
+gigabit
+degradation
+assign
+megabit
+bps
+auto-repeat
+file-sharing
+protocol
+sector
+menu bar
+hot desk
+executable
+rewrite
+uptime
+interpreter
+hear
+attach
+pixel
+logon
+scan
+logout
+computerless
+transfer list
+connectivity
+output
+track
+drive
+stack
+point-and-click
+flush
+string
+FTP
+export
+word processor
+off–line
+edit
+e–mail
+worm
+malware
+mail merge
+clone
+http
+guest
+Pentium
+compress
+keystroke
+screen saver
+modem
+beta
+support
+light pen
+source code
+SCSI
+remote access
+bootable
+autotune
+defragment
+flops
+board
+spreadsheet
+engine
+bay
+manipulate
+functionality
+Java
+rekey
+search
+antivirus
+flame
+microprocessor
+screenshot
+morph
+call sth up
+retrieval
+list
+lock screen
+overwrite
+computer scientist
+memory bank
+terabyte
+programming language
+netizen
+root
+word processing
+compatible
+electronic mail
+overload
+cybersecurity
+keylogging
+analogue
+menu option
+undo
+job bank
+superuser
+own
+connect time
+teraflop
+time-sharing
+immersive
+pen-based
+listing
+megaflop
+enable
+simulation
+metalanguage
+computer program
+wallpaper
+Eula
+concurrent access
+execution
+userID
+International Securities Exchange
+setup program
+packet
+allocation
+mca
+touch-sensitive
+relational database
+wizard
+batch
+overhead
+adware
+computerphobe
+topology
+closed
+executive
+UNIX
+shuffle the cards
+holodeck
+generate
+knowledge base
+command-driven
+access profile
+access code
+command line interface
+software engineering
+jobbing
+hover
+populate
+relevance
+help key
+time slice
+demand paging
+open source
+thinking–machine
+applications program
+end user
+bulletin board
+perceptual computing
+playlist
+electric brain
+computist
+cybersex
+computing machine
+Cyberian
+electronic computer
+biocomputing
+dataflow
+caddy
+graphics
+domain
+illegal
+record
+toggle
+rip
+bug
+data
+corrupt
+operation
+block
+Boolean search
+primitive
+density
+foreground
+positioner
+area
+capacity
+reference
+word
+toolbox
+computerate
+generator
+cybernaut
+look up
+tablet
+discriminate
+prologue
+prolog
+shutdown
+computeresque
+spell–checker
+computer-literate
+linguistic
+launch
+computer-science
+quantum
+virtual memory
+wi-fi
+epilogue
+simulate
+cell
+sort
+computerology
+adapter
+integrator
+screen
+low-level
+cabinet
+idle time
+resolution
+hypermedia
+hosting
+crawler
+credential
+radio button
+streaming
+overflow
+location-based
+hard-wired
+GUI
+gap
+DIM
+pop-up
+account
+latency
+hook
+archive site
+comment
+mask
+accumulator
+extensible
+shareware
+in-app
+shell program
+predictive
+tower
+sequential access
+encrypt
+virtual reality
+badly behaved
+parameter
+scareware
+zoom
+effector
+microinstruction
+complexity theory
+dot
+disc
+digital
+interoperability
+object-oriented
+computator
+fallback
+true
+hacking
+descriptor
+false
+counter
+print
+reprogram
+HCI
+interactive service
+control
+back up
+dispatcher
+daemon
+available
+speech/text etc recognition
+back sth up
+restart
+dial-in
+tabulator
+open-source
+portable
+app
+computerized
+fire wall
+command line
+jock
+power
+model
+bomb
+nanocomputer
+C, c
+computerphile
+multi-user
+active list
+ABEND
+chip
+disabled list
+catalog
+paddle
+property register
+formulary
+graphic
+cybergeek
+lappy
+check
+playable
+lap portable
+clicker
+e-mail [or] email
+backplane
+network card
+viewdata
+wireless
+space
+teleshopping
+go live
+start-up
+minicomputer
+stylus
+neurocomputer
+computing
+wow
+computation
+global
+chatbot
+attachment
+slot
+sysop
+screencast
+flag
+hotlist
+recompile
+CBI
+cyber kid
+spellchecker
+assembly
+plug-in
+medium
+platen
+ai
+disk compression
+import
+stop list
+pushdown
+negate
+encyclopedia
+os
+emulation
+double-click
+electronic mailbox
+psychobabbler
+slangster
+installer
+history list
+rogue dialler
+ship
+computer-process
+EPROM
+callback
+demand
+thumbnail
+opiophile
+hybrid computer
+laggy
+mark
+central processing unit
+tree
+real-time
+template
+high-level
+geekspeak
+object code
+instant messaging
+heuristic
+back button
+deadlock
+connect
+extension
+audit trail
+user group
+unlisted
+ascii
+accounting system
+distributed
+shell
+augmented reality
+backlist
+first-generation
+inclusion
+bloatware
+callback security
+computer jock
+parser
+valid
+on the fly
+ontology
+fragmentation
+differential analyzer
+hard drive
+taskbar
+computer art
+miniprinter
+performance benchmark
+day
+epidemiology
+virus checker
+BBS
+compression
+computor
+reserved list
+control-alt-delete
+force feedback
+machine–readable
+distro
+low-level language
+middle-click
+jukebox
+mouse button
+Memory Stick
+type out/up something
+CGI
+authentication
+vaporware
+hacky
+dumb
+voice recognition
+flatbed scanner
+mouse over sth
+print sth out
+trackball
+cafeteria
+hook into
+cut and paste
+RAM disk
+object
+downsize
+rerun
+fax modem
+neural network
+XML
+client-server
+expansion card
+RTF
+downloadable
+handshake
+font
+watermark
+brain machine
+bank
+machine translation
+condition code
+thinking machine
+applet
+cobot
+migrate
+air-gapped
+preinstall
+run-time
+back door
+hot-swap
+computer-integrated manufacturing
+interactivity
+print sth out/off
+retry
+message
+digital computer
+RISC
+carriage return
+colorize
+computer model
+blade server
+copy
+transaction
+printer
+screen scraping
+update
+base hardware
+cyberthreat
+desktop publishing
+connection
+analogize
+the darknet
+slave
+anti-virus
+smart card reader
+back up (something)
+program file
+MIDI
+time-out
+noise
+LLC
+file space
+defenestrate
+shortcut
+have many (or other) irons in the fire
+DP
+push technology
+text processing
+iconize
+cheat
+res
+emulator
+plug-compatible
+imaging
+scheduler
+bork
+pessimize
+minimize
+command language
+subprogram
+down
+intelligent terminal
+animation
+sense
+stocklist
+tap out something
+pull sth up
+information
+recovery programme
+viral
+hold
+power up
+v-mail
+burn
+deploy
+poll
+iterate
+button bar
+biomorph
+transaction processing
+bustle
+literal
+database
+programmatic
+malicious
+quest
+read out
+laptop (computer)
+sign off
+workgroup
+pull up something
+log off/out
+bezel
+pod slurping
+folder
+extract
+trapdoor
+log file
+installation
+electronically
+hard copy
+whetstone
+cybercrime
+future-proof
+minesweeper
+setup
+click away
+k
+byte
+log in (or on)
+Space Invaders
+lapheld
+robustness
+telecommute
+garbage
+checking program
+displayed
+IP address
+panelling
+external
+scalability
+check mark
+read-in
+timesharing
+petabyte
+thrash
+transmission
+decollate
+cyberweapon
+expert system
+pointing device
+quantum computer
+estimator
+legacy
+logger
+telegraphic transfer
+computery
+penetration testing
+pasting
+memory chip
+crack
+quantum bit
+packager
+buggy
+data retrieval
+log in/on
+information processing
+in-line
+JPEG
+manipulation
+data set
+networking
+computational linguistics
+keyboarder
+reenter
+connected
+roflstomp
+e-mail
+crunch
+return key
+send
+bubble memory
+power down
+dot matrix
+stoner
+chatter
+minitower
+enter key
+teahead
+cabinet bid
+machine-oriented
+embed
+bubble jet printer
+processing
+reconfigure
+cracker
+remake
+hot link
+typing
+log off (or out)
+array processor
+hotspot
+n/a
+ATM
+restoration
+logical
+OCR
+downtime
+tagger
+telecommuting
+sound card
+read-out
+game engine
+information retrieval
+delivery
+bitstream
+computer fraud
+workalike
+c.
+telecomputer
+console
+leg
+clip art
+ROM
+breaker
+inventory
+search engine
+itemize
+front-end processor
+instant message
+plug-and-play
+help screen
+logic bomb
+server farm
+literate
+reason
+middleware
+input/output
+Information Age
+administrator
+computer criminal
+flash memory
+computer hardware
+sequential
+fix
+cross-platform
+virtually
+walkthrough
