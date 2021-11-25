@@ -5,6 +5,7 @@ import string
 import requests
 import os
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
 APIKEY = os.getenv('KEY')
@@ -35,14 +36,20 @@ for i in range(25):
         string.ascii_lowercase+"0123456789", 8)
     while(len(generatedUsername) > 15):
         generatedUsername = f"{adj[r.randint(0,len(adj)-1)]}{noun[r.randint(0,len(noun)-1)]}{r.randint(0,2000)}"
-    userList.append({"email": generatedUsername+"@tcsTampa.com",
+    userList.append({"email": generatedUsername+"@tcstampa.com",
                      "password": generatedPassword})
 
 for i in userList:
     response = requests.post(
         f"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={APIKEY}", data={"email": i["email"], "password": i["password"], "returnSecureToken": "false"})
+    print(response.text)
 
 
 loginInfo = open("loginInfo.txt", "a")
 
 [loginInfo.write(f"{i['email']}: {i['password']}\n") for i in userList]
+
+for i in userList:
+    response = requests.patch(
+        f"https://coder-fair-default-rtdb.firebaseio.com/users/{i['email'][0:-13]}.json", data=json.dumps({"coderName": i["email"][0:-13], "role": 4}))
+    print(response.text)
