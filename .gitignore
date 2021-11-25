@@ -47,3 +47,6 @@ app.*.map.json
 
 # API key for Firebase
 /additional_scripts/.env
+
+# VSCODE Configuration Files
+.vscode
