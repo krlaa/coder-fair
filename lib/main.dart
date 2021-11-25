@@ -5,7 +5,7 @@ import 'constants/app_colors.dart';
 import 'controllers/home_controller.dart';
 import 'screens/home_screen.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 
