@@ -45,8 +45,11 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# API key for Firebase
-/additional_scripts/.env
+
+/additional_scripts/
 
 # VSCODE Configuration Files
 .vscode
+
+# Enviroment files
+*.env

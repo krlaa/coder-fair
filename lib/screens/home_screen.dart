@@ -1,10 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:coder_fair/controllers/home_controller.dart';
+import 'package:coder_fair/controllers/home_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends GetView<HomeScreenController> {
   @override
   Widget build(
     BuildContext context,

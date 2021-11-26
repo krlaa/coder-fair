@@ -24,6 +24,11 @@ dependencies:
   get: 4.3.8
   carousel_slider: ^4.0.0
   responsive_sizer: ^3.0.4+4
+  flutter_dotenv: ^5.0.2
+  flutter_secure_storage: ^5.0.2
+  hive: ^2.0.4
+  http: ^0.13.4
+  url_launcher: ^6.0.15
   flutter:
     sdk: flutter
 
@@ -46,7 +51,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - .env
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
