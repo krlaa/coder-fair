@@ -50,3 +50,6 @@ app.*.map.json
 
 # VSCODE Configuration Files
 .vscode
+
+# Enviroment files
+*.env

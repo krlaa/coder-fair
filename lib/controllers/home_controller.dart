@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'api_controller.dart';
 
 class HomeController extends GetxController {
+  var client = APIClient();
   final _isExpanded = false.obs;
   changeExpanded(outside) {
     _isExpanded.value = outside;
@@ -19,7 +20,7 @@ class HomeController extends GetxController {
   // fetchStudents function calls APICLient class' fetchStudents() and ensure loading is set to false after completion
   void fetchStudents() {
     fetchStudentsLoading(true);
-    APIClient.fetchStudents();
+    client.fetchStudents();
     fetchStudentsLoading(false);
   }
 
