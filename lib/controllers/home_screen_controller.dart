@@ -2,9 +2,11 @@ import 'package:coder_fair/models/student_model.dart';
 import 'package:get/get.dart';
 import 'api_controller.dart';
 
-class HomeController extends GetxController {
+class HomeScreenController extends GetxController {
   var client = APIClient();
-  final _isExpanded = false.obs;
+
+  // TODO: Remove this
+  var _isExpanded = false.obs;
   changeExpanded(outside) {
     _isExpanded.value = outside;
     print(_isExpanded.value);

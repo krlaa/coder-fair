@@ -32,7 +32,7 @@ class APIClient {
   // signIn function which is called by fetchUser, this only passes through the Firebase authentication endpoint
   Future<LoginState> signIn(String email, String password) async {
     // defines body of payload for signing in user
-    var body = {
+    final body = {
       'email': email,
       'password': password,
       "returnSecureToken": true

@@ -1,11 +1,11 @@
-import 'package:coder_fair/controllers/login_controller.dart';
+import 'package:coder_fair/controllers/login_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LoginScreen extends GetView<LoginController> {
+class LoginScreen extends GetView<LoginScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

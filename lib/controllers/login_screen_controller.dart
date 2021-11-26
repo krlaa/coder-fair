@@ -1,4 +1,5 @@
 import 'package:coder_fair/models/user_model.dart';
+import 'package:coder_fair/screens/coach_screen.dart';
 import 'package:coder_fair/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 
-class LoginController extends GetxController {
+class LoginScreenController extends GetxController {
   // Client to call api resources
   var client = APIClient();
 
@@ -15,7 +16,7 @@ class LoginController extends GetxController {
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   // loaded from secure storage
-  final _loadedFromSS = false.obs;
+  var _loadedFromSS = false.obs;
   get loadedFromSS => _loadedFromSS.value;
 
   // Indicate processing data
@@ -27,15 +28,15 @@ class LoginController extends GetxController {
   TextEditingController password = TextEditingController();
 
   // Form
-  final _formKey = GlobalKey<FormState>();
+  var _formKey = GlobalKey<FormState>();
   get formKey => _formKey;
 
   // show or hide password
-  final _obscurePassword = true.obs;
+  var _obscurePassword = true.obs;
   get obscurePassword => _obscurePassword.value;
   set obscurePassword(value) => _obscurePassword.value = value;
 
-  final _rememberPassword = false.obs;
+  var _rememberPassword = false.obs;
   get rememberPassword => _rememberPassword.value;
   set rememberPassword(value) => _rememberPassword.value = value;
 
@@ -61,6 +62,9 @@ class LoginController extends GetxController {
     } finally {
       _isLoading(false);
     }
+    if (_currentUser.value.role == 3) {
+      Get.to(CoachScreen());
+    }
     Get.to(HomeScreen());
   }
 
@@ -75,6 +79,7 @@ class LoginController extends GetxController {
     super.onInit();
   }
 
+  // Ensure the key is available to write to
   void ensureKey() async {
     var containsEncryptionKey =
         await secureStorage.containsKey(key: 'youshallnotpass');
@@ -85,6 +90,7 @@ class LoginController extends GetxController {
     }
   }
 
+  // inserts the secrets to the encrypted box
   void insertSecret() async {
     ensureKey();
     var encryptionKey = base64Url
@@ -95,6 +101,7 @@ class LoginController extends GetxController {
     encryptedBox.put('password', password.text);
   }
 
+  // Gets the secret then sets the text fields to the appropriate information. Disables the password visibility toggle to ensure people cannot obtain password easily
   void getSecret() async {
     ensureKey();
     var encryptionKey = base64Url

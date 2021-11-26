@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'constants/app_colors.dart';
-import 'controllers/home_controller.dart';
-import 'controllers/login_controller.dart';
+import 'controllers/home_screen_controller.dart';
+import 'controllers/login_screen_controller.dart';
 
 void main() async {
   var box = await Hive.openBox('userPreferences');
@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
     return ResponsiveSizer(
       builder: (_, __, ___) => GetMaterialApp(
         onInit: () {
-          Get.put(LoginController());
-          Get.put(HomeController());
+          Get.put(LoginScreenController());
+          Get.put(HomeScreenController());
         },
         theme: ThemeData(scaffoldBackgroundColor: mainBg),
         title: 'TCS Tampa CF',

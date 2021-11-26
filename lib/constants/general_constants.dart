@@ -1,6 +1,6 @@
 import 'dart:core';
 
 // regular expression to match the non domain part of an email
-var regExp = RegExp(
+final regExp = RegExp(
   r"^([^@]+)",
 );
