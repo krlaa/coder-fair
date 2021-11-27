@@ -32,6 +32,11 @@ class LoginScreen extends GetView<LoginScreenController> {
                       },
                     ),
                     TextFormField(
+                      onChanged: (val) {
+                        if (val.length == 0) {
+                          controller.resetPassField();
+                        }
+                      },
                       controller: controller.password,
                       autofillHints: [
                         AutofillHints.password,
