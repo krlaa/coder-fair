@@ -17,7 +17,7 @@ class HomeScreen extends GetView<HomeScreenController> {
           body: SafeArea(
             child: DefaultTextStyle(
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 10.sp),
+              style: TextStyle(fontSize: 15.sp),
               child: Row(
                 children: [
                   Flexible(
