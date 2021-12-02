@@ -24,7 +24,9 @@ class LoginScreen extends GetView<LoginScreenController> {
                         AutofillHints.username
                       ],
                       textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(hintText: "Email"),
+                      decoration: InputDecoration(
+                        hintText: "Email",
+                      ),
                       validator: (value) {
                         if (value == null || !GetUtils.isEmail(value)) {
                           return 'Please enter valid email';
@@ -112,7 +114,10 @@ class LoginScreen extends GetView<LoginScreenController> {
                             TextInput.finishAutofillContext(shouldSave: true);
                             controller.signIn();
                           } else {
-                            Get.snackbar("Error", "nope");
+                            Get.snackbar(
+                              "Error",
+                              "nope",
+                            );
                           }
                         },
                         child: !controller.isLoading

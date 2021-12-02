@@ -1,5 +1,4 @@
 import 'package:coder_fair/models/user_model.dart';
-import 'package:coder_fair/screens/coach_screen.dart';
 import 'package:coder_fair/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -67,9 +66,7 @@ class LoginScreenController extends GetxController {
     } finally {
       _isLoading(false);
     }
-    if (_currentUser.value.role == 3) {
-      Get.to(CoachScreen());
-    }
+
     Get.to(HomeScreen());
   }
 

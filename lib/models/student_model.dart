@@ -14,13 +14,13 @@ class Student {
   String profilePictureURL;
   List<Project> listOfProjects;
   String codeCoach;
-  String thumbnailURL;
-  Student(
-      {required this.coderName,
-      required this.profilePictureURL,
-      required this.listOfProjects,
-      required this.codeCoach,
-      required this.thumbnailURL});
+
+  Student({
+    this.coderName = "",
+    this.profilePictureURL = "",
+    this.listOfProjects = const [],
+    this.codeCoach = "",
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -28,27 +28,7 @@ class Student {
       'profilePictureURL': profilePictureURL,
       'listOfProjects': listOfProjects.map((x) => x.toMap()).toList(),
       'codeCoach': codeCoach,
-      'thumbnailURL': thumbnailURL,
     };
-  }
-
-  factory Student.fromMap(Map<String, dynamic> map) {
-    return Student(
-      coderName: map['coderName'],
-      profilePictureURL: map['profilePictureURL'],
-      listOfProjects: List<Project>.from(
-          map['listOfProjects']?.map((x) => Project.fromMap(x))),
-      codeCoach: map['codeCoach'],
-      thumbnailURL: map['thumbnailURL'],
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  static List<Student> fromJson(String source) {
-    return json.decode(source).map<Student>((x) {
-      return Student.fromMap(x);
-    }).toList();
   }
 
   @override

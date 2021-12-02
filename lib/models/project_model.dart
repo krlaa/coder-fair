@@ -27,19 +27,16 @@ class Project {
     };
   }
 
-  factory Project.fromMap(Map<String, dynamic> map) {
+  factory Project.fromMap(Map<String, dynamic> map, String title) {
     return Project(
-      title: map['title'],
-      videoURL: map['videoURL'],
+      title: title,
+      videoURL: map['video_url'],
       language: map['language'],
-      description: map['description'],
+      description: map['desc'],
     );
   }
 
   String toJson() => json.encode(toMap());
-
-  factory Project.fromJson(String source) =>
-      Project.fromMap(json.decode(source));
 
   @override
   String toString() {

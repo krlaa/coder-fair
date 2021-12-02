@@ -1,3 +1,4 @@
+import 'package:coder_fair/screens/home_screen.dart';
 import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,8 +31,30 @@ class MyApp extends StatelessWidget {
         },
         theme: ThemeData(scaffoldBackgroundColor: mainBg),
         title: 'TCS Tampa CF',
-        home: LoginScreen(),
+        home: HomeScreen(),
       ),
     );
   }
 }
+
+// TODO: Get rid of once your done
+
+// Row(children:[
+//   constraints.maxWidth> 1250 ?Column():Container(),
+//   Column(children:[
+//     Container(
+//   width: constraints.maxWidth >=1920? 721 : constraints.maxWidth >= 820? 660: constraints.maxWidth >= 428 ? 346 : 200.sp
+// )])
+//  Container(
+//   width: constraints.maxWidth >=1920? 721 : constraints.maxWidth >= 820? 660: constraints.maxWidth >= 428 ? 346 : 200.sp
+// )])
+//  Container(
+//   width: constraints.maxWidth >=1920? 721 : constraints.maxWidth >= 820? 660: constraints.maxWidth >= 428 ? 346 : 200.sp
+// )])
+
+// ])
+
+
+// constraints.maxWidth >=428 Column(children:[Text(),Image()]) : Row(children:[Text(),Image()])
+
+// Wrap(children:[Text(),Image()])
