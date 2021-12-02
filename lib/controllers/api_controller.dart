@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:coder_fair/constants/general_constants.dart';
+import 'package:coder_fair/models/project_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -14,10 +15,45 @@ class APIClient {
   var client = http.Client();
 
   // fetchStudents function which fetches students projects from Firebase RTDBMS
-  Future<List<Student>> fetchStudents() async {
-    return Future.delayed(Duration(seconds: 1), () {
-      return Student.fromJson(SAMPLE_STUDENT_DATA);
+  Future<Map> fetchStudents() async {
+    var response = await client.get(Uri.parse(
+        "https://coder-fair-default-rtdb.firebaseio.com/project_categories.json"));
+    Map categories = json.decode(response.body).cast<String, List>();
+    return categories;
+  }
+
+  Future<Student> loadInfo(String coderName) async {
+    var baseUrl = "https://coder-fair-default-rtdb.firebaseio.com/";
+
+    List coderProjects = json.decode(
+        (await client.get(Uri.parse("${baseUrl}coders/${coderName}.json")))
+            .body);
+    print(coderProjects);
+
+    var coderInfo = json.decode((await client
+            .get(Uri.parse("${baseUrl}coder_detail/${coderName}.json")))
+        .body);
+
+    List<Project> j = [];
+
+    await Future.forEach(coderProjects, (element) async {
+      print(element);
+      var x = json.decode((await client
+              .get(Uri.parse("${baseUrl}project_detail/${element}.json")))
+          .body);
+      print(x.runtimeType);
+      j.add(Project.fromMap(x, "$element"));
+      return element;
     });
+
+    print(j);
+
+    return Student(
+      coderName: coderName,
+      profilePictureURL: coderInfo['coder_pic_url'],
+      listOfProjects: j,
+      codeCoach: coderInfo['coach'],
+    );
   }
 
   // fetchUser function fetches the user details from the Firebase RTDBMS
@@ -25,7 +61,7 @@ class APIClient {
       {required String email, required String password}) async {
     LoginState info = await signIn(email, password);
     var response = await client.get(Uri.parse(
-        "https://coder-fair-default-rtdb.firebaseio.com/users/${info.username}.json"));
+        "https://coder-fair-default-rtdb.firebaseio.com/user/${info.username}.json"));
     return User.fromJson(response.body);
   }
 
@@ -56,6 +92,14 @@ class APIClient {
   // close function to close http client to avoid memory leaks.
   void close() {
     client.close();
+  }
+
+  Future<List<Student>> paginateStudents(
+      int startIndex, List<String> sublist) async {
+    List<Student> result = [];
+    Future.forEach(
+        sublist, (String element) async => result.add(await loadInfo(element)));
+    return result;
   }
 }
 

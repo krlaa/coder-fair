@@ -53,3 +53,5 @@ app.*.map.json
 
 # Enviroment files
 *.env
+
+db.json

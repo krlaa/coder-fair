@@ -1,5 +1,4 @@
 import 'package:coder_fair/models/user_model.dart';
-import 'package:coder_fair/screens/coach_screen.dart';
 import 'package:coder_fair/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,6 +42,11 @@ class LoginScreenController extends GetxController {
   //Defines current user this value will be accessed through this controller to determine vote weight; is obs because will need to observe always
   Rx<User> _currentUser = User(coderName: "", role: 0).obs;
 
+  // Ensures if the user deletes the whole password after loadedFromSS then password field will reset to include visibility icon.
+  void resetPassField() {
+    _loadedFromSS.value = false;
+  }
+
   // Sign in function to sign in the user
   // isLoading is set to true so that the UI responds to processing of data
   // TODO: Create specific snackbar to react to custom errors.
@@ -51,7 +55,7 @@ class LoginScreenController extends GetxController {
     box.put('rememberPassword', _rememberPassword.value);
     _isLoading(true);
     if (_rememberPassword.value) {
-      insertSecret();
+      await insertSecret();
     }
     try {
       _currentUser.value =
@@ -62,9 +66,7 @@ class LoginScreenController extends GetxController {
     } finally {
       _isLoading(false);
     }
-    if (_currentUser.value.role == 3) {
-      Get.to(CoachScreen());
-    }
+
     Get.to(HomeScreen());
   }
 
@@ -74,13 +76,13 @@ class LoginScreenController extends GetxController {
     var exists = box.get('rememberPassword');
     _rememberPassword.value = exists;
     if (exists) {
-      getSecret();
+      await getSecret();
     }
     super.onInit();
   }
 
   // Ensure the key is available to write to
-  void ensureKey() async {
+  Future<void> ensureKey() async {
     var containsEncryptionKey =
         await secureStorage.containsKey(key: 'youshallnotpass');
     if (!containsEncryptionKey) {
@@ -91,8 +93,8 @@ class LoginScreenController extends GetxController {
   }
 
   // inserts the secrets to the encrypted box
-  void insertSecret() async {
-    ensureKey();
+  Future<void> insertSecret() async {
+    await ensureKey();
     var encryptionKey = base64Url
         .decode(await secureStorage.read(key: 'youshallnotpass') ?? "");
     var encryptedBox = await Hive.openBox('vaultBox',
@@ -102,8 +104,8 @@ class LoginScreenController extends GetxController {
   }
 
   // Gets the secret then sets the text fields to the appropriate information. Disables the password visibility toggle to ensure people cannot obtain password easily
-  void getSecret() async {
-    ensureKey();
+  Future<void> getSecret() async {
+    await ensureKey();
     var encryptionKey = base64Url
         .decode(await secureStorage.read(key: 'youshallnotpass') ?? "");
     var encryptedBox = await Hive.openBox('vaultBox',
