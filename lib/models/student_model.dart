@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'user_model.dart';
+
 import 'project_model.dart';
+import 'user_model.dart';
 
 /// Represents a student. Contains necessary information to identify within the app as well details about their project(s)
 ///
@@ -33,6 +34,6 @@ class Student {
 
   @override
   String toString() {
-    return 'Student(coderName: $coderName,  listOfProjects: $listOfProjects, codeCoach: $codeCoach, )';
+    return 'Student(coderName: $coderName, profilePictureURL: $profilePictureURL, listOfProjects: $listOfProjects, codeCoach: $codeCoach)';
   }
 }
