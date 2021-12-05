@@ -217,10 +217,26 @@ class CustomPageViewScrollPhysics extends ScrollPhysics {
     return CustomPageViewScrollPhysics(parent: buildParent(ancestor)!);
   }
 
+  // @override
+  // SpringDescription get spring => const SpringDescription(
+  //       mass: 1000,
+  //       stiffness: 100,
+  //       damping: 500,
+  //     );
   @override
-  SpringDescription get spring => const SpringDescription(
-        mass: 1000,
-        stiffness: 100,
-        damping: 500,
-      );
+  Simulation? createBallisticSimulation(
+      ScrollMetrics position, double velocity) {
+    final tolerance = this.tolerance;
+    if ((velocity.abs() < tolerance.velocity) ||
+        (velocity > 0.0 && position.pixels >= position.maxScrollExtent) ||
+        (velocity < 0.0 && position.pixels <= position.minScrollExtent)) {
+      return null;
+    }
+    return ClampingScrollSimulation(
+      position: position.pixels,
+      velocity: velocity,
+      friction: 1000, // <--- HERE
+      tolerance: tolerance,
+    );
+  }
 }
