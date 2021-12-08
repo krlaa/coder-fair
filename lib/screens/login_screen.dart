@@ -1,3 +1,4 @@
+import 'package:coder_fair/constants/app_colors.dart';
 import 'package:coder_fair/controllers/login_screen_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:coder_fair/utils/blend_mask.dart';
 
 class LoginScreen extends GetView<LoginScreenController> {
   @override
@@ -20,29 +22,58 @@ class LoginScreen extends GetView<LoginScreenController> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.blue,
-            Colors.blue.shade800,
+            lightBlue,
+            darkBlue,
           ],
         )),
+
         // alignment: Alignment.center,
-        child: tcsLogo(context),
+        child: Stack(
+          children: [
+            blendMask(),
+            bodySection(context),
+          ],
+        ),
       )),
     );
   }
 
-  Center tcsLogo(BuildContext context) {
-    return Center(
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Center(
-          child: Image.asset(
-            'images/tcs-logo-white.png',
-            width: 80.w,
+  BlendMask blendMask() {
+    return BlendMask(
+        blendMode: BlendMode.multiply,
+        child: SizedBox(
+          width: 100.w,
+          height: 100.h,
+          child: Opacity(
+            opacity: 0.2,
+            child: Image.asset(
+              'images/bg-1.jpg',
+              repeat: ImageRepeat.repeat,
+            ),
           ),
-        ),
-        tampa2022(),
-        cfLogo(),
-        buildForm(context),
-      ]),
+        ));
+  }
+
+  Center bodySection(BuildContext context) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          tcsLogo(),
+          tampa2022(),
+          cfLogo(),
+          buildForm(context),
+        ]),
+      ),
+    );
+  }
+
+  Center tcsLogo() {
+    return Center(
+      child: Image.asset(
+        'images/tcs-logo-white.png',
+        width: 80.w,
+        height: 20.h,
+      ),
     );
   }
 
@@ -61,16 +92,13 @@ class LoginScreen extends GetView<LoginScreenController> {
 
   Center tampa2022() {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Text(
-          'Tampa 2022',
-          style: TextStyle(
-              fontFamily: 'RobotoSlab',
-              fontSize: 20.sp,
-              // fontWeight: FontWeight.bold,
-              color: Colors.white),
-        ),
+      child: Text(
+        'Tampa 2022',
+        style: TextStyle(
+            fontFamily: 'RobotoSlab',
+            fontSize: 20.sp,
+            // fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
