@@ -215,7 +215,10 @@ class LoginScreen extends GetView<LoginScreenController> {
                         titlePadding: EdgeInsets.all(20),
                         contentPadding: EdgeInsets.all(40),
                         title: "Forgot your password?",
-                        titleStyle: TextStyle(fontFamily: 'RobotoSlab'),
+                        titleStyle: TextStyle(
+                          fontFamily: 'RobotoSlab',
+                          color: Colors.black87,
+                        ),
                         content: Wrap(
                           alignment: WrapAlignment.center,
                           children: [
