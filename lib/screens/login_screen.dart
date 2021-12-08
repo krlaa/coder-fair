@@ -25,41 +25,53 @@ class LoginScreen extends GetView<LoginScreenController> {
           ],
         )),
         // alignment: Alignment.center,
-        child: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Center(
-              child: Image.asset(
-                'images/tcs-logo-white.png',
-                width: 80.w,
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text(
-                  'Tampa 2022',
-                  style: TextStyle(
-                      fontFamily: 'RobotoSlab',
-                      fontSize: 20.sp,
-                      // fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 40.0),
-                child: Image.asset(
-                  'images/cf-logo.png',
-                  height: 6.h,
-                  width: 90.w,
-                ),
-              ),
-            ),
-            buildForm(context),
-          ]),
-        ),
+        child: tcsLogo(context),
       )),
+    );
+  }
+
+  Center tcsLogo(BuildContext context) {
+    return Center(
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Center(
+          child: Image.asset(
+            'images/tcs-logo-white.png',
+            width: 80.w,
+          ),
+        ),
+        tampa2022(),
+        cfLogo(),
+        buildForm(context),
+      ]),
+    );
+  }
+
+  Center cfLogo() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 40.0),
+        child: Image.asset(
+          'images/cf-logo.png',
+          height: 6.h,
+          width: 90.w,
+        ),
+      ),
+    );
+  }
+
+  Center tampa2022() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Text(
+          'Tampa 2022',
+          style: TextStyle(
+              fontFamily: 'RobotoSlab',
+              fontSize: 20.sp,
+              // fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
+      ),
     );
   }
 
@@ -145,28 +157,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                     obscureText: controller.obscurePassword,
                   ),
                 ),
-                Container(
-                  width: 60.0.w,
-                  child: Obx(
-                    () => CheckboxListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.only(top: 15),
-                        tileColor: Colors.white,
-                        selectedTileColor: Colors.white,
-                        controlAffinity: ListTileControlAffinity.leading,
-                        title: Text(
-                          'Remember Password?',
-                          maxLines: 2,
-                          style: TextStyle(
-                            fontFamily: 'Raleway',
-                            fontSize: 15.sp,
-                            color: Colors.white,
-                          ),
-                        ),
-                        value: controller.rememberPassword,
-                        onChanged: (val) => controller.rememberPassword = val),
-                  ),
-                ),
+                rememberPassword(),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: SizedBox(
@@ -202,41 +193,70 @@ class LoginScreen extends GetView<LoginScreenController> {
                     ),
                   ),
                 ),
-                TextButton(
-                  child: Text("Forgot Password?",
-                      style: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 15.sp,
-                        color: Colors.white,
-                      )),
-                  onPressed: () {
-                    Get.defaultDialog(
-                        radius: 5,
-                        titlePadding: EdgeInsets.all(20),
-                        contentPadding: EdgeInsets.all(40),
-                        title: "Forgot your password?",
-                        titleStyle: TextStyle(
-                          fontFamily: 'RobotoSlab',
-                          color: Colors.black87,
-                        ),
-                        content: Wrap(
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text("Contact theCoderSchool at:",
-                                style: TextStyle(fontFamily: 'Raleway')),
-                            TextButton(
-                                child: Text("(813) 422-5566",
-                                    style: TextStyle(fontFamily: 'Raleway')),
-                                onPressed: () async {
-                                  if (!await launch("8134225566"))
-                                    throw 'Could not launch 8134225566';
-                                }),
-                          ],
-                        ));
-                  },
-                )
+                forgotPassword()
               ],
             )),
+      ),
+    );
+  }
+
+  TextButton forgotPassword() {
+    return TextButton(
+      child: Text("Forgot Password?",
+          style: TextStyle(
+            fontFamily: 'Raleway',
+            fontSize: 15.sp,
+            color: Colors.white,
+          )),
+      onPressed: () {
+        Get.defaultDialog(
+            radius: 5,
+            titlePadding: EdgeInsets.all(20),
+            contentPadding: EdgeInsets.all(40),
+            title: "Forgot your password?",
+            titleStyle: TextStyle(
+              fontFamily: 'RobotoSlab',
+              color: Colors.black87,
+            ),
+            content: Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                Text("Contact theCoderSchool at:",
+                    style: TextStyle(fontFamily: 'Raleway')),
+                TextButton(
+                    child: Text("(813) 422-5566",
+                        style: TextStyle(fontFamily: 'Raleway')),
+                    onPressed: () async {
+                      if (!await launch("8134225566"))
+                        throw 'Could not launch 8134225566';
+                    }),
+              ],
+            ));
+      },
+    );
+  }
+
+  Container rememberPassword() {
+    return Container(
+      width: 60.0.w,
+      child: Obx(
+        () => CheckboxListTile(
+            dense: true,
+            contentPadding: EdgeInsets.only(top: 15),
+            tileColor: Colors.white,
+            selectedTileColor: Colors.white,
+            controlAffinity: ListTileControlAffinity.leading,
+            title: Text(
+              'Remember Password?',
+              maxLines: 2,
+              style: TextStyle(
+                fontFamily: 'Raleway',
+                fontSize: 15.sp,
+                color: Colors.white,
+              ),
+            ),
+            value: controller.rememberPassword,
+            onChanged: (val) => controller.rememberPassword = val),
       ),
     );
   }
