@@ -2,11 +2,16 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coder_fair/models/project_model.dart';
 import 'package:coder_fair/models/student_model.dart';
 import 'package:get/get.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'api_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreenController extends GetxController {
   var client = APIClient();
+
+  var _x = YoutubePlayerController(initialVideoId: "").obs;
+  get x => _x.value;
+  set x(value) => _x.value = value;
 
   var _currentStudent = Student().obs;
   get currentStudent => _currentStudent.value;
@@ -16,7 +21,7 @@ class HomeScreenController extends GetxController {
   get currentIndex => _currentIndex.value;
   set currentIndex(value) => _currentIndex.value = value;
 
-  var _currentCategory = "".obs;
+  var _currentCategory = "Apps".obs;
   get currentCategory => _currentCategory.value;
   set currentCategory(value) => _currentCategory.value = value;
 
@@ -87,16 +92,7 @@ class HomeScreenController extends GetxController {
         categories.keys.toList()[i],
       );
     }
-    currentCategory = "Apps";
-    print(categories["Game_Engine"]);
+
     super.onInit();
-    // _currentIndex.listen((p0) async {
-    //   await Future.delayed(Duration(milliseconds: 500));
-    //   print("checking......");
-    //   print(currentIndex == p0);
-    //   if (categories[currentCategory][p0] != currentStudent) {
-    //     await loadStudent(currentCategory, p0);
-    //   }
-    // });
   }
 }

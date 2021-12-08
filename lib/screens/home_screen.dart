@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
+// TODO: Add overlay screen for onboarding
+
 class HomeScreen extends GetView<HomeScreenController> {
   @override
   Widget build(
@@ -29,6 +31,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                         isAlwaysShown: true,
                         showTrackOnHover: true,
                         child: ListView.builder(
+                          scrollDirection: Axis.vertical,
                           itemCount: controller.categories.length,
                           itemBuilder: (context, index2) {
                             var cat =
@@ -68,6 +71,25 @@ class HomeScreen extends GetView<HomeScreenController> {
                                                   CustomPageViewScrollPhysics(),
                                               pageSnapping: true,
                                               onPageChanged: (index, reason) {
+                                                controller.x =
+                                                    YoutubePlayerController(
+                                                  initialVideoId:
+                                                      YoutubePlayerController
+                                                          .convertUrlToId(
+                                                              "${controller.currentStudent.listOfProjects[0].videoURL}")!,
+                                                  params: YoutubePlayerParams(
+                                                    startAt: const Duration(
+                                                        minutes: 1,
+                                                        seconds: 36),
+                                                    showControls: true,
+                                                    showFullscreenButton: true,
+                                                    desktopMode: false,
+                                                    enableJavaScript: true,
+                                                    autoPlay: true,
+                                                    privacyEnhanced: true,
+                                                    useHybridComposition: true,
+                                                  ),
+                                                );
                                                 controller.currentCategory =
                                                     controller.categories.keys
                                                         .toList()[index2];
@@ -106,7 +128,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                                                     controller.currentCategory);
                                               },
                                               viewportFraction: 0.3,
-                                              scrollDirection: Axis.horizontal,
+                                              scrollDirection: Axis.vertical,
                                               height: 200,
                                               initialPage: 0,
                                               enlargeCenterPage: true,
@@ -139,60 +161,52 @@ class HomeScreen extends GetView<HomeScreenController> {
                   flex: 3,
                   child: Obx(() {
                     print(controller.currentStudent.listOfProjects);
-                    YoutubePlayerController _controller =
-                        YoutubePlayerController(
-                      initialVideoId: YoutubePlayerController.convertUrlToId(
-                          "${controller.currentStudent.listOfProjects[0].videoURL}")!,
-                      params: YoutubePlayerParams(
-                        autoPlay: true,
-                        showControls: false,
-                        showFullscreenButton: true,
-                      ),
-                    );
+
                     return Container(
                         color: Colors.green,
                         child: !controller.loadingStudentInfo
-                            ? Column(
-                                children: [
-                                  Text("${controller.currentStudent}"),
-                                  YoutubePlayerControllerProvider(
-                                      // Provides controller to all the widget below it.
-                                      controller: _controller,
-                                      child: YoutubePlayerIFrame(
-                                        key: Key(controller
-                                            .currentStudent.coderName),
-                                        controller: _controller,
-                                      )),
-                                  YoutubePlayerControllerProvider(
-                                      // Provides controller to all the widget below it.
-                                      controller: _controller,
+                            ? YoutubePlayerControllerProvider(
+                                // Provides controller to all the widget below it.
+                                controller: controller.x,
+                                child: Column(
+                                  children: [
+                                    Text("${controller.currentStudent}"),
+                                    YoutubePlayerIFrame(
+                                      key: Key(
+                                          controller.currentStudent.coderName),
+                                      controller: controller.x,
+                                    ),
+                                    Positioned.fill(
                                       child: YoutubeValueBuilder(
-                                        controller:
-                                            _controller, // This can be omitted, if using `YoutubePlayerControllerProvider`
+                                        controller: controller.x,
                                         builder: (context, value) {
-                                          return IconButton(
-                                            icon: Icon(
-                                              value.playerState ==
-                                                      PlayerState.playing
-                                                  ? Icons.pause
-                                                  : Icons.play_arrow,
+                                          return Material(
+                                            child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    YoutubePlayerController
+                                                        .getThumbnail(
+                                                      videoId: controller
+                                                          .x.initialVideoId,
+                                                      quality: ThumbnailQuality
+                                                          .medium,
+                                                    ),
+                                                  ),
+                                                  fit: BoxFit.fitWidth,
+                                                ),
+                                              ),
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
                                             ),
-                                            onPressed: value.isReady
-                                                ? () {
-                                                    context.ytController.play();
-                                                    value.playerState ==
-                                                            PlayerState.playing
-                                                        ? context.ytController
-                                                            .pause()
-                                                        : context.ytController
-                                                            .play();
-                                                  }
-                                                : null,
                                           );
                                         },
-                                      ))
-                                ],
-                              )
+                                      ),
+                                    ),
+                                  ],
+                                ))
                             : Center(
                                 child: CircularProgressIndicator(
                                   color: Colors.white,
