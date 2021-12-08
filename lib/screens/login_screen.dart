@@ -27,17 +27,10 @@ class LoginScreen extends GetView<LoginScreenController> {
         // alignment: Alignment.center,
         child: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 50.0,
-                right: 50.0,
-                left: 50.0,
-              ), // padding around tcs logo
-              child: Center(
-                child: Image.asset(
-                  'images/tcs-logo-white.png',
-                  width: 80.w,
-                ),
+            Center(
+              child: Image.asset(
+                'images/tcs-logo-white.png',
+                width: 80.w,
               ),
             ),
             Center(
