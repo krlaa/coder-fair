@@ -97,7 +97,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                     },
                   ),
                 ),
-                Padding(padding: EdgeInsets.all(8.0)),
+                Padding(padding: EdgeInsets.all(10.0)),
                 Container(
                   width: 60.w,
                   child: TextFormField(
@@ -150,7 +150,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                   child: Obx(
                     () => CheckboxListTile(
                         dense: true,
-                        contentPadding: EdgeInsets.all(0),
+                        contentPadding: EdgeInsets.only(top: 15),
                         tileColor: Colors.white,
                         selectedTileColor: Colors.white,
                         controlAffinity: ListTileControlAffinity.leading,
