@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coder_fair/controllers/home_screen_controller.dart';
 import 'package:coder_fair/models/project_model.dart';
@@ -7,6 +9,8 @@ import 'package:flutter/physics.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
+import 'card_screen.dart';
 
 // TODO: Add overlay screen for onboarding
 
@@ -49,20 +53,25 @@ class HomeScreen extends GetView<HomeScreenController> {
                                           itemCount: cat.length,
                                           itemBuilder:
                                               (context, index1, realIndex) {
-                                            return Material(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              elevation: 8,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15)),
-                                                child: Center(
-                                                    child: Text(cat[index1]
-                                                            is Student
-                                                        ? cat[index1].coderName
-                                                        : cat[index1])),
+                                            return InkWell(
+                                              onTap: () {
+                                                Get.to(CardScreen(),
+                                                    opaque: false);
+                                              },
+                                              child: Card(
+                                                elevation: 8,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                  child: Center(
+                                                      child: Text(
+                                                          cat[index1] is Student
+                                                              ? cat[index1]
+                                                                  .coderName
+                                                              : cat[index1])),
+                                                ),
                                               ),
                                             );
                                           },
@@ -94,31 +103,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                                                     controller.categories.keys
                                                         .toList()[index2];
                                                 controller.currentIndex = index;
-                                                // if (controller.currentValue
-                                                //             .value +
-                                                //         2 <
-                                                //     index) {
-                                                //   CarouselController x =
-                                                //       controller
-                                                //               .listOfControllers[
-                                                //           index2];
-                                                //   x.jumpToPage(controller
-                                                //           .currentValue
-                                                //           .value +
-                                                //       2);
-                                                //   controller.currentValue
-                                                //       .value = controller
-                                                //           .currentValue
-                                                //           .value +
-                                                //       2;
-                                                // } else if (controller
-                                                //             .currentValue
-                                                //             .value +
-                                                //         2 ==
-                                                //     index) {
-                                                //   controller.currentValue
-                                                //       .value = index;
-                                                // }
+
                                                 controller.paginateStudents(
                                                     index,
                                                     controller.categories.keys
@@ -156,64 +141,6 @@ class HomeScreen extends GetView<HomeScreenController> {
                       ));
                     }
                   })),
-              if (constraints.maxWidth > 1250)
-                Flexible(
-                  flex: 3,
-                  child: Obx(() {
-                    print(controller.currentStudent.listOfProjects);
-
-                    return Container(
-                        color: Colors.green,
-                        child: !controller.loadingStudentInfo
-                            ? YoutubePlayerControllerProvider(
-                                // Provides controller to all the widget below it.
-                                controller: controller.x,
-                                child: Column(
-                                  children: [
-                                    Text("${controller.currentStudent}"),
-                                    YoutubePlayerIFrame(
-                                      key: Key(
-                                          controller.currentStudent.coderName),
-                                      controller: controller.x,
-                                    ),
-                                    Positioned.fill(
-                                      child: YoutubeValueBuilder(
-                                        controller: controller.x,
-                                        builder: (context, value) {
-                                          return Material(
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    YoutubePlayerController
-                                                        .getThumbnail(
-                                                      videoId: controller
-                                                          .x.initialVideoId,
-                                                      quality: ThumbnailQuality
-                                                          .medium,
-                                                    ),
-                                                  ),
-                                                  fit: BoxFit.fitWidth,
-                                                ),
-                                              ),
-                                              child: const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ))
-                            : Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              ));
-                  }),
-                )
             ],
           ),
         ),
@@ -231,12 +158,6 @@ class CustomPageViewScrollPhysics extends ScrollPhysics {
     return CustomPageViewScrollPhysics(parent: buildParent(ancestor)!);
   }
 
-  // @override
-  // SpringDescription get spring => const SpringDescription(
-  //       mass: 1000,
-  //       stiffness: 100,
-  //       damping: 500,
-  //     );
   @override
   Simulation? createBallisticSimulation(
       ScrollMetrics position, double velocity) {

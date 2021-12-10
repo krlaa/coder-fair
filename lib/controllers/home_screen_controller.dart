@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coder_fair/models/project_model.dart';
 import 'package:coder_fair/models/student_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'api_controller.dart';
@@ -12,7 +13,9 @@ class HomeScreenController extends GetxController {
   var _x = YoutubePlayerController(initialVideoId: "").obs;
   get x => _x.value;
   set x(value) => _x.value = value;
-
+  var _cardListController = CarouselController().obs;
+  get cardListController => _cardListController.value;
+  set cardListController(value) => _cardListController.value = value;
   var _currentStudent = Student().obs;
   get currentStudent => _currentStudent.value;
   set currentStudent(value) => _currentStudent.value = value;
