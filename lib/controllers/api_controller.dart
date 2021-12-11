@@ -28,7 +28,7 @@ class APIClient {
     List coderProjects = json.decode(
         (await client.get(Uri.parse("${baseUrl}coders/${coderName}.json")))
             .body);
-
+    print("$coderProjects" + " projects " + coderName);
     var coderInfo = json.decode((await client
             .get(Uri.parse("${baseUrl}coder_detail/${coderName}.json")))
         .body);

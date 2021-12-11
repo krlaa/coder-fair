@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coder_fair/controllers/home_screen_controller.dart';
+import 'package:coder_fair/models/student_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class CardScreen extends GetView<HomeScreenController> {
+  final Student student;
+  CardScreen({required this.student});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,12 +73,15 @@ class CardScreen extends GetView<HomeScreenController> {
                                             return YoutubePlayerControllerProvider(
                                               // Provides controller to all the widget below it.
                                               controller: x,
-                                              child: YoutubePlayerIFrame(
-                                                key: Key(controller
-                                                    .currentStudent
-                                                    .listOfProjects[index]
-                                                    .videoURL),
-                                              ),
+                                              child: YoutubeValueBuilder(
+                                                  builder: (context, value) {
+                                                return YoutubePlayerIFrame(
+                                                  key: Key(controller
+                                                      .currentStudent
+                                                      .listOfProjects[index]
+                                                      .videoURL),
+                                                );
+                                              }),
                                             );
                                           },
                                         ),

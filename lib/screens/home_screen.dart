@@ -55,8 +55,8 @@ class HomeScreen extends GetView<HomeScreenController> {
                                               (context, index1, realIndex) {
                                             return InkWell(
                                               onTap: () {
-                                                Get.to(CardScreen(),
-                                                    opaque: false);
+                                                controller
+                                                    .sendToCardScreen(index1);
                                               },
                                               child: Card(
                                                 elevation: 8,
@@ -80,25 +80,6 @@ class HomeScreen extends GetView<HomeScreenController> {
                                                   CustomPageViewScrollPhysics(),
                                               pageSnapping: true,
                                               onPageChanged: (index, reason) {
-                                                controller.x =
-                                                    YoutubePlayerController(
-                                                  initialVideoId:
-                                                      YoutubePlayerController
-                                                          .convertUrlToId(
-                                                              "${controller.currentStudent.listOfProjects[0].videoURL}")!,
-                                                  params: YoutubePlayerParams(
-                                                    startAt: const Duration(
-                                                        minutes: 1,
-                                                        seconds: 36),
-                                                    showControls: true,
-                                                    showFullscreenButton: true,
-                                                    desktopMode: false,
-                                                    enableJavaScript: true,
-                                                    autoPlay: true,
-                                                    privacyEnhanced: true,
-                                                    useHybridComposition: true,
-                                                  ),
-                                                );
                                                 controller.currentCategory =
                                                     controller.categories.keys
                                                         .toList()[index2];

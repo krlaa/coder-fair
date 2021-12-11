@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coder_fair/models/project_model.dart';
 import 'package:coder_fair/models/student_model.dart';
+import 'package:coder_fair/screens/card_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -59,7 +60,6 @@ class HomeScreenController extends GetxController {
 
     listOfControllers =
         categories.values.map((e) => CarouselController()).toList();
-    loadingStudentNames = false;
   }
 
   loadStudent(category, index) async {
@@ -69,7 +69,8 @@ class HomeScreenController extends GetxController {
     } else {
       var x = await client.loadInfo(categories[category][index]);
       categories[category][index] = x;
-      currentStudent = x;
+      print(x);
+      // currentStudent = x;
     }
     loadingStudentInfo = false;
   }
@@ -89,13 +90,25 @@ class HomeScreenController extends GetxController {
   @override
   void onInit() async {
     await fetchStudents();
-    for (var i = 0; i < categories.keys.toList().length; i++) {
-      paginateStudents(
-        0,
-        categories.keys.toList()[i],
-      );
-    }
+    await Future.forEach(categories.keys.toList(), (String x) async {
+      await paginateStudents(0, x);
+    });
+    loadingStudentNames = false;
+    // for (var i = 0; i < categories.keys.toList().length; i++) {
+    //   paginateStudents(
+    //     0,
+    //     categories.keys.toList()[i],
+    //   );
+    // }
 
     super.onInit();
+  }
+
+  void sendToCardScreen(index) {
+    Get.to(
+        CardScreen(
+          student: categories[currentCategory][index],
+        ),
+        opaque: false);
   }
 }
