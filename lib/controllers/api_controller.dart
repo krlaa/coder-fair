@@ -24,7 +24,7 @@ class APIClient {
 
   Future<Student> loadInfo(String coderName) async {
     var baseUrl = "https://coder-fair-default-rtdb.firebaseio.com/";
-
+    print("${baseUrl}coders/${coderName}.json");
     List coderProjects = json.decode(
         (await client.get(Uri.parse("${baseUrl}coders/${coderName}.json")))
             .body);

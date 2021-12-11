@@ -1,16 +1,27 @@
 import 'package:coder_fair/screens/home_screen.dart';
 import 'package:coder_fair/screens/login_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'constants/app_colors.dart';
 import 'controllers/home_screen_controller.dart';
 import 'controllers/login_screen_controller.dart';
 
 void main() async {
-  var box = await Hive.openBox('userPreferences');
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Future<Box> openHiveBox(String boxName) async {
+    if (!kIsWeb && !Hive.isBoxOpen(boxName))
+      Hive.init((await getApplicationDocumentsDirectory()).path);
+
+    return await Hive.openBox(boxName);
+  }
+
+  var box = await openHiveBox('userPreferences');
   var exists = box.get('rememberPassword');
   if (exists == null) {
     box.put('rememberPassword', false);

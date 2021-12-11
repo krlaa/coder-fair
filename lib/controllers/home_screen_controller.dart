@@ -76,12 +76,16 @@ class HomeScreenController extends GetxController {
   }
 
   paginateStudents(int index, String category) async {
-    loadStudent(category, index);
+    await loadStudent(category, index);
     if (!(categories[category][index] is Student)) {
       var x = await client.paginateStudents(
-          index, categories[category].sublist(index + 1, index + 3));
+          index,
+          categories[category]
+              .sublist(index + 1, sublistIndex(index, category)));
       // print("This is the value of calling paginate students: $x");
-      categories[category].replaceRange(index + 1, index + 3, x);
+
+      categories[category]
+          .replaceRange(index + 1, sublistIndex(index, category), x);
       // print("These are the categories after replacement: ${categories[category]}");
     }
     currentStudent = categories[category][index];
@@ -110,5 +114,11 @@ class HomeScreenController extends GetxController {
           student: categories[currentCategory][index],
         ),
         opaque: false);
+  }
+
+  int sublistIndex(index, category) {
+    return (index + 3 > categories[category].length)
+        ? index + (categories[category].length - index)
+        : index + 3;
   }
 }
