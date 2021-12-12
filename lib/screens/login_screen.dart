@@ -126,7 +126,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                       hintText: "Email",
                       hintStyle: TextStyle(
                         fontFamily: 'Raleway',
-                        fontSize: 16.sp,
+                        fontSize: 15.sp,
                         color: Colors.grey,
                       ),
                     ),
@@ -162,7 +162,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                       hintText: "Password",
                       hintStyle: TextStyle(
                         fontFamily: 'Raleway',
-                        fontSize: 16.sp,
+                        fontSize: 15.sp,
                         color: Colors.grey,
                       ),
                       suffixIcon: !controller.loadedFromSS
@@ -204,7 +204,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.lightGreenAccent.shade700,
+                        primary: buttonGreen,
                         padding:
                             EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       ),
@@ -212,7 +212,8 @@ class LoginScreen extends GetView<LoginScreenController> {
                           ? Text('Login',
                               style: TextStyle(
                                 fontFamily: 'Raleway',
-                                fontSize: 16.sp,
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ))
                           : CircularProgressIndicator(
@@ -233,7 +234,7 @@ class LoginScreen extends GetView<LoginScreenController> {
       child: Text("Forgot Password?",
           style: TextStyle(
             fontFamily: 'Raleway',
-            fontSize: 15.sp,
+            fontSize: 14.sp,
             color: Colors.white,
           )),
       onPressed: () {
@@ -269,6 +270,7 @@ class LoginScreen extends GetView<LoginScreenController> {
       width: 60.0.w,
       child: Obx(
         () => CheckboxListTile(
+            activeColor: buttonGreen,
             dense: true,
             contentPadding: EdgeInsets.only(top: 15),
             tileColor: Colors.white,
@@ -279,7 +281,7 @@ class LoginScreen extends GetView<LoginScreenController> {
               maxLines: 2,
               style: TextStyle(
                 fontFamily: 'Raleway',
-                fontSize: 15.sp,
+                fontSize: 14.sp,
                 color: Colors.white,
               ),
             ),
