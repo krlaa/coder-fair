@@ -66,6 +66,8 @@ class HomeScreen extends GetView<HomeScreenController> {
                                                                   .currentCategory]
                                                           [index1],
                                                     ),
+                                                    transition: Transition.size,
+                                                    curve: Curves.easeInOut,
                                                     opaque: false);
                                               },
                                               child: Card(
