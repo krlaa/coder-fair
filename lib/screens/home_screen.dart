@@ -55,8 +55,18 @@ class HomeScreen extends GetView<HomeScreenController> {
                                               (context, index1, realIndex) {
                                             return InkWell(
                                               onTap: () {
-                                                controller
-                                                    .sendToCardScreen(index1);
+                                                controller.currentCategory =
+                                                    controller.categories.keys
+                                                        .toList()[index2];
+                                                Get.to(
+                                                    CardScreen(
+                                                      student: controller
+                                                                  .categories[
+                                                              controller
+                                                                  .currentCategory]
+                                                          [index1],
+                                                    ),
+                                                    opaque: false);
                                               },
                                               child: Card(
                                                 elevation: 8,
@@ -89,9 +99,6 @@ class HomeScreen extends GetView<HomeScreenController> {
                                                     index,
                                                     controller.categories.keys
                                                         .toList()[index2]);
-                                                print(controller.categories.keys
-                                                        .toList()[index2] ==
-                                                    controller.currentCategory);
                                               },
                                               viewportFraction: 0.3,
                                               scrollDirection: Axis.vertical,

@@ -16,7 +16,10 @@ class CardScreen extends GetView<HomeScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
         backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        extendBody: true,
         body: BackdropFilter(
           filter: ImageFilter.blur(
             sigmaX: 15.0,
@@ -33,7 +36,7 @@ class CardScreen extends GetView<HomeScreenController> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              Text("${controller.currentStudent}"),
+                              Text("${student}"),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -57,27 +60,24 @@ class CardScreen extends GetView<HomeScreenController> {
                                               viewportFraction: 1),
                                           carouselController:
                                               controller.cardListController,
-                                          itemCount: controller.currentStudent
-                                              .listOfProjects.length,
+                                          itemCount:
+                                              student.listOfProjects.length,
                                           itemBuilder:
                                               (context, index, realIndex) {
                                             var x = YoutubePlayerController(
                                                 initialVideoId:
                                                     YoutubePlayerController
-                                                        .convertUrlToId(
-                                                            controller
-                                                                .currentStudent
-                                                                .listOfProjects[
-                                                                    index]
-                                                                .videoURL)!);
+                                                        .convertUrlToId(student
+                                                            .listOfProjects[
+                                                                index]
+                                                            .videoURL)!);
                                             return YoutubePlayerControllerProvider(
                                               // Provides controller to all the widget below it.
                                               controller: x,
                                               child: YoutubeValueBuilder(
                                                   builder: (context, value) {
                                                 return YoutubePlayerIFrame(
-                                                  key: Key(controller
-                                                      .currentStudent
+                                                  key: Key(student
                                                       .listOfProjects[index]
                                                       .videoURL),
                                                 );

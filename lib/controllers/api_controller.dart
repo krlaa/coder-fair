@@ -24,11 +24,10 @@ class APIClient {
 
   Future<Student> loadInfo(String coderName) async {
     var baseUrl = "https://coder-fair-default-rtdb.firebaseio.com/";
-    print("${baseUrl}coders/${coderName}.json");
     List coderProjects = json.decode(
         (await client.get(Uri.parse("${baseUrl}coders/${coderName}.json")))
             .body);
-    print("$coderProjects" + " projects " + coderName);
+
     var coderInfo = json.decode((await client
             .get(Uri.parse("${baseUrl}coder_detail/${coderName}.json")))
         .body);
@@ -43,13 +42,14 @@ class APIClient {
       j.add(Project.fromMap(x, "$element", coderName));
       return element;
     });
-
-    return Student(
+    var result = Student(
       coderName: coderName,
       profilePictureURL: coderInfo['coder_pic_url'],
       listOfProjects: j,
       codeCoach: coderInfo['coach'],
     );
+    print(result);
+    return result;
   }
 
   // fetchUser function fetches the user details from the Firebase RTDBMS
@@ -92,9 +92,11 @@ class APIClient {
   Future<List<Student>> paginateStudents(
       int startIndex, List<dynamic> sublist) async {
     List<Student> result = [];
-    await Future.forEach(
-        sublist, (element) async => result.add(await loadInfo("$element")));
-
+    await Future.forEach(sublist, (element) async {
+      var x = await loadInfo("$element");
+      print(x);
+      result.add(x);
+    });
     return result;
   }
 }

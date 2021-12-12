@@ -11,9 +11,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 class HomeScreenController extends GetxController {
   var client = APIClient();
 
-  var _x = YoutubePlayerController(initialVideoId: "").obs;
-  get x => _x.value;
-  set x(value) => _x.value = value;
   var _cardListController = CarouselController().obs;
   get cardListController => _cardListController.value;
   set cardListController(value) => _cardListController.value = value;
@@ -69,41 +66,43 @@ class HomeScreenController extends GetxController {
     } else {
       var x = await client.loadInfo(categories[category][index]);
       categories[category][index] = x;
-      print(x);
-      // currentStudent = x;
+      currentStudent = x;
     }
     loadingStudentInfo = false;
   }
 
   paginateStudents(int index, String category) async {
-    await loadStudent(category, index);
-    if (!(categories[category][index] is Student)) {
-      var x = await client.paginateStudents(
-          index,
-          categories[category]
-              .sublist(index + 1, sublistIndex(index, category)));
-      // print("This is the value of calling paginate students: $x");
+    if (categories[category].length > 1) {
+      if (!(categories[category][index + 1] is Student)) {
+        var subI = sublistIndex(index, category);
+        print(subI);
+        var x = await client.paginateStudents(
+            index, categories[category].sublist(index + 1, subI));
+        // print("This is the value of calling paginate students: $x");
 
-      categories[category]
-          .replaceRange(index + 1, sublistIndex(index, category), x);
-      // print("These are the categories after replacement: ${categories[category]}");
+        categories[category].replaceRange(index + 1, subI, x);
+        print(
+            "These are the categories after replacement: ${categories[category]}");
+      }
+      await loadStudent(category, index);
+
+      currentStudent = categories[category][index];
+    } else {
+      await loadStudent(category, index);
+
+      currentStudent = categories[category][index];
     }
-    currentStudent = categories[category][index];
   }
 
   @override
   void onInit() async {
     await fetchStudents();
+
     await Future.forEach(categories.keys.toList(), (String x) async {
+      print(x);
       await paginateStudents(0, x);
     });
     loadingStudentNames = false;
-    // for (var i = 0; i < categories.keys.toList().length; i++) {
-    //   paginateStudents(
-    //     0,
-    //     categories.keys.toList()[i],
-    //   );
-    // }
 
     super.onInit();
   }
@@ -116,6 +115,7 @@ class HomeScreenController extends GetxController {
         opaque: false);
   }
 
+  //returns the index based on the category list length
   int sublistIndex(index, category) {
     return (index + 3 > categories[category].length)
         ? index + (categories[category].length - index)
