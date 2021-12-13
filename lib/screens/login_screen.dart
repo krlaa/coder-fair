@@ -120,6 +120,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                       AutofillHints.username
                     ],
                     textInputAction: TextInputAction.next,
+                    style: TextStyle(fontSize: 15.sp),
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -156,6 +157,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                         return 'Please enter a password';
                       }
                     },
+                    style: TextStyle(fontSize: 15.sp),
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
