@@ -75,14 +75,13 @@ class HomeScreenController extends GetxController {
     if (categories[category].length > 1) {
       if (!(categories[category][index + 1] is Student)) {
         var subI = sublistIndex(index, category);
-        print(subI);
         var x = await client.paginateStudents(
             index, categories[category].sublist(index + 1, subI));
         // print("This is the value of calling paginate students: $x");
 
         categories[category].replaceRange(index + 1, subI, x);
-        print(
-            "These are the categories after replacement: ${categories[category]}");
+        // print(
+        // "These are the categories after replacement: ${categories[category]}");
       }
       await loadStudent(category, index);
 
@@ -99,7 +98,6 @@ class HomeScreenController extends GetxController {
     await fetchStudents();
 
     await Future.forEach(categories.keys.toList(), (String x) async {
-      print(x);
       await paginateStudents(0, x);
     });
     loadingStudentNames = false;

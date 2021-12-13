@@ -48,7 +48,6 @@ class APIClient {
       listOfProjects: j,
       codeCoach: coderInfo['coach'],
     );
-    print(result);
     return result;
   }
 
@@ -94,7 +93,6 @@ class APIClient {
     List<Student> result = [];
     await Future.forEach(sublist, (element) async {
       var x = await loadInfo("$element");
-      print(x);
       result.add(x);
     });
     return result;

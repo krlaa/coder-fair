@@ -13,7 +13,6 @@ import 'controllers/login_screen_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   Future<Box> openHiveBox(String boxName) async {
     if (!kIsWeb && !Hive.isBoxOpen(boxName))
       Hive.init((await getApplicationDocumentsDirectory()).path);
@@ -22,6 +21,7 @@ void main() async {
   }
 
   var box = await openHiveBox('userPreferences');
+
   var exists = box.get('rememberPassword');
   if (exists == null) {
     box.put('rememberPassword', false);
