@@ -44,6 +44,7 @@ class CardScreen extends GetView<HomeScreenController> {
                                   Flexible(
                                       flex: 1,
                                       child: FloatingActionButton(
+                                          heroTag: student.hashCode + 1,
                                           mini: true,
                                           onPressed: () {
                                             controller.cardListController
@@ -91,6 +92,7 @@ class CardScreen extends GetView<HomeScreenController> {
                                   Flexible(
                                       flex: 1,
                                       child: FloatingActionButton(
+                                          heroTag: student.hashCode - 1,
                                           mini: true,
                                           onPressed: () {
                                             controller.cardListController

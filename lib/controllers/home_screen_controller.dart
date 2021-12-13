@@ -115,7 +115,8 @@ class HomeScreenController extends GetxController {
 
   //returns the index based on the category list length
   int sublistIndex(index, category) {
-    return (index + 3 > categories[category].length)
+    return (index + 3 > categories[category].length ||
+            index == categories[category].length)
         ? index + (categories[category].length - index)
         : index + 3;
   }

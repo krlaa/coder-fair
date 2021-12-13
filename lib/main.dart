@@ -1,6 +1,8 @@
 import 'package:coder_fair/screens/home_screen.dart';
+import 'package:coder_fair/screens/home_screen_backup.dart';
 import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -36,18 +38,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveSizer(
       builder: (_, __, ___) => GetMaterialApp(
+        scrollBehavior: AppScrollBehavior(),
         onInit: () {
           Get.put(LoginScreenController());
           Get.put(HomeScreenController());
         },
         theme: ThemeData(scaffoldBackgroundColor: mainBg),
         title: 'TCS Tampa CF',
-        home: LoginScreen(),
+        home: HomeScreenPage(),
       ),
     );
   }
 }
 
+class AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
 // TODO: Get rid of once your done
 
 // Row(children:[

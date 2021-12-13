@@ -25,114 +25,108 @@ class HomeScreen extends GetView<HomeScreenController> {
         child: DefaultTextStyle(
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 10.sp),
-          child: Row(
-            children: [
-              Flexible(
-                  flex: 4,
-                  child: Obx(() {
-                    if (!controller.loadingStudentNames) {
-                      return Scrollbar(
-                        isAlwaysShown: true,
-                        showTrackOnHover: true,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: controller.categories.length,
-                          itemBuilder: (context, index2) {
-                            var cat =
-                                controller.categories.values.toList()[index2];
-                            return Row(
-                              children: [
-                                Flexible(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                          '${controller.categories.keys.toList()[index2]}'),
-                                      CarouselSlider.builder(
-                                          carouselController: controller
-                                              .listOfControllers[index2],
-                                          itemCount: cat.length,
-                                          itemBuilder:
-                                              (context, index1, realIndex) {
-                                            return InkWell(
-                                              onTap: () {
-                                                controller.currentCategory =
-                                                    controller.categories.keys
-                                                        .toList()[index2];
-                                                Get.to(
-                                                    CardScreen(
-                                                      student: controller
-                                                                  .categories[
-                                                              controller
-                                                                  .currentCategory]
-                                                          [index1],
-                                                    ),
-                                                    transition: Transition.size,
-                                                    curve: Curves.easeInOut,
-                                                    opaque: false);
-                                              },
-                                              child: Card(
-                                                elevation: 8,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15)),
-                                                  child: Center(
-                                                      child: Text(
-                                                          cat[index1] is Student
-                                                              ? cat[index1]
-                                                                  .coderName
-                                                              : cat[index1])),
+          child: Flexible(
+              flex: 4,
+              child: Obx(() {
+                if (!controller.loadingStudentNames) {
+                  return Scrollbar(
+                    isAlwaysShown: true,
+                    showTrackOnHover: true,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: controller.categories.length,
+                      itemBuilder: (context, index2) {
+                        var cat = controller.categories.values.toList()[index2];
+                        return Row(
+                          children: [
+                            Flexible(
+                              child: Column(
+                                children: [
+                                  Text(
+                                      '${controller.categories.keys.toList()[index2]}'),
+                                  CarouselSlider.builder(
+                                      carouselController:
+                                          controller.listOfControllers[index2],
+                                      itemCount: cat.length,
+                                      itemBuilder:
+                                          (context, index1, realIndex) {
+                                        return InkWell(
+                                          onTap: () {
+                                            controller.currentCategory =
+                                                controller.categories.keys
+                                                    .toList()[index2];
+                                            Get.to(
+                                                CardScreen(
+                                                  student: controller
+                                                              .categories[
+                                                          controller
+                                                              .currentCategory]
+                                                      [index1],
                                                 ),
-                                              ),
-                                            );
+                                                transition: Transition.size,
+                                                curve: Curves.easeInOut,
+                                                opaque: false);
                                           },
-                                          options: CarouselOptions(
-                                              scrollPhysics:
-                                                  CustomPageViewScrollPhysics(),
-                                              pageSnapping: true,
-                                              onPageChanged: (index, reason) {
-                                                controller.currentCategory =
-                                                    controller.categories.keys
-                                                        .toList()[index2];
-                                                controller.currentIndex = index;
+                                          child: Card(
+                                            elevation: 8,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: Center(
+                                                  child: Text(cat[index1]
+                                                          is Student
+                                                      ? cat[index1].coderName
+                                                      : cat[index1])),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      options: CarouselOptions(
+                                          scrollPhysics:
+                                              CustomPageViewScrollPhysics(),
+                                          pageSnapping: true,
+                                          onPageChanged: (index, reason) {
+                                            controller.currentCategory =
+                                                controller.categories.keys
+                                                    .toList()[index2];
+                                            controller.currentIndex = index;
 
-                                                controller.paginateStudents(
-                                                    index,
-                                                    controller.categories.keys
-                                                        .toList()[index2]);
-                                              },
-                                              viewportFraction: 0.3,
-                                              scrollDirection: Axis.vertical,
-                                              height: 200,
-                                              initialPage: 0,
-                                              enlargeCenterPage: true,
-                                              enableInfiniteScroll: false)),
-                                    ],
-                                  ),
-                                ),
-                                FloatingActionButton(onPressed: () {
-                                  CarouselController x =
-                                      controller.listOfControllers[index2];
-                                  x.nextPage(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.linear);
-                                })
-                              ],
-                            );
-                          },
-                        ),
-                      );
-                    } else {
-                      return Center(
-                          child: CircularProgressIndicator(
-                        backgroundColor: Colors.white,
-                        color: Colors.white,
-                      ));
-                    }
-                  })),
-            ],
-          ),
+                                            controller.paginateStudents(
+                                                index,
+                                                controller.categories.keys
+                                                    .toList()[index2]);
+                                          },
+                                          viewportFraction: 0.3,
+                                          scrollDirection: Axis.vertical,
+                                          height: 200,
+                                          initialPage: 0,
+                                          enlargeCenterPage: true,
+                                          enableInfiniteScroll: false)),
+                                ],
+                              ),
+                            ),
+                            FloatingActionButton(onPressed: () {
+                              CarouselController x =
+                                  controller.listOfControllers[index2];
+                              x.nextPage(
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.linear);
+                            })
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return Center(
+                      child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                    color: Colors.white,
+                  ));
+                }
+              })),
         ),
       ));
     });
