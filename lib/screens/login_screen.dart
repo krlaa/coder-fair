@@ -247,21 +247,29 @@ class LoginScreen extends GetView<LoginScreenController> {
             title: "Forgot your password?",
             titleStyle: TextStyle(
               fontFamily: 'RobotoSlab',
-              color: Colors.black87,
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
+              color: h2Blk,
             ),
-            content: Wrap(
-              alignment: WrapAlignment.center,
-              children: [
-                Text("Contact theCoderSchool at:",
-                    style: TextStyle(fontFamily: 'Raleway')),
-                TextButton(
-                    child: Text("(813) 422-5566",
-                        style: TextStyle(fontFamily: 'Raleway')),
-                    onPressed: () async {
-                      if (!await launch("8134225566"))
-                        throw 'Could not launch 8134225566';
-                    }),
-              ],
+            content: Center(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Text("Contact theCoderSchool at: ",
+                      style: TextStyle(
+                          fontFamily: 'Raleway', fontSize: 14, color: h2Blk)),
+                  InkWell(
+                      child: Text("(813) 422-5566",
+                          style: TextStyle(
+                              fontFamily: 'Raleway',
+                              fontSize: 14,
+                              color: darkBlue)),
+                      onTap: () async {
+                        if (!await launch("8134225566"))
+                          throw 'Could not launch 8134225566';
+                      }),
+                ],
+              ),
             ));
       },
     );
