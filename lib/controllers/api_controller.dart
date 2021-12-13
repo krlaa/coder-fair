@@ -18,17 +18,15 @@ class APIClient {
   Future<Map> fetchStudents() async {
     var response = await client.get(Uri.parse(
         "https://coder-fair-default-rtdb.firebaseio.com/project_categories.json"));
-    Map categories = json.decode(response.body).cast<String, List>();
+    Map<String, dynamic> categories = json.decode(response.body);
     return categories;
   }
 
   Future<Student> loadInfo(String coderName) async {
     var baseUrl = "https://coder-fair-default-rtdb.firebaseio.com/";
-
     List coderProjects = json.decode(
         (await client.get(Uri.parse("${baseUrl}coders/${coderName}.json")))
             .body);
-    print(coderProjects);
 
     var coderInfo = json.decode((await client
             .get(Uri.parse("${baseUrl}coder_detail/${coderName}.json")))
@@ -37,23 +35,20 @@ class APIClient {
     List<Project> j = [];
 
     await Future.forEach(coderProjects, (element) async {
-      print(element);
       var x = json.decode((await client
               .get(Uri.parse("${baseUrl}project_detail/${element}.json")))
           .body);
-      print(x.runtimeType);
-      j.add(Project.fromMap(x, "$element"));
+
+      j.add(Project.fromMap(x, "$element", coderName));
       return element;
     });
-
-    print(j);
-
-    return Student(
+    var result = Student(
       coderName: coderName,
       profilePictureURL: coderInfo['coder_pic_url'],
       listOfProjects: j,
       codeCoach: coderInfo['coach'],
     );
+    return result;
   }
 
   // fetchUser function fetches the user details from the Firebase RTDBMS
@@ -84,7 +79,6 @@ class APIClient {
           token: json.decode(response.body)['idToken'],
           username: regExp.stringMatch(email).toString());
     } catch (e) {
-      print(response.statusCode);
       throw Error;
     }
   }
@@ -95,10 +89,12 @@ class APIClient {
   }
 
   Future<List<Student>> paginateStudents(
-      int startIndex, List<String> sublist) async {
+      int startIndex, List<dynamic> sublist) async {
     List<Student> result = [];
-    Future.forEach(
-        sublist, (String element) async => result.add(await loadInfo(element)));
+    await Future.forEach(sublist, (element) async {
+      var x = await loadInfo("$element");
+      result.add(x);
+    });
     return result;
   }
 }

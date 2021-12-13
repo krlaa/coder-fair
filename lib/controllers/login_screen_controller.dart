@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:coder_fair/models/user_model.dart';
 import 'package:coder_fair/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -84,19 +86,23 @@ class LoginScreenController extends GetxController {
   // Ensure the key is available to write to
   Future<void> ensureKey() async {
     var containsEncryptionKey =
-        await secureStorage.containsKey(key: 'youshallnotpass');
-    if (!containsEncryptionKey) {
+        await secureStorage.read(key: 'youshallnotpass');
+    if (containsEncryptionKey != null && containsEncryptionKey.isEmpty ||
+        containsEncryptionKey == null) {
+      print("isEmpty");
       var key = Hive.generateSecureKey();
       await secureStorage.write(
           key: 'youshallnotpass', value: base64UrlEncode(key));
+      print("wrote");
+      print(await secureStorage.read(key: 'youshallnotpass'));
     }
   }
 
   // inserts the secrets to the encrypted box
   Future<void> insertSecret() async {
     await ensureKey();
-    var encryptionKey = base64Url
-        .decode(await secureStorage.read(key: 'youshallnotpass') ?? "");
+    var encryptionKey =
+        base64Url.decode((await secureStorage.read(key: 'youshallnotpass'))!);
     var encryptedBox = await Hive.openBox('vaultBox',
         encryptionCipher: HiveAesCipher(encryptionKey));
     encryptedBox.put('email', email.text);
@@ -105,9 +111,11 @@ class LoginScreenController extends GetxController {
 
   // Gets the secret then sets the text fields to the appropriate information. Disables the password visibility toggle to ensure people cannot obtain password easily
   Future<void> getSecret() async {
+    var key;
     await ensureKey();
-    var encryptionKey = base64Url
-        .decode(await secureStorage.read(key: 'youshallnotpass') ?? "");
+    var encryptionKey =
+        base64Url.decode((await secureStorage.read(key: 'youshallnotpass'))!);
+    // print(key);
     var encryptedBox = await Hive.openBox('vaultBox',
         encryptionCipher: HiveAesCipher(encryptionKey));
     email.text = encryptedBox.get('email');

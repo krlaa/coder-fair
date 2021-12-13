@@ -11,12 +11,13 @@ class Project {
   String videoURL;
   String language;
   String description;
-
+  String name;
   Project(
       {required this.title,
       required this.videoURL,
       required this.language,
-      required this.description});
+      required this.description,
+      required this.name});
 
   Map<String, dynamic> toMap() {
     return {
@@ -27,19 +28,19 @@ class Project {
     };
   }
 
-  factory Project.fromMap(Map<String, dynamic> map, String title) {
+  factory Project.fromMap(Map<String, dynamic> map, String title, String name) {
     return Project(
-      title: title,
-      videoURL: map['video_url'],
-      language: map['language'],
-      description: map['desc'],
-    );
+        title: title,
+        videoURL: map['video_url'],
+        language: map['language'],
+        description: map['desc'],
+        name: name);
   }
 
   String toJson() => json.encode(toMap());
 
   @override
   String toString() {
-    return 'Project(title: $title)';
+    return 'Project(title: $title, videoURL: $videoURL)';
   }
 }
