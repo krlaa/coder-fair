@@ -1,7 +1,5 @@
 import 'package:coder_fair/controllers/home_screen_controller.dart';
-
 import "package:flutter/material.dart";
-
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:coder_fair/screens/stacked_card_carousel.dart';
@@ -12,7 +10,7 @@ class HomeScreenPage extends GetView<HomeScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[900],
         body: Obx(() {
           List keys = controller.categories.keys.toList();
           print(controller.categories.keys.toList());
