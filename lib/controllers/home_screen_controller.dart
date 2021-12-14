@@ -73,7 +73,7 @@ class HomeScreenController extends GetxController {
 
   paginateStudents(int index, String category) async {
     if (categories[category].length > 1) {
-      if (!(categories[category][index + 1] is Student)) {
+      if ((categories[category][index + 1].codeCoach == null)) {
         var subI = sublistIndex(index, category);
         var x = await client.paginateStudents(
             index, categories[category].sublist(index + 1, subI));

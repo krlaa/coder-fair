@@ -15,11 +15,19 @@ class APIClient {
   var client = http.Client();
 
   // fetchStudents function which fetches students projects from Firebase RTDBMS
-  Future<Map> fetchStudents() async {
+  Future<Map<String, List<Student>>> fetchStudents() async {
     var response = await client.get(Uri.parse(
         "https://coder-fair-default-rtdb.firebaseio.com/project_categories.json"));
     Map<String, dynamic> categories = json.decode(response.body);
-    return categories;
+    Map<String, List<Student>> result = {};
+    categories.forEach((k, v) {
+      List<Student> list =
+          v.map((value) => Student(coderName: value)).toList().cast<Student>();
+      print(list);
+      result[k] = list;
+    });
+    print(result);
+    return result;
   }
 
   Future<Student> loadInfo(String coderName) async {

@@ -11,15 +11,15 @@ void main() async {
   io.HttpOverrides.global = null;
   await dotenv.load(fileName: ".env");
   var client = APIClient();
-  // test("Test fetchStudents function", () async {
-  //   var x = await client.fetchStudents();
-  //   print(x);
-  //   expect(x is Map, true);
-  // });
-  test("Test loadInfo function", () async {
-    var x = await client.loadInfo("codeBat1");
-    print(x);
+  test("Test fetchStudents function", () async {
+    var x = await client.fetchStudents();
+    // print(x);
+    expect(x is Map, true);
   });
+  // test("Test loadInfo function", () async {
+  //   var x = await client.loadInfo("codeBat1");
+  //   print(x);
+  // });
   // test("Test Login", () async {
   //   var x = await client.fetchUser(
   //       email: "kevindurantony@gmail.com", password: "alliswell");
