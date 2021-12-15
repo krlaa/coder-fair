@@ -23,10 +23,8 @@ class APIClient {
     categories.forEach((k, v) {
       List<Student> list =
           v.map((value) => Student(coderName: value)).toList().cast<Student>();
-      print(list);
       result[k] = list;
     });
-    print(result);
     return result;
   }
 
@@ -97,10 +95,11 @@ class APIClient {
   }
 
   Future<List<Student>> paginateStudents(
-      int startIndex, List<dynamic> sublist) async {
+      int startIndex, List<Student> sublist) async {
+    print(sublist);
     List<Student> result = [];
-    await Future.forEach(sublist, (element) async {
-      var x = await loadInfo("$element");
+    await Future.forEach(sublist, (Student element) async {
+      var x = await loadInfo("${element.coderName}");
       result.add(x);
     });
     return result;

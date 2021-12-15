@@ -34,6 +34,6 @@ class Student {
 
   @override
   String toString() {
-    return 'Student(coderName: $coderName)';
+    return 'Student(coderName: $coderName, profilePictureURL: $profilePictureURL, listOfProjects: $listOfProjects, codeCoach: $codeCoach)';
   }
 }

@@ -61,25 +61,43 @@ class HomeScreenController extends GetxController {
 
   loadStudent(category, index) async {
     loadingStudentInfo = true;
-    if (categories[category][index] is Student) {
+    if (!(categories[category][index].codeCoach.isEmpty)) {
+      print("now im here");
       currentStudent = categories[category][index];
     } else {
-      var x = await client.loadInfo(categories[category][index]);
+      var x = await client.loadInfo(categories[category][index].coderName);
       categories[category][index] = x;
       currentStudent = x;
     }
     loadingStudentInfo = false;
   }
 
+  loadAndReturn(category, element) async {
+    if (!(element.codeCoach.isEmpty)) {
+      print("now im here");
+      return element;
+    } else {
+      var x = await client.loadInfo(element.coderName);
+      return x;
+    }
+  }
+
   paginateStudents(int index, String category) async {
-    if (categories[category].length > 1) {
-      if ((categories[category][index + 1].codeCoach == null)) {
+    if (categories[category].length > 1 ||
+        categories[category].length - 1 != index) {
+      if ((categories[category][index + 1].codeCoach.isEmpty)) {
         var subI = sublistIndex(index, category);
-        var x = await client.paginateStudents(
-            index, categories[category].sublist(index + 1, subI));
+        List<Student> result = [];
+        await Future.forEach(categories[category].sublist(index + 1, subI),
+            (Student element) async {
+          var x = await loadAndReturn(category, element);
+          result.add(x);
+        });
+        // var x = await client.paginateStudents(
+        //     index, categories[category].sublist(index + 1, subI));
         // print("This is the value of calling paginate students: $x");
 
-        categories[category].replaceRange(index + 1, subI, x);
+        categories[category].replaceRange(index + 1, subI, result);
         // print(
         // "These are the categories after replacement: ${categories[category]}");
       }
@@ -115,9 +133,9 @@ class HomeScreenController extends GetxController {
 
   //returns the index based on the category list length
   int sublistIndex(index, category) {
-    return (index + 3 > categories[category].length ||
-            index == categories[category].length)
+    return (index + 4 > categories[category].length ||
+            index == categories[category].length - 1)
         ? index + (categories[category].length - index)
-        : index + 3;
+        : index + 4;
   }
 }

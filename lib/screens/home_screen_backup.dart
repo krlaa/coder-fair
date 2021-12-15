@@ -14,7 +14,6 @@ class HomeScreenPage extends GetView<HomeScreenController> {
         backgroundColor: Colors.grey[900],
         body: Obx(() {
           List keys = controller.categories.keys.toList();
-          print(controller.categories.keys.toList());
           if (!controller.loadingStudentNames) {
             return DefaultTabController(
                 length: keys.length,
@@ -39,31 +38,33 @@ class HomeScreenPage extends GetView<HomeScreenController> {
                                 .asMap()
                                 .entries
                                 .map((entry) {
-                                  print(entry.value);
                                   return ValueBuilder<List?>(
                                       initialValue: controller.categories.values
                                           .toList()[entry.key],
                                       builder: (value, update) {
                                         return Column(
                                           children: [
-                                            TextFormField(onChanged: (x) {
-                                              print(x);
-                                              print(value);
-                                              if (x.isEmpty) {
-                                                update(controller
-                                                    .categories.values
-                                                    .toList()[entry.key]);
-                                              } else {
-                                                update(controller
-                                                    .categories.values
-                                                    .toList()[entry.key]!
-                                                    .where((element) {
-                                                  Student j = element;
-                                                  return j.coderName
-                                                      .contains(x);
-                                                }).toList());
-                                              }
-                                            }),
+                                            TextFormField(
+                                                autocorrect: true,
+                                                autofillHints: ["hi"],
+                                                onChanged: (x) {
+                                                  if (x.isEmpty) {
+                                                    update(controller
+                                                        .categories.values
+                                                        .toList()[entry.key]);
+                                                  } else {
+                                                    update(controller
+                                                        .categories.values
+                                                        .toList()[entry.key]!
+                                                        .where((element) {
+                                                      Student j = element;
+                                                      return j.coderName
+                                                              .contains(x) ||
+                                                          j.codeCoach
+                                                              .contains(x);
+                                                    }).toList());
+                                                  }
+                                                }),
                                             Expanded(
                                               child: carousel(
                                                   entry.key, value!, context),
@@ -85,52 +86,55 @@ class HomeScreenPage extends GetView<HomeScreenController> {
   }
 
   Widget carousel(int index2, cat, context) {
-    if (cat.isEmpty) {
-      return Center(child: Text("Nothing here"));
-    } else
-      return StackedCardCarousel(
-          pageController: PageController(keepPage: true),
-          initialOffset: 20.h,
-          spaceBetweenItems: 200,
-          onPageChanged: (index) {
-            controller.currentIndex = index;
+    return AnimatedSwitcher(
+        switchOutCurve: Curves.easeIn,
+        duration: Duration(milliseconds: 300),
+        child: cat.isEmpty
+            ? Center(
+                child: Text("Nothing here"),
+              )
+            : StackedCardCarousel(
+                pageController: PageController(keepPage: true),
+                initialOffset: 20.h,
+                spaceBetweenItems: 300,
+                onPageChanged: (index) {
+                  controller.currentIndex = index;
 
-            controller.paginateStudents(
-                index, controller.categories.keys.toList()[index2]);
-          },
-          type: StackedCardCarouselType.cardsStack,
-          items: cat
-              .asMap()
-              .entries
-              .map((entry) {
-                return Container(
-                  width: 300,
-                  height: 170,
-                  child: InkWell(
-                    onTap: () {
-                      Get.to(
-                          CardScreen(
-                            student: controller
-                                    .categories[controller.currentCategory]
-                                [entry.key],
+                  controller.paginateStudents(
+                      index, controller.categories.keys.toList()[index2]);
+                },
+                type: StackedCardCarouselType.cardsStack,
+                items: cat
+                    .asMap()
+                    .entries
+                    .map((entry) {
+                      return Container(
+                        width: 300,
+                        height: 170,
+                        child: InkWell(
+                          onTap: () {
+                            Get.to(
+                                CardScreen(
+                                  student: controller.categories[
+                                      controller.currentCategory][entry.key],
+                                ),
+                                transition: Transition.size,
+                                curve: Curves.easeInOut,
+                                opaque: false);
+                          },
+                          child: Card(
+                            elevation: 15,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Center(child: Text("${entry.value}")),
+                            ),
                           ),
-                          transition: Transition.size,
-                          curve: Curves.easeInOut,
-                          opaque: false);
-                    },
-                    child: Card(
-                      elevation: 15,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Center(child: Text("${entry.value}")),
-                      ),
-                    ),
-                  ),
-                );
-              })
-              .toList()
-              .cast<Widget>());
+                        ),
+                      );
+                    })
+                    .toList()
+                    .cast<Widget>()));
   }
 }
 
