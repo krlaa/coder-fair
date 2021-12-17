@@ -94,14 +94,15 @@ class HomeScreenPage extends GetView<HomeScreenController> {
                 child: Text("Nothing here"),
               )
             : StackedCardCarousel(
-                pageController: PageController(keepPage: true),
+                pageController:
+                    PageController(initialPage: cat.length, keepPage: true),
                 initialOffset: 20.h,
-                spaceBetweenItems: 300,
+                spaceBetweenItems: 350,
                 onPageChanged: (index) {
                   controller.currentIndex = index;
 
-                  controller.paginateStudents(
-                      index, controller.categories.keys.toList()[index2]);
+                  controller.paginateStudents((cat.length - 1 - index),
+                      controller.categories.keys.toList()[index2]);
                 },
                 type: StackedCardCarouselType.cardsStack,
                 items: cat
@@ -113,14 +114,51 @@ class HomeScreenPage extends GetView<HomeScreenController> {
                         height: 170,
                         child: InkWell(
                           onTap: () {
-                            Get.to(
-                                CardScreen(
-                                  student: controller.categories[
-                                      controller.currentCategory][entry.key],
-                                ),
-                                transition: Transition.size,
-                                curve: Curves.easeInOut,
-                                opaque: false);
+                            if (controller.currentIndex ==
+                                cat.length - 1 - entry.key)
+                              showModalBottomSheet(
+                                  backgroundColor: Colors.transparent,
+                                  isScrollControlled: true,
+                                  constraints: BoxConstraints.loose(Size(
+                                      MediaQuery.of(context).size.width >= 1200
+                                          ? 40.w
+                                          : 90.w,
+                                      85.h)),
+                                  context: context,
+                                  builder: (context) {
+                                    return Wrap(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Container(
+                                            height: 90.h,
+                                            child: CardScreen(
+                                              student: controller.categories[
+                                                      controller
+                                                          .currentCategory]
+                                                  [entry.key],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            // Get.bottomSheet(
+                            //     CardScreen(
+                            //       student: controller.categories[
+                            //           controller.currentCategory][entry.key],
+                            //     ),
+                            //     backgroundColor: Colors.red,
+                            //     persistent: true);
+                            // Get.to(
+                            //     CardScreen(
+                            //       student: controller.categories[
+                            //           controller.currentCategory][entry.key],
+                            //     ),
+                            //     transition: Transition.size,
+                            //     curve: Curves.easeInOut,
+                            //     opaque: false);
                           },
                           child: Card(
                             elevation: 15,
@@ -133,6 +171,8 @@ class HomeScreenPage extends GetView<HomeScreenController> {
                         ),
                       );
                     })
+                    .toList()
+                    .reversed
                     .toList()
                     .cast<Widget>()));
   }

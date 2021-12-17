@@ -11,13 +11,13 @@ class Project {
   String videoURL;
   String language;
   String description;
-  String name;
+  String coderName;
   Project(
       {required this.title,
       required this.videoURL,
       required this.language,
       required this.description,
-      required this.name});
+      required this.coderName});
 
   Map<String, dynamic> toMap() {
     return {
@@ -34,7 +34,7 @@ class Project {
         videoURL: map['video_url'],
         language: map['language'],
         description: map['desc'],
-        name: name);
+        coderName: name);
   }
 
   String toJson() => json.encode(toMap());

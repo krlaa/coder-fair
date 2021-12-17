@@ -61,11 +61,12 @@ class HomeScreenController extends GetxController {
 
   loadStudent(category, index) async {
     loadingStudentInfo = true;
-    if (!(categories[category][index].codeCoach.isEmpty)) {
+    if ((categories[category][index].loadFull)) {
       print("now im here");
       currentStudent = categories[category][index];
     } else {
-      var x = await client.loadInfo(categories[category][index].coderName);
+      print(categories[category][index]);
+      var x = await client.loadInfo(categories[category][index]);
       categories[category][index] = x;
       currentStudent = x;
     }
@@ -73,19 +74,26 @@ class HomeScreenController extends GetxController {
   }
 
   loadAndReturn(category, element) async {
-    if (!(element.codeCoach.isEmpty)) {
-      print("now im here");
+    if ((element.loadFull)) {
+      print("well well well");
+
       return element;
     } else {
-      var x = await client.loadInfo(element.coderName);
+      print("well well well2");
+      var x = await client.loadInfo(element);
       return x;
     }
   }
 
   paginateStudents(int index, String category) async {
-    if (categories[category].length > 1 ||
-        categories[category].length - 1 != index) {
-      if ((categories[category][index + 1].codeCoach.isEmpty)) {
+    print("i got here");
+    if (categories[category].length > 1 &&
+        categories[category].length > index + 1) {
+      print("now here");
+
+      if (!(categories[category][index + 1].loadFull)) {
+        print("made it");
+
         var subI = sublistIndex(index, category);
         List<Student> result = [];
         await Future.forEach(categories[category].sublist(index + 1, subI),

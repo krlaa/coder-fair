@@ -20,41 +20,40 @@ class APIClient {
         "https://coder-fair-default-rtdb.firebaseio.com/project_categories.json"));
     Map<String, dynamic> categories = json.decode(response.body);
     Map<String, List<Student>> result = {};
-    categories.forEach((k, v) {
-      List<Student> list =
-          v.map((value) => Student(coderName: value)).toList().cast<Student>();
-      result[k] = list;
-    });
+
+    for (MapEntry k in categories.entries) {
+      List<Student> l = [];
+      for (var element in k.value) {
+        var response = await client.get(Uri.parse(
+            "https://coder-fair-default-rtdb.firebaseio.com/coder_detail/$element.json"));
+        var decoded = json.decode(response.body);
+        l.add(Student.fromJson(decoded, "$element"));
+      }
+      result[k.key] = l;
+
+      print(result);
+    }
+
     return result;
   }
 
-  Future<Student> loadInfo(String coderName) async {
+  Future<Student> loadInfo(Student student) async {
     var baseUrl = "https://coder-fair-default-rtdb.firebaseio.com/";
-    List coderProjects = json.decode(
-        (await client.get(Uri.parse("${baseUrl}coders/${coderName}.json")))
-            .body);
 
-    var coderInfo = json.decode((await client
-            .get(Uri.parse("${baseUrl}coder_detail/${coderName}.json")))
+    var coderProjects = json.decode((await client
+            .get(Uri.parse("${baseUrl}coders/${student.coderName}.json")))
         .body);
 
     List<Project> j = [];
-
-    await Future.forEach(coderProjects, (element) async {
+    for (var element in coderProjects) {
       var x = json.decode((await client
               .get(Uri.parse("${baseUrl}project_detail/${element}.json")))
           .body);
 
-      j.add(Project.fromMap(x, "$element", coderName));
-      return element;
-    });
-    var result = Student(
-      coderName: coderName,
-      profilePictureURL: coderInfo['coder_pic_url'],
-      listOfProjects: j,
-      codeCoach: coderInfo['coach'],
-    );
-    return result;
+      j.add(Project.fromMap(x, "$element", student.coderName));
+    }
+
+    return student.copyWith(listOfProjects: j, loadFull: true);
   }
 
   // fetchUser function fetches the user details from the Firebase RTDBMS
@@ -99,7 +98,7 @@ class APIClient {
     print(sublist);
     List<Student> result = [];
     await Future.forEach(sublist, (Student element) async {
-      var x = await loadInfo("${element.coderName}");
+      var x = await loadInfo(element);
       result.add(x);
     });
     return result;
