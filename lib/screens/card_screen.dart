@@ -22,7 +22,7 @@ class CardScreen extends GetView<HomeScreenController> {
         extendBody: true,
         body: Center(
           child: Container(
-              width: MediaQuery.of(context).size.width >= 900 ? 40.w : 90.w,
+              width: Device.width >= 900 ? 40.w : 90.w,
               height: 90.h,
               color: Colors.green,
               child: !controller.loadingStudentInfo

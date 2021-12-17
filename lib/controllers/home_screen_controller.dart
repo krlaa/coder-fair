@@ -14,9 +14,6 @@ class HomeScreenController extends GetxController {
   var _cardListController = CarouselController().obs;
   get cardListController => _cardListController.value;
   set cardListController(value) => _cardListController.value = value;
-  var _currentStudent = Student().obs;
-  get currentStudent => _currentStudent.value;
-  set currentStudent(value) => _currentStudent.value = value;
 
   var _currentIndex = 0.obs;
   get currentIndex => _currentIndex.value;
@@ -61,39 +58,33 @@ class HomeScreenController extends GetxController {
 
   loadStudent(category, index) async {
     loadingStudentInfo = true;
-    if ((categories[category][index].loadFull)) {
-      print("now im here");
-      currentStudent = categories[category][index];
-    } else {
+    if (!(categories[category][index].loadFull)) {
       print(categories[category][index]);
       var x = await client.loadInfo(categories[category][index]);
       categories[category][index] = x;
-      currentStudent = x;
     }
     loadingStudentInfo = false;
   }
 
   loadAndReturn(category, element) async {
+    loadingStudentInfo = true;
+
     if ((element.loadFull)) {
-      print("well well well");
+      loadingStudentInfo = false;
 
       return element;
     } else {
-      print("well well well2");
       var x = await client.loadInfo(element);
+      loadingStudentInfo = false;
+
       return x;
     }
   }
 
   paginateStudents(int index, String category) async {
-    print("i got here");
     if (categories[category].length > 1 &&
         categories[category].length > index + 1) {
-      print("now here");
-
       if (!(categories[category][index + 1].loadFull)) {
-        print("made it");
-
         var subI = sublistIndex(index, category);
         List<Student> result = [];
         await Future.forEach(categories[category].sublist(index + 1, subI),
@@ -101,21 +92,11 @@ class HomeScreenController extends GetxController {
           var x = await loadAndReturn(category, element);
           result.add(x);
         });
-        // var x = await client.paginateStudents(
-        //     index, categories[category].sublist(index + 1, subI));
-        // print("This is the value of calling paginate students: $x");
-
         categories[category].replaceRange(index + 1, subI, result);
-        // print(
-        // "These are the categories after replacement: ${categories[category]}");
       }
       await loadStudent(category, index);
-
-      currentStudent = categories[category][index];
     } else {
       await loadStudent(category, index);
-
-      currentStudent = categories[category][index];
     }
   }
 
