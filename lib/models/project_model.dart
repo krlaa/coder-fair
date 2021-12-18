@@ -12,6 +12,9 @@ class Project {
   String language;
   String description;
   String coderName;
+  late bool _liked = false;
+  late Map _likedCategory = {};
+
   Project(
       {required this.title,
       required this.videoURL,
@@ -43,4 +46,10 @@ class Project {
   String toString() {
     return 'Project(title: $title, videoURL: $videoURL)';
   }
+
+  get liked => _liked;
+  set liked(value) => _liked = value;
+
+  get likedCategory => _likedCategory;
+  set likedCategory(value) => _likedCategory = value;
 }

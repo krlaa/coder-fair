@@ -43,7 +43,6 @@ class HomeScreenPage extends GetView<HomeScreenController> {
                                         return Column(
                                           children: [
                                             TextFormField(
-                                                autocorrect: true,
                                                 autofillHints: ["hi"],
                                                 onChanged: (x) {
                                                   if (x.isEmpty) {

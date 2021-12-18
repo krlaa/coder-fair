@@ -1,7 +1,12 @@
+// ignore_for_file: unused_import, duplicate_import
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:coder_fair/controllers/login_screen_controller.dart';
+import 'package:coder_fair/models/category_model.dart';
 import 'package:coder_fair/models/project_model.dart';
 import 'package:coder_fair/models/student_model.dart';
 import 'package:coder_fair/screens/card_screen.dart';
+import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -11,6 +16,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 class HomeScreenController extends GetxController {
   var client = APIClient();
 
+  LoginScreenController _loginState = Get.find();
+
   var _cardListController = CarouselController().obs;
   get cardListController => _cardListController.value;
   set cardListController(value) => _cardListController.value = value;
@@ -19,13 +26,17 @@ class HomeScreenController extends GetxController {
   get currentIndex => _currentIndex.value;
   set currentIndex(value) => _currentIndex.value = value;
 
-  var _currentCategory = "Apps".obs;
+  var _currentCategory = "Scratch".obs;
   get currentCategory => _currentCategory.value;
   set currentCategory(value) => _currentCategory.value = value;
 
   var _categories = {}.obs;
   get categories => _categories.value;
   set categories(value) => _categories.value = value;
+
+  var _categories1 = CategoryList().obs;
+  get categories1 => _categories1.value;
+  set categories1(value) => _categories1.value = value;
 
   var _listOfControllers = [].obs;
   get listOfControllers => _listOfControllers.value;
@@ -54,12 +65,25 @@ class HomeScreenController extends GetxController {
 
     listOfControllers =
         categories.values.map((e) => CarouselController()).toList();
+    for (var entry in categories.entries) {
+      List<Student> newList = [];
+      for (var student in entry.value) {
+        if (_loginState.currentUser.coders.contains(student.coderName)) {
+          newList.insert(0, student);
+        } else {
+          newList.add(student);
+        }
+      }
+      var category = Category(name: entry.key, values: newList);
+      categories1.add(category);
+      categories[entry.key] = newList;
+    }
+    print(categories1);
   }
 
   loadStudent(category, index) async {
     loadingStudentInfo = true;
     if (!(categories[category][index].loadFull)) {
-      print(categories[category][index]);
       var x = await client.loadInfo(categories[category][index]);
       categories[category][index] = x;
     }
