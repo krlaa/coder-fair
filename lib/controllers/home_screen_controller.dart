@@ -26,7 +26,7 @@ class HomeScreenController extends GetxController {
   get currentIndex => _currentIndex.value;
   set currentIndex(value) => _currentIndex.value = value;
 
-  var _currentCategory = "Scratch".obs;
+  var _currentCategory = "Apps".obs;
   get currentCategory => _currentCategory.value;
   set currentCategory(value) => _currentCategory.value = value;
 
@@ -78,7 +78,6 @@ class HomeScreenController extends GetxController {
       categories1.add(category);
       categories[entry.key] = newList;
     }
-    print(categories1);
   }
 
   loadStudent(category, index) async {
@@ -100,7 +99,13 @@ class HomeScreenController extends GetxController {
     } else {
       var x = await client.loadInfo(element);
       loadingStudentInfo = false;
-
+      for (var i = 0; i < categories[category].length; i++) {
+        Student student = categories[category][i];
+        if (student.coderName == element.coderName) {
+          student = x;
+          print("${categories[category]}\n\n\n");
+        }
+      }
       return x;
     }
   }
@@ -134,14 +139,6 @@ class HomeScreenController extends GetxController {
     loadingStudentNames = false;
 
     super.onInit();
-  }
-
-  void sendToCardScreen(index) {
-    Get.to(
-        CardScreen(
-          student: categories[currentCategory][index],
-        ),
-        opaque: false);
   }
 
   //returns the index based on the category list length

@@ -5,4 +5,8 @@ extension StringExtensions on String {
     return YoutubePlayerController.getThumbnail(
         videoId: YoutubePlayerController.convertUrlToId(this)!, webp: false);
   }
+
+  String getVideoId() {
+    return YoutubePlayerController.convertUrlToId(this)!;
+  }
 }

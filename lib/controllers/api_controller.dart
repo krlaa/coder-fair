@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:coder_fair/models/project_model.dart';
 import 'package:coder_fair/models/student_model.dart';
 import 'package:coder_fair/models/user_model.dart';
+import 'package:universal_io/io.dart';
 
 class APIClient {
   // Opens a http client
@@ -18,7 +19,6 @@ class APIClient {
   var authEmulatorDomain = usingEmulator ? "localhost:9099/" : "";
   // fetchStudents function which fetches students projects from Firebase RTDBMS
   Future<Map<String, List<Student>>> fetchStudents() async {
-    print(baseDomain);
     var response = await client
         .get(Uri.parse("${baseDomain}project_categories.json${query}"));
     Map<String, dynamic> categories = json.decode(response.body);
@@ -77,11 +77,13 @@ class APIClient {
     try {
       response = await http.post(
           Uri.parse(
-              'http://${authEmulatorDomain}identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${dotenv.env["API_KEY"]}'),
+              'https://${authEmulatorDomain}identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${dotenv.env["API_KEY"]}'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(body));
+
       return UserPayload.fromJson(response.body);
     } catch (e) {
+      print(e.toString());
       throw Error;
     }
   }

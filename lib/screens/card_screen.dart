@@ -12,13 +12,34 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class CardScreen extends GetView<HomeScreenController> {
-  final Student student;
-  CardScreen({required this.student})
-      : d = PageController(
-            initialPage: student.listOfProjects.length, keepPage: true);
+class CardScreen extends StatefulWidget {
+  Student student;
+  String categoryName;
+  CardScreen({required this.student, required this.categoryName})
+      : _caroController = CarouselController();
 
-  var d;
+  var _caroController;
+
+  @override
+  State<CardScreen> createState() => _CardScreenState();
+}
+
+class _CardScreenState extends State<CardScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadIfNull();
+  }
+
+  loadIfNull() async {
+    HomeScreenController controller = Get.find();
+    if (!widget.student.loadFull) {
+      widget.student =
+          await controller.loadAndReturn(widget.categoryName, widget.student);
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,41 +53,69 @@ class CardScreen extends GetView<HomeScreenController> {
               // width: Device.width >= 900 ? 35.w : 90.w,
               height: 90.h,
               color: Colors.green,
-              child: !controller.loadingStudentInfo
+              child: widget.student.loadFull
                   ? Column(
                       children: [
-                        Text("${student}"),
-                        Expanded(
-                          child: FractionallySizedBox(
-                            widthFactor: 0.8,
-                            child: StackedCardCarousel(
-                                pageController: d,
-                                items: student.listOfProjects
-                                    .asMap()
-                                    .entries
-                                    .map((e) => ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: AspectRatio(
-                                              aspectRatio: 16 / 9,
-                                              child: Image.network(
-                                                e.value.videoURL
-                                                    .getThumbnailFromUrl(),
-                                                fit: BoxFit.cover,
-                                              )),
-                                        ))
-                                    .toList()
-                                    .reversed
-                                    .toList()),
-                          ),
-                        ),
+                        Text("${widget.student}"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Flexible(
+                                flex: 1,
+                                child: (widget.student.listOfProjects.length >
+                                        1)
+                                    ? FloatingActionButton(
+                                        heroTag: widget.student.hashCode + 1,
+                                        mini: true,
+                                        onPressed: () {
+                                          widget._caroController.previousPage();
+                                        })
+                                    : Spacer()),
+                            Flexible(
+                              flex: 6,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: AspectRatio(
+                                  aspectRatio: 16 / 9,
+                                  child: CarouselSlider.builder(
+                                    options:
+                                        CarouselOptions(viewportFraction: 1),
+                                    carouselController: widget._caroController,
+                                    itemCount:
+                                        widget.student.listOfProjects.length,
+                                    itemBuilder: (context, index, realIndex) {
+                                      var ytb_controller =
+                                          YoutubePlayerController(
+                                              initialVideoId: widget
+                                                  .student
+                                                  .listOfProjects[index]
+                                                  .videoURL
+                                                  .getVideoId());
+                                      return YoutubePlayerIFrame(
+                                        aspectRatio: 16 / 9,
+                                        controller: ytb_controller,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                                flex: 1,
+                                child: (widget.student.listOfProjects.length >
+                                        1)
+                                    ? FloatingActionButton(
+                                        heroTag: widget.student.hashCode - 1,
+                                        mini: true,
+                                        onPressed: () {
+                                          widget._caroController.nextPage();
+                                        })
+                                    : Spacer()),
+                          ],
+                        )
                       ],
                     )
-                  : Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
-                    )),
+                  : Center(child: CircularProgressIndicator())),
         ));
   }
 }

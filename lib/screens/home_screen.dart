@@ -1,5 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coder_fair/controllers/home_screen_controller.dart';
 import 'package:coder_fair/models/student_model.dart';
+import 'package:coder_fair/widgets/carousel.dart';
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -63,8 +65,17 @@ class HomeScreen extends GetView<HomeScreenController> {
                                                   }
                                                 }),
                                             Expanded(
-                                              child: carousel(
-                                                  entry.key, value!, context),
+                                              child: Container(
+                                                // color: Colors.black,
+                                                width: 375,
+                                                child:
+                                                    CarouselBuilderWithIndicator(
+                                                  categoryName: controller
+                                                      .categories.keys
+                                                      .toList()[entry.key],
+                                                  cat: value!,
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         );
@@ -80,93 +91,6 @@ class HomeScreen extends GetView<HomeScreenController> {
             return Center(child: CircularProgressIndicator());
           }
         }));
-  }
-
-  Widget carousel(int index2, cat, context) {
-    var d = PageController(initialPage: cat.length, keepPage: true);
-    return AnimatedSwitcher(
-        switchOutCurve: Curves.easeIn,
-        duration: Duration(milliseconds: 300),
-        child: cat.isEmpty
-            ? Center(
-                child: Text("Nothing here"),
-              )
-            : Scrollbar(
-                scrollbarOrientation: ScrollbarOrientation.left,
-                controller: d,
-                child: StackedCardCarousel(
-                    pageController: d,
-                    initialOffset: 20.h,
-                    spaceBetweenItems: 350,
-                    onPageChanged: (index) {
-                      controller.currentIndex = index;
-
-                      controller.paginateStudents((cat.length - 1 - index),
-                          controller.categories.keys.toList()[index2]);
-                    },
-                    type: StackedCardCarouselType.cardsStack,
-                    items: cat
-                        .asMap()
-                        .entries
-                        .map((entry) {
-                          return Container(
-                              width: 300,
-                              height: 170,
-                              child: InkWell(
-                                onTap: () {
-                                  if (controller.currentIndex ==
-                                      cat.length - 1 - entry.key)
-                                    showModalBottomSheet(
-                                        backgroundColor: Colors.transparent,
-                                        isScrollControlled: true,
-                                        constraints: BoxConstraints.loose(Size(
-                                            Device.width >= 1200 ? 40.w : 90.w,
-                                            85.h)),
-                                        context: context,
-                                        builder: (context) {
-                                          return Wrap(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Container(
-                                                  height: 90.h,
-                                                  child: CardScreen(
-                                                    student: controller
-                                                                .categories[
-                                                            controller
-                                                                .currentCategory]
-                                                        [entry.key],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                },
-                                child: Obx(
-                                  () => Card(
-                                    elevation: 15,
-                                    child: AnimatedContainer(
-                                      duration: Duration(milliseconds: 200),
-                                      decoration: BoxDecoration(
-                                        color: cat.length - 1 - entry.key ==
-                                                controller.currentIndex
-                                            ? Colors.white
-                                            : Colors.yellow,
-                                      ),
-                                      child:
-                                          Center(child: Text("${entry.value}")),
-                                    ),
-                                  ),
-                                ),
-                              ));
-                        })
-                        .toList()
-                        .reversed
-                        .toList()
-                        .cast<Widget>()),
-              ));
   }
 }
 
