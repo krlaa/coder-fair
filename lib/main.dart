@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         },
         theme: ThemeData(scaffoldBackgroundColor: mainBg),
         title: 'TCS Tampa CF',
-        home: HomeScreen(),
+        home: LoginScreen(),
       ),
     );
   }
