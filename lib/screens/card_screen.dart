@@ -1,14 +1,13 @@
+// ignore_for_file: duplicate_import
+
 import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chewie/chewie.dart';
-import 'package:coder_fair/constants/extenstions.dart';
+import 'package:coder_fair/constants/app_colors.dart';
 import 'package:coder_fair/controllers/home_screen_controller.dart';
 import 'package:coder_fair/models/student_model.dart';
-import 'package:coder_fair/screens/stacked_card_carousel.dart';
 import 'package:coder_fair/widgets/customVideo.dart';
-import 'package:coder_fair/widgets/vimeoplayer/src/quality_links.dart';
-import 'package:coder_fair/widgets/vimeoplayer/vimeoplayer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
@@ -59,7 +58,7 @@ class _CardScreenState extends State<CardScreen> {
           child: Container(
               width: Device.width >= 900 ? 35.w : 90.w,
               height: 90.h,
-              color: Color(0xFFF2F4FF),
+              color: Colors.white,
               child: widget.student.loadFull
                   ? Container(
                       margin: EdgeInsets.symmetric(horizontal: 15.sp),
@@ -102,6 +101,9 @@ class _CardScreenState extends State<CardScreen> {
                                                   .length >
                                               1)
                                           ? FloatingActionButton(
+                                              backgroundColor: buttonGreen,
+                                              child: Icon(Icons
+                                                  .navigate_before_outlined),
                                               heroTag:
                                                   widget.student.hashCode + 1,
                                               mini: true,
@@ -118,7 +120,9 @@ class _CardScreenState extends State<CardScreen> {
                                       aspectRatio: 16 / 9,
                                       child: CarouselSlider.builder(
                                         options: CarouselOptions(
+                                            enableInfiniteScroll: false,
                                             onPageChanged: (index, reason) {
+                                              print(reason);
                                               currentIndex = index;
                                               setState(() {});
                                             },
@@ -129,8 +133,6 @@ class _CardScreenState extends State<CardScreen> {
                                             .student.listOfProjects.length,
                                         itemBuilder:
                                             (context, index, realIndex) {
-                                          print(widget.student
-                                              .listOfProjects[index].videoURL);
                                           return CustomVideo(
                                             videoId: widget.student
                                                 .listOfProjects[index].videoURL,
@@ -147,9 +149,12 @@ class _CardScreenState extends State<CardScreen> {
                                                   .length >
                                               1)
                                           ? FloatingActionButton(
+                                              backgroundColor: buttonGreen,
                                               heroTag:
                                                   widget.student.hashCode - 1,
                                               mini: true,
+                                              child: Icon(
+                                                  Icons.navigate_next_outlined),
                                               onPressed: () {
                                                 widget._caroController
                                                     .nextPage();
@@ -166,6 +171,9 @@ class _CardScreenState extends State<CardScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 AnimatedSmoothIndicator(
+                                    effect: WormEffect(
+                                        activeDotColor: buttonGreen,
+                                        dotColor: Colors.grey),
                                     onDotClicked: (index) {
                                       currentIndex = index;
                                       widget._caroController
@@ -222,8 +230,8 @@ class _CardScreenState extends State<CardScreen> {
                                 ],
                               ),
                               FloatingActionButton(
-                                backgroundColor: Color(0xFFF2F4FF),
-                                elevation: 40,
+                                backgroundColor: Colors.white,
+                                elevation: 10,
                                 onPressed: () {
                                   Get.defaultDialog(
                                       title: "Like this Project",
@@ -264,8 +272,7 @@ class _CardScreenState extends State<CardScreen> {
                                         ),
                                       ));
                                 },
-                                child:
-                                    Text("♡", style: TextStyle(fontSize: 40)),
+                                child: Icon(Icons.favorite, color: buttonGreen),
                               )
                             ],
                           ),
@@ -336,5 +343,11 @@ class _CardScreenState extends State<CardScreen> {
       style: TextStyle(
           fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }
