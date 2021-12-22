@@ -1,179 +1,109 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coder_fair/controllers/home_screen_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:coder_fair/models/student_model.dart';
+import 'package:coder_fair/widgets/carousel.dart';
+import "package:flutter/material.dart";
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:coder_fair/screens/stacked_card_carousel.dart';
+
+import 'card_screen.dart';
 
 class HomeScreen extends GetView<HomeScreenController> {
   @override
-  Widget build(
-    BuildContext context,
-  ) {
-    YoutubePlayerController _controller = YoutubePlayerController(
-      initialVideoId: 'K18cpp_-gP8',
-      params: YoutubePlayerParams(
-        autoPlay: true,
-        showControls: false,
-        showFullscreenButton: true,
-      ),
-    );
-    return LayoutBuilder(builder: (context, constraints) {
-      print(controller.categories);
-      return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => controller.changeExpanded(true),
-          ),
-          body: SafeArea(
-            child: DefaultTextStyle(
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 15.sp),
-              child: Row(
-                children: [
-                  Flexible(
-                      flex: 4,
-                      child: Obx(() {
-                        if (!controller.loadingStudentNames.value) {
-                          return Scrollbar(
-                            isAlwaysShown: true,
-                            showTrackOnHover: true,
-                            child: ListView.builder(
-                              itemCount: controller.categories.length,
-                              itemBuilder: (context, index) {
-                                var cat = controller.categories.values
-                                    .toList()[index];
-                                print(controller
-                                    .listOfControllers[index].hashCode);
-                                return Row(
-                                  children: [
-                                    Flexible(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                              '${controller.categories.keys.toList()[index]}'),
-                                          CarouselSlider.builder(
-                                              carouselController: controller
-                                                  .listOfControllers[index],
-                                              itemCount: cat.length,
-                                              itemBuilder:
-                                                  (context, index1, realIndex) {
-                                                return Material(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  elevation: 8,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15)),
-                                                    child: Center(
-                                                        child:
-                                                            Text(cat[index1])),
-                                                  ),
-                                                );
-                                              },
-                                              options: CarouselOptions(
-                                                  onPageChanged:
-                                                      (index, reason) {
-                                                    controller.loadStudent(
-                                                        cat[index]);
-                                                  },
-                                                  viewportFraction: 0.3,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  height: 200,
-                                                  initialPage: 0,
-                                                  enlargeCenterPage: true,
-                                                  enableInfiniteScroll:
-                                                      cat.length > 2)),
-                                        ],
-                                      ),
-                                    ),
-                                    FloatingActionButton(onPressed: () {
-                                      CarouselController x =
-                                          controller.listOfControllers[index];
-                                      x.nextPage(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.linear);
-                                    })
-                                  ],
-                                );
-                              },
-                            ),
-                          );
-                        } else {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            backgroundColor: Colors.white,
-                            color: Colors.white,
-                          ));
-                        }
-                      })),
-                  if (constraints.maxWidth > 1250)
-                    Flexible(
-                        flex: 3,
-                        child: Expanded(
-                          child: Obx(
-                            () => Container(
-                                color: Colors.green,
-                                child: !controller.loadingStudentInfo.value
-                                    ? Column(
-                                        children: [
-                                          Text(
-                                              "${controller.currentStudent.value.codeCoach}"),
-                                          YoutubePlayerControllerProvider(
-                                              // Provides controller to all the widget below it.
-                                              controller: _controller,
-                                              child: YoutubePlayerIFrame(
-                                                controller: _controller,
-                                                aspectRatio: 16 / 15,
-                                              )),
-                                          YoutubePlayerControllerProvider(
-                                              // Provides controller to all the widget below it.
-                                              controller: _controller,
-                                              child: YoutubeValueBuilder(
-                                                controller:
-                                                    _controller, // This can be omitted, if using `YoutubePlayerControllerProvider`
-                                                builder: (context, value) {
-                                                  return IconButton(
-                                                    icon: Icon(
-                                                      value.playerState ==
-                                                              PlayerState
-                                                                  .playing
-                                                          ? Icons.pause
-                                                          : Icons.play_arrow,
-                                                    ),
-                                                    onPressed: value.isReady
-                                                        ? () {
-                                                            context.ytController
-                                                                .play();
-                                                            value.playerState ==
-                                                                    PlayerState
-                                                                        .playing
-                                                                ? context
-                                                                    .ytController
-                                                                    .pause()
-                                                                : context
-                                                                    .ytController
-                                                                    .play();
-                                                          }
-                                                        : null,
-                                                  );
-                                                },
-                                              ))
-                                        ],
-                                      )
-                                    : Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                        ),
-                                      )),
-                          ),
-                        ))
-                ],
-              ),
-            ),
-          ));
-    });
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Color(0xFF148EEE),
+        body: Obx(() {
+          List keys = controller.categories.keys.toList();
+          if (!controller.loadingStudentNames) {
+            return DefaultTabController(
+                length: keys.length,
+                child: Column(
+                  children: [
+                    TabBar(
+                      onTap: (value) {
+                        controller.currentCategory =
+                            controller.categories.keys.toList()[value];
+                      },
+                      tabs: keys.map((x) => genericTab("$x")).toList(),
+                    ),
+                    Expanded(
+                      child: Container(
+                        width: Device.width >= 1200 ? 40.w : 90.w,
+                        child: TabBarView(
+                            physics: NeverScrollableScrollPhysics(),
+                            children: keys
+                                .asMap()
+                                .entries
+                                .map((entry) {
+                                  return ValueBuilder<List?>(
+                                      initialValue: controller.categories.values
+                                          .toList()[entry.key],
+                                      builder: (value, update) {
+                                        return Column(
+                                          children: [
+                                            TextFormField(
+                                                autofillHints: ["hi"],
+                                                onChanged: (x) {
+                                                  if (x.isEmpty) {
+                                                    update(controller
+                                                        .categories.values
+                                                        .toList()[entry.key]);
+                                                  } else {
+                                                    update(controller
+                                                        .categories.values
+                                                        .toList()[entry.key]!
+                                                        .where((element) {
+                                                      Student j = element;
+                                                      return j.coderName
+                                                              .contains(x) ||
+                                                          j.codeCoach
+                                                              .contains(x);
+                                                    }).toList());
+                                                  }
+                                                }),
+                                            Expanded(
+                                              child: Container(
+                                                // color: Colors.black,
+                                                width: 375,
+                                                child:
+                                                    CarouselBuilderWithIndicator(
+                                                  categoryName: controller
+                                                      .categories.keys
+                                                      .toList()[entry.key],
+                                                  cat: value!,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                })
+                                .toList()
+                                .cast<Widget>()),
+                      ),
+                    )
+                  ],
+                ));
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        }));
   }
+}
+
+Widget genericTab(String tabTitle) {
+  return Tooltip(
+    message: tabTitle,
+    child: Tab(
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          tabTitle,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    ),
+  );
 }

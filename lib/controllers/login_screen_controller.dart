@@ -1,3 +1,8 @@
+// ignore_for_file: unused_import
+
+import 'dart:typed_data';
+
+import 'package:coder_fair/models/role_model.dart';
 import 'package:coder_fair/models/user_model.dart';
 import 'package:coder_fair/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +45,11 @@ class LoginScreenController extends GetxController {
   set rememberPassword(value) => _rememberPassword.value = value;
 
   //Defines current user this value will be accessed through this controller to determine vote weight; is obs because will need to observe always
-  Rx<User> _currentUser = User(coderName: "", role: 0).obs;
+
+  var _currentUser =
+      User(role: Role.none(), coders: [], token: UserPayload.none()).obs;
+  get currentUser => _currentUser.value;
+  set currentUser(value) => _currentUser.value = value;
 
   // Ensures if the user deletes the whole password after loadedFromSS then password field will reset to include visibility icon.
   void resetPassField() {
@@ -58,7 +67,7 @@ class LoginScreenController extends GetxController {
       await insertSecret();
     }
     try {
-      _currentUser.value =
+      currentUser =
           await client.fetchUser(email: email.text, password: password.text);
     } catch (e) {
       Get.snackbar("Uh oh", "Looks like something went wrong");
@@ -84,19 +93,23 @@ class LoginScreenController extends GetxController {
   // Ensure the key is available to write to
   Future<void> ensureKey() async {
     var containsEncryptionKey =
-        await secureStorage.containsKey(key: 'youshallnotpass');
-    if (!containsEncryptionKey) {
+        await secureStorage.read(key: 'youshallnotpass');
+    if (containsEncryptionKey != null && containsEncryptionKey.isEmpty ||
+        containsEncryptionKey == null) {
+      print("isEmpty");
       var key = Hive.generateSecureKey();
       await secureStorage.write(
           key: 'youshallnotpass', value: base64UrlEncode(key));
+      print("wrote");
+      print(await secureStorage.read(key: 'youshallnotpass'));
     }
   }
 
   // inserts the secrets to the encrypted box
   Future<void> insertSecret() async {
     await ensureKey();
-    var encryptionKey = base64Url
-        .decode(await secureStorage.read(key: 'youshallnotpass') ?? "");
+    var encryptionKey =
+        base64Url.decode((await secureStorage.read(key: 'youshallnotpass'))!);
     var encryptedBox = await Hive.openBox('vaultBox',
         encryptionCipher: HiveAesCipher(encryptionKey));
     encryptedBox.put('email', email.text);
@@ -106,8 +119,9 @@ class LoginScreenController extends GetxController {
   // Gets the secret then sets the text fields to the appropriate information. Disables the password visibility toggle to ensure people cannot obtain password easily
   Future<void> getSecret() async {
     await ensureKey();
-    var encryptionKey = base64Url
-        .decode(await secureStorage.read(key: 'youshallnotpass') ?? "");
+    var encryptionKey =
+        base64Url.decode((await secureStorage.read(key: 'youshallnotpass'))!);
+    // print(key);
     var encryptedBox = await Hive.openBox('vaultBox',
         encryptionCipher: HiveAesCipher(encryptionKey));
     email.text = encryptedBox.get('email');
