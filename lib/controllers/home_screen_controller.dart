@@ -1,22 +1,25 @@
+// ignore_for_file: unused_import, duplicate_import
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:coder_fair/controllers/login_screen_controller.dart';
+import 'package:coder_fair/models/category_model.dart';
 import 'package:coder_fair/models/project_model.dart';
 import 'package:coder_fair/models/student_model.dart';
 import 'package:coder_fair/screens/card_screen.dart';
+import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'api_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreenController extends GetxController {
   var client = APIClient();
 
+  LoginScreenController _loginState = Get.find();
+
   var _cardListController = CarouselController().obs;
   get cardListController => _cardListController.value;
   set cardListController(value) => _cardListController.value = value;
-  var _currentStudent = Student().obs;
-  get currentStudent => _currentStudent.value;
-  set currentStudent(value) => _currentStudent.value = value;
 
   var _currentIndex = 0.obs;
   get currentIndex => _currentIndex.value;
@@ -29,6 +32,10 @@ class HomeScreenController extends GetxController {
   var _categories = {}.obs;
   get categories => _categories.value;
   set categories(value) => _categories.value = value;
+
+  var _categories1 = CategoryList().obs;
+  get categories1 => _categories1.value;
+  set categories1(value) => _categories1.value = value;
 
   var _listOfControllers = [].obs;
   get listOfControllers => _listOfControllers.value;
@@ -57,39 +64,67 @@ class HomeScreenController extends GetxController {
 
     listOfControllers =
         categories.values.map((e) => CarouselController()).toList();
+    for (var entry in categories.entries) {
+      List<Student> newList = [];
+      for (var student in entry.value) {
+        if (_loginState.currentUser.coders.contains(student.coderName)) {
+          newList.insert(0, student);
+        } else {
+          newList.add(student);
+        }
+      }
+      var category = Category(name: entry.key, values: newList);
+      categories1.add(category);
+      categories[entry.key] = newList;
+    }
   }
 
   loadStudent(category, index) async {
     loadingStudentInfo = true;
-    if (categories[category][index] is Student) {
-      currentStudent = categories[category][index];
-    } else {
+    if (!(categories[category][index].loadFull)) {
       var x = await client.loadInfo(categories[category][index]);
       categories[category][index] = x;
-      currentStudent = x;
     }
     loadingStudentInfo = false;
   }
 
-  paginateStudents(int index, String category) async {
-    if (categories[category].length > 1) {
-      if (!(categories[category][index + 1] is Student)) {
-        var subI = sublistIndex(index, category);
-        var x = await client.paginateStudents(
-            index, categories[category].sublist(index + 1, subI));
-        // print("This is the value of calling paginate students: $x");
+  loadAndReturn(category, element) async {
+    loadingStudentInfo = true;
 
-        categories[category].replaceRange(index + 1, subI, x);
-        // print(
-        // "These are the categories after replacement: ${categories[category]}");
+    if ((element.loadFull)) {
+      loadingStudentInfo = false;
+
+      return element;
+    } else {
+      var x = await client.loadInfo(element);
+      loadingStudentInfo = false;
+      for (var i = 0; i < categories[category].length; i++) {
+        Student student = categories[category][i];
+        if (student.coderName == element.coderName) {
+          student = x;
+          print("${categories[category]}\n\n\n");
+        }
+      }
+      return x;
+    }
+  }
+
+  paginateStudents(int index, String category) async {
+    if (categories[category].length > 1 &&
+        categories[category].length > index + 1) {
+      if (!(categories[category][index + 1].loadFull)) {
+        var subI = sublistIndex(index, category);
+        List<Student> result = [];
+        await Future.forEach(categories[category].sublist(index + 1, subI),
+            (Student element) async {
+          var x = await loadAndReturn(category, element);
+          result.add(x);
+        });
+        categories[category].replaceRange(index + 1, subI, result);
       }
       await loadStudent(category, index);
-
-      currentStudent = categories[category][index];
     } else {
       await loadStudent(category, index);
-
-      currentStudent = categories[category][index];
     }
   }
 
@@ -105,19 +140,11 @@ class HomeScreenController extends GetxController {
     super.onInit();
   }
 
-  void sendToCardScreen(index) {
-    Get.to(
-        CardScreen(
-          student: categories[currentCategory][index],
-        ),
-        opaque: false);
-  }
-
   //returns the index based on the category list length
   int sublistIndex(index, category) {
-    return (index + 3 > categories[category].length ||
-            index == categories[category].length)
+    return (index + 4 > categories[category].length ||
+            index == categories[category].length - 1)
         ? index + (categories[category].length - index)
-        : index + 3;
+        : index + 4;
   }
 }

@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         scrollBehavior: AppScrollBehavior(),
         onInit: () {
           Get.put(LoginScreenController());
-          Get.put(HomeScreenController());
+          Get.lazyPut<HomeScreenController>(() => HomeScreenController());
         },
         theme: ThemeData(scaffoldBackgroundColor: mainBg),
         title: 'TCS Tampa CF',

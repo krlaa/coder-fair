@@ -11,13 +11,20 @@ class Project {
   String videoURL;
   String language;
   String description;
-  String name;
+  String coderName;
+  String version;
+  String status;
+  late bool _liked = false;
+  late Map _likedCategory = {};
+
   Project(
       {required this.title,
       required this.videoURL,
       required this.language,
       required this.description,
-      required this.name});
+      required this.coderName,
+      required this.version,
+      required this.status});
 
   Map<String, dynamic> toMap() {
     return {
@@ -30,11 +37,13 @@ class Project {
 
   factory Project.fromMap(Map<String, dynamic> map, String title, String name) {
     return Project(
-        title: title,
-        videoURL: map['video_url'],
+        title: "${map['title']}",
+        videoURL: "${map['video_url']}",
         language: map['language'],
+        status: map['status'],
         description: map['desc'],
-        name: name);
+        coderName: name,
+        version: "${map['version']}.0");
   }
 
   String toJson() => json.encode(toMap());
@@ -43,4 +52,10 @@ class Project {
   String toString() {
     return 'Project(title: $title, videoURL: $videoURL)';
   }
+
+  get liked => _liked;
+  set liked(value) => _liked = value;
+
+  get likedCategory => _likedCategory;
+  set likedCategory(value) => _likedCategory = value;
 }

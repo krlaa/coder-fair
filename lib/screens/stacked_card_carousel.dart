@@ -50,18 +50,14 @@ class _StackedCardCarouselState extends State<StackedCardCarousel>
     return ClickThroughStack(
       children: <Widget>[
         _stackedCards(context),
-        Scrollbar(
+        PageView.builder(
+          scrollDirection: Axis.vertical,
           controller: widget._pageController,
-          isAlwaysShown: true,
-          child: PageView.builder(
-            scrollDirection: Axis.vertical,
-            controller: widget._pageController,
-            itemCount: widget._items.length,
-            onPageChanged: widget._onPageChanged,
-            itemBuilder: (BuildContext context, int index) {
-              return Container();
-            },
-          ),
+          itemCount: widget._items.length,
+          onPageChanged: widget._onPageChanged,
+          itemBuilder: (BuildContext context, int index) {
+            return Container();
+          },
         ),
       ],
     );

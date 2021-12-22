@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
+
 import 'project_model.dart';
 import 'user_model.dart';
 
@@ -15,12 +17,14 @@ class Student {
   String profilePictureURL;
   List<Project> listOfProjects;
   String codeCoach;
+  bool loadFull;
 
   Student({
     this.coderName = "",
     this.profilePictureURL = "",
     this.listOfProjects = const [],
     this.codeCoach = "",
+    this.loadFull = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,11 +33,58 @@ class Student {
       'profilePictureURL': profilePictureURL,
       'listOfProjects': listOfProjects.map((x) => x.toMap()).toList(),
       'codeCoach': codeCoach,
+      'loadFull': loadFull,
     };
   }
 
+  factory Student.fromJson(Map<String, dynamic> parsedJson, String name) {
+    return Student(
+        codeCoach: parsedJson["coach"],
+        coderName: name,
+        profilePictureURL: parsedJson["coder_pic_url"]);
+  }
   @override
   String toString() {
-    return 'Student(coderName: $coderName)';
+    return 'Student(coderName: $coderName, profilePictureURL: $profilePictureURL, listOfProjects: $listOfProjects, codeCoach: $codeCoach, loadFull: $loadFull)';
+  }
+
+  Student copyWith({
+    String? coderName,
+    String? profilePictureURL,
+    List<Project>? listOfProjects,
+    String? codeCoach,
+    bool? loadFull,
+  }) {
+    return Student(
+      coderName: coderName ?? this.coderName,
+      profilePictureURL: profilePictureURL ?? this.profilePictureURL,
+      listOfProjects: listOfProjects ?? this.listOfProjects,
+      codeCoach: codeCoach ?? this.codeCoach,
+      loadFull: loadFull ?? this.loadFull,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
+
+    return other is Student &&
+        other.coderName == coderName &&
+        other.profilePictureURL == profilePictureURL &&
+        listEquals(other.listOfProjects, listOfProjects) &&
+        other.codeCoach == codeCoach &&
+        other.loadFull == loadFull;
+  }
+
+  @override
+  int get hashCode {
+    return coderName.hashCode ^
+        profilePictureURL.hashCode ^
+        listOfProjects.hashCode ^
+        codeCoach.hashCode ^
+        loadFull.hashCode;
   }
 }
