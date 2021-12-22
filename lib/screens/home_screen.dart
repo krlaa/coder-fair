@@ -13,7 +13,7 @@ class HomeScreen extends GetView<HomeScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Color(0xFF148EEE),
         body: Obx(() {
           List keys = controller.categories.keys.toList();
           if (!controller.loadingStudentNames) {
@@ -30,7 +30,6 @@ class HomeScreen extends GetView<HomeScreenController> {
                     ),
                     Expanded(
                       child: Container(
-                        color: Colors.red,
                         width: Device.width >= 1200 ? 40.w : 90.w,
                         child: TabBarView(
                             physics: NeverScrollableScrollPhysics(),

@@ -50,10 +50,10 @@ class _CarouselBuilderWithIndicatorState
                   Flexible(
                       flex: 1,
                       child: FloatingActionButton(
-                        child: Icon(Icons.arrow_downward_sharp),
+                        child: Icon(Icons.arrow_upward_sharp),
                         mini: true,
                         onPressed: () {
-                          carouselController.nextPage();
+                          carouselController.previousPage();
                         },
                       )),
                   Flexible(
@@ -70,31 +70,15 @@ class _CarouselBuilderWithIndicatorState
                             child: InkWell(
                               onTap: () {
                                 if (_index == entry.key)
-                                  showModalBottomSheet(
-                                      backgroundColor: Colors.transparent,
-                                      isScrollControlled: true,
-                                      constraints: BoxConstraints.loose(Size(
-                                          Device.width >= 1200 ? 40.w : 90.w,
-                                          85.h)),
-                                      context: context,
-                                      builder: (context) {
-                                        return Wrap(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: Container(
-                                                height: 90.h,
-                                                child: CardScreen(
-                                                  student: entry.value,
-                                                  categoryName:
-                                                      widget.categoryName,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      });
+                                  Get.dialog(ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        height: 90.h,
+                                        child: CardScreen(
+                                          student: entry.value,
+                                          categoryName: widget.categoryName,
+                                        ),
+                                      )));
                               },
                               child: Stack(
                                 children: [
@@ -102,13 +86,20 @@ class _CarouselBuilderWithIndicatorState
                                     elevation: 15,
                                     child: AnimatedContainer(
                                       duration: Duration(milliseconds: 200),
-                                      decoration: BoxDecoration(
-                                        color: entry.key == _index
-                                            ? Colors.white
-                                            : Colors.yellow,
-                                      ),
-                                      child:
-                                          Center(child: Text("${entry.value}")),
+                                      decoration: BoxDecoration(),
+                                      child: Center(
+                                          child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 40,
+                                            backgroundImage: NetworkImage(
+                                                entry.value.profilePictureURL),
+                                          ),
+                                          Text(entry.value.coderName)
+                                        ],
+                                      )),
                                     ),
                                   ),
                                   AnimatedSwitcher(
@@ -118,7 +109,7 @@ class _CarouselBuilderWithIndicatorState
                                             child: BackdropFilter(
                                               child: Container(),
                                               filter: ImageFilter.blur(
-                                                  sigmaX: 0, sigmaY: 0),
+                                                  sigmaX: 0.001, sigmaY: 0.001),
                                             ),
                                           )
                                         : ClipRRect(
@@ -157,10 +148,10 @@ class _CarouselBuilderWithIndicatorState
                   Flexible(
                       flex: 1,
                       child: FloatingActionButton(
-                        child: Icon(Icons.arrow_upward_sharp),
+                        child: Icon(Icons.arrow_downward_sharp),
                         mini: true,
                         onPressed: () {
-                          carouselController.previousPage();
+                          carouselController.nextPage();
                         },
                       )),
                 ],

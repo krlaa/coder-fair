@@ -9,7 +9,7 @@ void main() async {
   // print(x.values.toList());
   TestWidgetsFlutterBinding.ensureInitialized();
   io.HttpOverrides.global = null;
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "env");
   var client = APIClient();
   test("Test fetchStudents function", () async {
     var x = await client.fetchStudents();

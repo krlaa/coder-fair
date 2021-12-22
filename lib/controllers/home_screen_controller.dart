@@ -9,7 +9,6 @@ import 'package:coder_fair/screens/card_screen.dart';
 import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'api_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
