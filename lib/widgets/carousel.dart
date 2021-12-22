@@ -27,14 +27,31 @@ class _CarouselBuilderWithIndicatorState
     with AutomaticKeepAliveClientMixin {
   CarouselController carouselController = CarouselController();
   late HomeScreenController controller;
+
+  int _index = 0;
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     super.initState();
     controller = Get.find();
   }
 
-  int _index = 0;
-  bool get wantKeepAlive => true;
+  @override
+  void didUpdateWidget(covariant CarouselBuilderWithIndicator oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    _index = 0;
+    update();
+    setState(() {});
+  }
+
+  void update() async {
+    await carouselController.onReady;
+    if (!widget.cat.isEmpty) carouselController.animateToPage(0);
+  }
+// entry.value = a student object
+
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
@@ -50,7 +67,9 @@ class _CarouselBuilderWithIndicatorState
                   Flexible(
                       flex: 1,
                       child: FloatingActionButton(
-                        child: Icon(Icons.arrow_upward_sharp),
+                        child: RotatedBox(
+                            quarterTurns: 1,
+                            child: Icon(Icons.navigate_before_outlined)),
                         mini: true,
                         onPressed: () {
                           carouselController.previousPage();
@@ -102,26 +121,16 @@ class _CarouselBuilderWithIndicatorState
                                       )),
                                     ),
                                   ),
-                                  AnimatedSwitcher(
-                                    duration: Duration(seconds: 5),
-                                    child: entry.key == _index
-                                        ? ClipRRect(
-                                            child: BackdropFilter(
-                                              child: Container(),
-                                              filter: ImageFilter.blur(
-                                                  sigmaX: 0.001, sigmaY: 0.001),
-                                            ),
-                                          )
-                                        : ClipRRect(
-                                            child: BackdropFilter(
-                                              child: Container(),
-                                              filter: ImageFilter.blur(
-                                                  sigmaX: 4, sigmaY: 4),
-                                            ),
-                                          ),
-                                    switchInCurve: Curves.easeInOut,
-                                    switchOutCurve: Curves.easeInOut,
-                                  )
+                                  ClipRRect(
+                                    child: BackdropFilter(
+                                      child: Container(),
+                                      filter: ImageFilter.blur(
+                                          sigmaX:
+                                              entry.key == _index ? 0.001 : 4,
+                                          sigmaY:
+                                              entry.key == _index ? 0.001 : 4),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -148,7 +157,9 @@ class _CarouselBuilderWithIndicatorState
                   Flexible(
                       flex: 1,
                       child: FloatingActionButton(
-                        child: Icon(Icons.arrow_downward_sharp),
+                        child: RotatedBox(
+                            quarterTurns: 3,
+                            child: Icon(Icons.navigate_before_outlined)),
                         mini: true,
                         onPressed: () {
                           carouselController.nextPage();
