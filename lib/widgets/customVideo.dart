@@ -38,9 +38,11 @@ class _CustomVideoState extends State<CustomVideo>
 
     chewieController = ChewieController(
       materialProgressColors: ChewieProgressColors(
-          playedColor: Colors.green.shade900, handleColor: buttonGreen),
+          playedColor: Colors.green.shade900,
+          handleColor: AppColor.buttonGreen),
       cupertinoProgressColors: ChewieProgressColors(
-          playedColor: Colors.green.shade900, handleColor: buttonGreen),
+          playedColor: Colors.green.shade900,
+          handleColor: AppColor.buttonGreen),
       allowFullScreen: false,
       showOptions: false,
       autoInitialize: true,

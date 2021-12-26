@@ -143,7 +143,8 @@ class _CardScreenState extends State<CardScreen> {
                                                           1)
                                                       ? FloatingActionButton(
                                                           backgroundColor:
-                                                              buttonGreen,
+                                                              AppColor
+                                                                  .buttonGreen,
                                                           child: Icon(Icons
                                                               .navigate_before_outlined),
                                                           heroTag: widget
@@ -202,7 +203,8 @@ class _CardScreenState extends State<CardScreen> {
                                                           1)
                                                       ? FloatingActionButton(
                                                           backgroundColor:
-                                                              buttonGreen,
+                                                              AppColor
+                                                                  .buttonGreen,
                                                           heroTag: widget
                                                                   .cat[now]
                                                                   .hashCode -
@@ -229,7 +231,8 @@ class _CardScreenState extends State<CardScreen> {
                                           children: [
                                             AnimatedSmoothIndicator(
                                                 effect: WormEffect(
-                                                    activeDotColor: buttonGreen,
+                                                    activeDotColor:
+                                                        AppColor.buttonGreen,
                                                     dotColor: Colors.grey),
                                                 onDotClicked: (index) {
                                                   currentIndex = index;
@@ -434,7 +437,7 @@ class _CardScreenState extends State<CardScreen> {
                                                     ? Icons.favorite
                                                     : Icons
                                                         .favorite_outline_outlined,
-                                                color: buttonGreen),
+                                                color: AppColor.buttonGreen),
                                           )
                                         ],
                                       ),

@@ -22,8 +22,8 @@ class LoginScreen extends GetView<LoginScreenController> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            lightBlue,
-            darkBlue,
+            AppColor.lightBlue,
+            AppColor.darkBlue,
           ],
         )),
 
@@ -206,7 +206,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: buttonGreen,
+                        primary: AppColor.buttonGreen,
                         padding:
                             EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       ),
@@ -249,7 +249,7 @@ class LoginScreen extends GetView<LoginScreenController> {
               fontFamily: 'RobotoSlab',
               fontWeight: FontWeight.bold,
               fontSize: 17,
-              color: h2Blk,
+              color: AppColor.h2Blk,
             ),
             content: Center(
               child: Wrap(
@@ -257,13 +257,15 @@ class LoginScreen extends GetView<LoginScreenController> {
                 children: [
                   Text("Contact theCoderSchool at: ",
                       style: TextStyle(
-                          fontFamily: 'Raleway', fontSize: 14, color: h2Blk)),
+                          fontFamily: 'Raleway',
+                          fontSize: 14,
+                          color: AppColor.h2Blk)),
                   InkWell(
                       child: Text("(813) 422-5566",
                           style: TextStyle(
                               fontFamily: 'Raleway',
                               fontSize: 14,
-                              color: darkBlue)),
+                              color: AppColor.darkBlue)),
                       onTap: () async {
                         if (!await launch("8134225566"))
                           throw 'Could not launch 8134225566';
@@ -280,7 +282,7 @@ class LoginScreen extends GetView<LoginScreenController> {
       width: 60.0.w,
       child: Obx(
         () => CheckboxListTile(
-            activeColor: buttonGreen,
+            activeColor: AppColor.buttonGreen,
             dense: true,
             contentPadding: EdgeInsets.only(top: 15),
             tileColor: Colors.white,
