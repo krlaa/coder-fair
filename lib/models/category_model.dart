@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:collection/collection.dart';
-
 import 'package:coder_fair/models/student_model.dart';
 
 class CategoryList {

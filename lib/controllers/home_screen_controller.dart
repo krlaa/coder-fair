@@ -9,6 +9,7 @@ import 'package:coder_fair/screens/card_screen.dart';
 import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'api_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -25,7 +26,7 @@ class HomeScreenController extends GetxController {
   get currentIndex => _currentIndex.value;
   set currentIndex(value) => _currentIndex.value = value;
 
-  var _currentCategory = "Apps".obs;
+  var _currentCategory = "Game_Engine".obs;
   get currentCategory => _currentCategory.value;
   set currentCategory(value) => _currentCategory.value = value;
 
@@ -65,12 +66,17 @@ class HomeScreenController extends GetxController {
     listOfControllers =
         categories.values.map((e) => CarouselController()).toList();
     for (var entry in categories.entries) {
+      List<Student> shuffledList = entry.value;
+      shuffledList.shuffle();
+
       List<Student> newList = [];
-      for (var student in entry.value) {
+      for (var student in shuffledList) {
+        var alteredStudent = student;
+
         if (_loginState.currentUser.coders.contains(student.coderName)) {
-          newList.insert(0, student);
+          newList.insert(0, alteredStudent);
         } else {
-          newList.add(student);
+          newList.add(alteredStudent);
         }
       }
       var category = Category(name: entry.key, values: newList);
@@ -82,7 +88,8 @@ class HomeScreenController extends GetxController {
   loadStudent(category, index) async {
     loadingStudentInfo = true;
     if (!(categories[category][index].loadFull)) {
-      var x = await client.loadInfo(categories[category][index]);
+      var x = await client.loadInfo(
+          categories[category][index], _loginState.currentUser.token.uid);
       categories[category][index] = x;
     }
     loadingStudentInfo = false;
@@ -96,13 +103,12 @@ class HomeScreenController extends GetxController {
 
       return element;
     } else {
-      var x = await client.loadInfo(element);
+      var x = await client.loadInfo(element, _loginState.currentUser.token.uid);
       loadingStudentInfo = false;
       for (var i = 0; i < categories[category].length; i++) {
         Student student = categories[category][i];
         if (student.coderName == element.coderName) {
           student = x;
-          print("${categories[category]}\n\n\n");
         }
       }
       return x;
@@ -120,12 +126,26 @@ class HomeScreenController extends GetxController {
           var x = await loadAndReturn(category, element);
           result.add(x);
         });
+
         categories[category].replaceRange(index + 1, subI, result);
       }
+
       await loadStudent(category, index);
     } else {
       await loadStudent(category, index);
     }
+  }
+
+  updateLikedCategory(String currentProject, String likedCategory) {
+    client.updateLikedCategory(
+        currentProject, likedCategory, _loginState.currentUser.token);
+  }
+
+  addToSeen(String coderName) async {
+    var box = Hive.box('userPreferences');
+    Map listOfSeen = box.get('listOfSeen');
+    listOfSeen.addAll({coderName: true});
+    await box.put('listOfSeen', listOfSeen);
   }
 
   @override

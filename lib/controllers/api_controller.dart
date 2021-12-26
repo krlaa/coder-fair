@@ -34,22 +34,35 @@ class APIClient {
       }
       result[k.key] = l;
     }
-
     return result;
   }
 
-  Future<Student> loadInfo(Student student) async {
-    var coderProjects = json.decode((await client.get(
-            Uri.parse("${baseDomain}coders/${student.coderName}.json${query}")))
-        .body);
+  Future<Student> loadInfo(Student student, String uuid) async {
+    var coderList = (await client.get(
+        Uri.parse("${baseDomain}coders/${student.coderName}.json${query}")));
+    var coderProjects = json.decode(coderList.body);
 
     List<Project> j = [];
     for (var element in coderProjects) {
-      var x = json.decode((await client.get(
-              Uri.parse("${baseDomain}project_detail/${element}.json${query}")))
-          .body);
+      var projectDetail = (await client.get(
+          Uri.parse("${baseDomain}project_detail/${element}.json${query}")));
 
-      j.add(Project.fromMap(x, "$element", student.coderName));
+      var x = json.decode(projectDetail.body);
+      var likedDetail = (await client
+          .get(Uri.parse("${baseDomain}like/${element}/${uuid}.json${query}")));
+
+      var likedInfo = json.decode(likedDetail.body);
+
+      var project = Project.fromMap(x, "$element", student.coderName);
+
+      if (likedInfo.runtimeType == Null) {
+        project.liked = false;
+      } else {
+        project.liked = true;
+        project.likedCategory = likedInfo;
+      }
+
+      j.add(project);
     }
 
     return student.copyWith(listOfProjects: j, loadFull: true);
@@ -75,12 +88,13 @@ class APIClient {
     // response from post request
     var response;
     try {
+      print(usingEmulator);
       response = await http.post(
           Uri.parse(
-              'https://${authEmulatorDomain}identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${dotenv.env["API_KEY"]}'),
+              'http${usingEmulator ? '' : 's'}://${authEmulatorDomain}identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${dotenv.env["API_KEY"]}'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(body));
-
+      // print(response.body);
       return UserPayload.fromJson(response.body);
     } catch (e) {
       print(e.toString());
@@ -95,6 +109,20 @@ class APIClient {
 
   //
   void increaseLikeCount() {}
+
+  void updateLikedCategory(
+      String currentProject, String likedCategory, UserPayload payload) async {
+    var response;
+    try {
+      response = await http.put(
+          Uri.parse(
+              '${baseDomain}like/${currentProject}/${payload.uid}.json${query}${usingEmulator ? '&' : ''}auth=${payload.token}'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(likedCategory));
+    } catch (e) {
+      throw Error;
+    }
+  }
 }
 
 /// User Payload class

@@ -23,10 +23,14 @@ void main() async {
   }
 
   var box = await openHiveBox('userPreferences');
+  var seenBox = box.get('listOfSeen');
 
+  if (seenBox == null) {
+    await box.put('listOfSeen', {});
+  }
   var exists = box.get('rememberPassword');
   if (exists == null) {
-    box.put('rememberPassword', false);
+    await box.put('rememberPassword', false);
   }
 
   await dotenv.load(fileName: ".env");

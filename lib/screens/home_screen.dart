@@ -57,9 +57,13 @@ class HomeScreen extends GetView<HomeScreenController> {
                                                         .where((element) {
                                                       Student j = element;
                                                       return j.coderName
-                                                              .contains(x) ||
+                                                              .toLowerCase()
+                                                              .contains(x
+                                                                  .toLowerCase()) ||
                                                           j.codeCoach
-                                                              .contains(x);
+                                                              .toLowerCase()
+                                                              .contains(x
+                                                                  .toLowerCase());
                                                     }).toList());
                                                   }
                                                 }),
