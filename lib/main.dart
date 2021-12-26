@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
           Get.put(LoginScreenController());
           Get.lazyPut<HomeScreenController>(() => HomeScreenController());
         },
-        theme: ThemeData(scaffoldBackgroundColor: mainBg),
+        theme: ThemeData(scaffoldBackgroundColor: AppColor.mainBg),
         title: 'TCS Tampa CF',
         home: LoginScreen(),
       ),
