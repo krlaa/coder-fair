@@ -14,8 +14,9 @@ class Project {
   String coderName;
   String version;
   String status;
+  String identifier;
   late bool _liked = false;
-  late Map _likedCategory = {};
+  late String _likedCategory = "";
 
   Project(
       {required this.title,
@@ -24,7 +25,8 @@ class Project {
       required this.description,
       required this.coderName,
       required this.version,
-      required this.status});
+      required this.status,
+      required this.identifier});
 
   Map<String, dynamic> toMap() {
     return {
@@ -35,13 +37,14 @@ class Project {
     };
   }
 
-  factory Project.fromMap(Map<String, dynamic> map, String title, String name) {
+  factory Project.fromMap(Map<String, dynamic> map, String key, String name) {
     return Project(
+        identifier: key,
         title: "${map['title']}",
         videoURL: "${map['video_url']}",
         language: map['language'],
-        status: map['status'],
-        description: map['desc'],
+        status: "${map['status']}",
+        description: map['description'],
         coderName: name,
         version: "${map['version']}.0");
   }
@@ -50,7 +53,7 @@ class Project {
 
   @override
   String toString() {
-    return 'Project(title: $title, videoURL: $videoURL)';
+    return 'Project(title: $title, videoURL: $videoURL, language: $language, description: $description, coderName: $coderName, version: $version, status: $status, identifier: $identifier, _liked: $_liked, _likedCategory: $_likedCategory)';
   }
 
   get liked => _liked;

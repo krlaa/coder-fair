@@ -96,12 +96,9 @@ class LoginScreenController extends GetxController {
         await secureStorage.read(key: 'youshallnotpass');
     if (containsEncryptionKey != null && containsEncryptionKey.isEmpty ||
         containsEncryptionKey == null) {
-      print("isEmpty");
       var key = Hive.generateSecureKey();
       await secureStorage.write(
           key: 'youshallnotpass', value: base64UrlEncode(key));
-      print("wrote");
-      print(await secureStorage.read(key: 'youshallnotpass'));
     }
   }
 
@@ -121,7 +118,7 @@ class LoginScreenController extends GetxController {
     await ensureKey();
     var encryptionKey =
         base64Url.decode((await secureStorage.read(key: 'youshallnotpass'))!);
-    // print(key);
+    //
     var encryptedBox = await Hive.openBox('vaultBox',
         encryptionCipher: HiveAesCipher(encryptionKey));
     email.text = encryptedBox.get('email');

@@ -30,10 +30,9 @@ class _CustomVideoState extends State<CustomVideo>
   }
 
   void loadVideo() async {
-    print("im getting called");
     var x = QualityLinks(widget.videoId);
     var link = await x.getQualitiesAsync();
-    videoPlayerController = VideoPlayerController.network(link?["360p 23"]);
+    videoPlayerController = VideoPlayerController.network(link?["360p"]);
 
     await videoPlayerController.initialize();
 
@@ -44,16 +43,19 @@ class _CustomVideoState extends State<CustomVideo>
           playedColor: Colors.green.shade900, handleColor: buttonGreen),
       allowFullScreen: false,
       showOptions: false,
+      autoInitialize: true,
       allowMuting: false,
       videoPlayerController: videoPlayerController,
-      autoPlay: false,
+      autoPlay: true,
       looping: false,
     );
     chewieController.setVolume(0);
     playerWidget = Chewie(
       controller: chewieController,
     );
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

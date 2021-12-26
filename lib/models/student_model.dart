@@ -16,36 +16,32 @@ class Student {
   String coderName;
   String profilePictureURL;
   List<Project> listOfProjects;
+  String first_name;
   String codeCoach;
   bool loadFull;
+  late bool seen = false;
 
   Student({
     this.coderName = "",
+    this.first_name = "",
     this.profilePictureURL = "",
     this.listOfProjects = const [],
     this.codeCoach = "",
     this.loadFull = false,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'coderName': coderName,
-      'profilePictureURL': profilePictureURL,
-      'listOfProjects': listOfProjects.map((x) => x.toMap()).toList(),
-      'codeCoach': codeCoach,
-      'loadFull': loadFull,
-    };
-  }
+  set seenStudent(value) => this.seen = value;
 
   factory Student.fromJson(Map<String, dynamic> parsedJson, String name) {
     return Student(
         codeCoach: parsedJson["coach"],
+        first_name: parsedJson["first_name"],
         coderName: name,
         profilePictureURL: parsedJson["coder_pic_url"]);
   }
   @override
   String toString() {
-    return 'Student(coderName: $coderName, profilePictureURL: $profilePictureURL, listOfProjects: $listOfProjects, codeCoach: $codeCoach, loadFull: $loadFull)';
+    return 'Student(firstName: $first_name, profilePictureURL: $profilePictureURL, listOfProjects: $listOfProjects, codeCoach: $codeCoach, loadFull: $loadFull)';
   }
 
   Student copyWith({
@@ -53,9 +49,11 @@ class Student {
     String? profilePictureURL,
     List<Project>? listOfProjects,
     String? codeCoach,
+    String? first_name,
     bool? loadFull,
   }) {
     return Student(
+      first_name: first_name ?? this.first_name,
       coderName: coderName ?? this.coderName,
       profilePictureURL: profilePictureURL ?? this.profilePictureURL,
       listOfProjects: listOfProjects ?? this.listOfProjects,
@@ -63,8 +61,6 @@ class Student {
       loadFull: loadFull ?? this.loadFull,
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   @override
   bool operator ==(Object other) {
