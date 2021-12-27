@@ -17,7 +17,7 @@ class HomeScreenController extends GetxController {
   var client = APIClient();
 
   LoginScreenController _loginState = Get.find();
-
+  get loginState => _loginState;
   var _cardListController = CarouselController().obs;
   get cardListController => _cardListController.value;
   set cardListController(value) => _cardListController.value = value;

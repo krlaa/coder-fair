@@ -50,11 +50,11 @@ class _CarouselBuilderWithIndicatorState
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     _index = 0;
-    // update();
+    updateScrollPosition();
     setState(() {});
   }
 
-  void update() async {
+  void updateScrollPosition() async {
     await carouselController.onReady;
     if (!widget.cat.isEmpty) carouselController.animateToPage(0);
   }

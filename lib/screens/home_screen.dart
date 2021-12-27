@@ -39,7 +39,12 @@ class HomeScreen extends GetView<HomeScreenController> {
                                 .map((entry) {
                                   return ValueBuilder<List?>(
                                       initialValue: controller.categories.values
-                                          .toList()[entry.key],
+                                          .toList()[entry.key]
+                                          .where((x) => (x.eligible == true ||
+                                              controller
+                                                  .loginState.currentUser.coders
+                                                  .contains(x.coderName)))
+                                          .toList(),
                                       builder: (value, update) {
                                         return Column(
                                           children: [
@@ -49,7 +54,17 @@ class HomeScreen extends GetView<HomeScreenController> {
                                                   if (x.isEmpty) {
                                                     update(controller
                                                         .categories.values
-                                                        .toList()[entry.key]);
+                                                        .toList()[entry.key]
+                                                        .where((x) => (x
+                                                                    .eligible ==
+                                                                true ||
+                                                            controller
+                                                                .loginState
+                                                                .currentUser
+                                                                .coders
+                                                                .contains(x
+                                                                    .coderName)))
+                                                        .toList());
                                                   } else {
                                                     update(controller
                                                         .categories.values
