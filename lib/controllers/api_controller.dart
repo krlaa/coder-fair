@@ -119,7 +119,7 @@ class APIClient {
     try {
       response = await http.put(
           Uri.parse(
-              '${baseDomain}like/${currentProject}/${payload.uid}.json${query}${usingEmulator ? '&' : ''}auth=${payload.token}'),
+              '${baseDomain}like/${currentProject}/${payload.uid}.json${query}${usingEmulator ? '&' : ''}'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(likedCategory));
     } catch (e) {
