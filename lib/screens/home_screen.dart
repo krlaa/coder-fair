@@ -91,7 +91,8 @@ class HomeScreen extends GetView<HomeScreenController> {
                   ],
                 ));
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(color: Colors.white));
           }
         }));
   }
