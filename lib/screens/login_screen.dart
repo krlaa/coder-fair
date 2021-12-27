@@ -96,7 +96,7 @@ class LoginScreen extends GetView<LoginScreenController> {
         'Tampa 2022',
         style: TextStyle(
             fontFamily: 'RobotoSlab',
-            fontSize: 20.sp,
+            fontSize: 20,
             // fontWeight: FontWeight.bold,
             color: Colors.white),
       ),
@@ -120,14 +120,14 @@ class LoginScreen extends GetView<LoginScreenController> {
                       AutofillHints.username
                     ],
                     textInputAction: TextInputAction.next,
-                    style: TextStyle(fontSize: 15.sp),
+                    style: TextStyle(fontSize: 15),
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
                       hintText: "Email",
                       hintStyle: TextStyle(
                         fontFamily: 'Raleway',
-                        fontSize: 15.sp,
+                        fontSize: 15,
                         color: Colors.grey,
                       ),
                     ),
@@ -157,14 +157,14 @@ class LoginScreen extends GetView<LoginScreenController> {
                         return 'Please enter a password';
                       }
                     },
-                    style: TextStyle(fontSize: 15.sp),
+                    style: TextStyle(fontSize: 15),
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
                       hintText: "Password",
                       hintStyle: TextStyle(
                         fontFamily: 'Raleway',
-                        fontSize: 15.sp,
+                        fontSize: 15,
                         color: Colors.grey,
                       ),
                       suffixIcon: !controller.loadedFromSS
@@ -214,12 +214,17 @@ class LoginScreen extends GetView<LoginScreenController> {
                           ? Text('Login',
                               style: TextStyle(
                                 fontFamily: 'Raleway',
-                                fontSize: 15.sp,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ))
-                          : CircularProgressIndicator(
-                              color: Colors.white,
+                          : SizedBox(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.0,
+                              ),
+                              height: 15.0,
+                              width: 15.0,
                             ),
                     ),
                   ),
@@ -236,7 +241,7 @@ class LoginScreen extends GetView<LoginScreenController> {
       child: Text("Forgot Password?",
           style: TextStyle(
             fontFamily: 'Raleway',
-            fontSize: 14.sp,
+            fontSize: 14,
             color: Colors.white,
           )),
       onPressed: () {
@@ -248,7 +253,7 @@ class LoginScreen extends GetView<LoginScreenController> {
             titleStyle: TextStyle(
               fontFamily: 'RobotoSlab',
               fontWeight: FontWeight.bold,
-              fontSize: 17,
+              fontSize: 15,
               color: AppColor.h2Blk,
             ),
             content: Center(
@@ -293,7 +298,7 @@ class LoginScreen extends GetView<LoginScreenController> {
               maxLines: 2,
               style: TextStyle(
                 fontFamily: 'Raleway',
-                fontSize: 14.sp,
+                fontSize: 14,
                 color: Colors.white,
               ),
             ),
