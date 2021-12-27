@@ -64,7 +64,6 @@ class APIClient {
 
       j.add(project);
     }
-
     return student.copyWith(listOfProjects: j, loadFull: true);
   }
 
@@ -72,8 +71,12 @@ class APIClient {
   Future<User> fetchUser(
       {required String email, required String password}) async {
     UserPayload info = await signIn(email, password);
-    var response = await client
-        .get(Uri.parse("${baseDomain}user/${info.uid}.json${query}"));
+    var response = await client.get(
+      Uri.parse(
+          "${baseDomain}user/${info.uid}.json${query}?auth=${info.token}"),
+      // headers: {"Authorization": "Bearer ${info.token}"}
+    );
+    print(response.body);
     return User.fromJson(response.body, info);
   }
 
@@ -94,7 +97,7 @@ class APIClient {
               'http${usingEmulator ? '' : 's'}://${authEmulatorDomain}identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${dotenv.env["API_KEY"]}'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(body));
-      print(response.body);
+      print(UserPayload.fromJson(response.body));
       return UserPayload.fromJson(response.body);
     } catch (e) {
       print(e.toString());
