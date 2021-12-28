@@ -268,14 +268,14 @@ class _CardScreenState extends State<CardScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               language(widget
-                                                  .student
+                                                  .cat[now]
                                                   .listOfProjects[currentIndex]
                                                   .language),
                                               SizedBox(
                                                 height: 10,
                                               ),
                                               version(widget
-                                                  .student
+                                                  .cat[now]
                                                   .listOfProjects[currentIndex]
                                                   .version),
                                             ],
@@ -300,7 +300,7 @@ class _CardScreenState extends State<CardScreen> {
                                             ],
                                           ),
                                           FloatingActionButton(
-                                            disabledElevation: 0,
+                                            // disabledElevation: 0,
                                             backgroundColor: Colors.white,
                                             elevation: 10,
                                             onPressed: widget.cat[now].eligible
@@ -472,6 +472,14 @@ class _CardScreenState extends State<CardScreen> {
                                             .description,
                                       ),
                                       Spacer(),
+                                      if (!widget.cat[now].eligible)
+                                        Text(
+                                          "NOTE: ${widget.cat[now].listOfProjects[currentIndex].coderName} started after October 1, 2021, we cant wait to see what they will code for the next CoderFair",
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )
                                     ],
                                   ),
                                 );

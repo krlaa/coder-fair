@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, duplicate_import
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:coder_fair/constants/app_colors.dart';
 import 'package:coder_fair/controllers/login_screen_controller.dart';
 import 'package:coder_fair/models/category_model.dart';
 import 'package:coder_fair/models/project_model.dart';
@@ -10,6 +11,7 @@ import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'api_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -61,6 +63,7 @@ class HomeScreenController extends GetxController {
   // fetchStudents function calls APICLient class' fetchStudents() and ensure loading is set to false after completion
   Future<void> fetchStudents() async {
     loadingStudentNames = true;
+
     categories = await client.fetchStudents();
 
     listOfControllers =
@@ -151,6 +154,61 @@ class HomeScreenController extends GetxController {
   @override
   void onInit() async {
     await fetchStudents();
+
+    // TODO: Call asset image
+    Get.dialog(Container(
+      height: 200,
+      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 300),
+      child: Material(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.white,
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Stack(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                        onPressed: () => Get.back(), icon: Icon(Icons.close)),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Text(
+                        "2022 Summer Camps",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Image.network(
+                "https://cdn.discordapp.com/attachments/913143504845295659/925195105726509157/finalbest.jpg"),
+            SizedBox(
+              height: 20,
+            ),
+            InkWell(
+                child: Text("More info @ New Tampa | South Tampa | Carrollwood",
+                    style: TextStyle(
+                        fontFamily: 'Raleway',
+                        fontSize: 14,
+                        color: AppColor.darkBlue)),
+                onTap: () async {
+                  if (!await launch("8134225566"))
+                    throw 'Could not launch 8134225566';
+                })
+          ],
+        ),
+      ),
+    ));
 
     await Future.forEach(categories.keys.toList(), (String x) async {
       await paginateStudents(0, x);

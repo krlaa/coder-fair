@@ -13,6 +13,15 @@ class HomeScreen extends GetView<HomeScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text(
+              "Welcome ${controller.loginState.currentUser.full_name.split(' ')[0]}"),
+        ),
+        drawer: Drawer(
+          child: ListTile(
+            title: Text("Sign Out"),
+          ),
+        ),
         backgroundColor: Color(0xFF148EEE),
         body: Obx(() {
           List keys = controller.categories.keys.toList();

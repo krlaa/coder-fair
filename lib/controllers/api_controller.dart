@@ -97,7 +97,7 @@ class APIClient {
               'http${usingEmulator ? '' : 's'}://${authEmulatorDomain}identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${dotenv.env["API_KEY"]}'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(body));
-      print(UserPayload.fromJson(response.body));
+
       return UserPayload.fromJson(response.body);
     } catch (e) {
       print(e.toString());
