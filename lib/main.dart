@@ -4,7 +4,6 @@ import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -33,7 +32,6 @@ void main() async {
     await box.put('rememberPassword', false);
   }
 
-  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 

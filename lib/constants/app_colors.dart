@@ -14,4 +14,6 @@ class AppColor {
   static Color h2Blk = Color(0xFF222222);
 
   static Color h2Yellow = Color(0xFFF0A31D);
+
+  static Color metaBlue = Color(0xFF00111B);
 }

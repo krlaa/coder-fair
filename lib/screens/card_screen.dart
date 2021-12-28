@@ -238,7 +238,6 @@ class _CardScreenState extends State<CardScreen> {
                                                   currentIndex = index;
                                                   widget._caroController
                                                       .animateToPage(index);
-                                                  setState(() {});
                                                 },
                                                 curve: Curves.easeIn,
                                                 activeIndex: currentIndex,
@@ -494,7 +493,9 @@ class _CardScreenState extends State<CardScreen> {
                                 TextButton(
                                     onPressed: () {
                                       widget.currentPosition -= 1;
-
+                                      currentIndex = 0;
+                                      widget._caroController
+                                          .jumpToPage(currentIndex);
                                       pageController.previousPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn);
@@ -506,6 +507,9 @@ class _CardScreenState extends State<CardScreen> {
                                 TextButton(
                                     onPressed: () {
                                       widget.currentPosition += 1;
+                                      currentIndex = 0;
+                                      widget._caroController
+                                          .jumpToPage(currentIndex);
                                       pageController.nextPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn);
