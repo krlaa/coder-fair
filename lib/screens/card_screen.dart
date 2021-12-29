@@ -40,7 +40,7 @@ class _CardScreenState extends State<CardScreen> {
   List<ChewieController> chewieControllerList = [];
   late HomeScreenController controller;
   PageController pageController = PageController(initialPage: 0);
-
+  List<CarouselController> carousel_controllerList = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -48,6 +48,12 @@ class _CardScreenState extends State<CardScreen> {
     loadIfNull();
     print(widget.categoryName);
     pageController = new PageController(initialPage: widget.currentPosition);
+    for (var item in widget.cat) {
+      carousel_controllerList.add(CarouselController());
+    }
+    carousel_controllerList.forEach((element) {
+      print(element.hashCode);
+    });
   }
 
   loadIfNull() async {
@@ -67,7 +73,7 @@ class _CardScreenState extends State<CardScreen> {
             child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Container(
-              width: Device.width >= 900 ? 35.w : 90.w,
+              width: Device.width >= 900 ? 45.w : 90.w,
               height: 90.h,
               color: Colors.white,
               child: widget.cat[widget.currentPosition].loadFull
@@ -78,6 +84,8 @@ class _CardScreenState extends State<CardScreen> {
                               physics: NeverScrollableScrollPhysics(),
                               controller: pageController,
                               onPageChanged: (index) {
+                                widget.currentPosition = index;
+
                                 widget.cat[index].seen = true;
                                 controller
                                     .addToSeen(widget.cat[index].coderName);
@@ -112,10 +120,28 @@ class _CardScreenState extends State<CardScreen> {
                                                 splashRadius: 20,
                                                 onPressed: () => Get.back(),
                                                 icon: Icon(Icons.close)),
-                                            Text(
-                                                "coach: ${widget.cat[now].codeCoach}"),
-                                            Text(
-                                                "coder: ${widget.cat[now].coderName}"),
+                                            Expanded(
+                                              child: Container(
+                                                child: Center(
+                                                  child: SingleChildScrollView(
+                                                    reverse: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Text(
+                                                      "coach: ${widget.cat[now].codeCoach} | coder: ${widget.cat[now].coderName}",
+                                                      maxLines: 1,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      // overflow:
+                                                      //     TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
                                             CircleAvatar(
                                               backgroundImage: NetworkImage(
                                                   widget.cat[now]
@@ -153,8 +179,8 @@ class _CardScreenState extends State<CardScreen> {
                                                               1,
                                                           mini: true,
                                                           onPressed: () {
-                                                            widget
-                                                                ._caroController
+                                                            carousel_controllerList[
+                                                                    now]
                                                                 .previousPage();
                                                           })
                                                       : Container()),
@@ -176,7 +202,8 @@ class _CardScreenState extends State<CardScreen> {
                                                         },
                                                         viewportFraction: 1),
                                                     carouselController:
-                                                        widget._caroController,
+                                                        carousel_controllerList[
+                                                            now],
                                                     itemCount: widget.cat[now]
                                                         .listOfProjects.length,
                                                     itemBuilder: (context,
@@ -213,8 +240,8 @@ class _CardScreenState extends State<CardScreen> {
                                                           child: Icon(Icons
                                                               .navigate_next_outlined),
                                                           onPressed: () {
-                                                            widget
-                                                                ._caroController
+                                                            carousel_controllerList[
+                                                                    now]
                                                                 .nextPage();
                                                           })
                                                       : Container()),
@@ -236,8 +263,9 @@ class _CardScreenState extends State<CardScreen> {
                                                     dotColor: Colors.grey),
                                                 onDotClicked: (index) {
                                                   currentIndex = index;
-                                                  widget._caroController
+                                                  carousel_controllerList[now]
                                                       .animateToPage(index);
+                                                  setState(() {});
                                                 },
                                                 curve: Curves.easeIn,
                                                 activeIndex: currentIndex,
@@ -279,6 +307,7 @@ class _CardScreenState extends State<CardScreen> {
                                                   .version),
                                             ],
                                           ),
+                                          Spacer(),
                                           Stack(
                                             alignment: Alignment.center,
                                             children: [
@@ -297,6 +326,9 @@ class _CardScreenState extends State<CardScreen> {
                                                   .listOfProjects[currentIndex]
                                                   .status)
                                             ],
+                                          ),
+                                          SizedBox(
+                                            width: 20,
                                           ),
                                           FloatingActionButton(
                                             // disabledElevation: 0,
@@ -470,7 +502,7 @@ class _CardScreenState extends State<CardScreen> {
                                             .listOfProjects[currentIndex]
                                             .description,
                                       ),
-                                      Spacer(),
+                                      SizedBox(height: 20),
                                       if (!widget.cat[now].eligible)
                                         Text(
                                           "NOTE: ${widget.cat[now].listOfProjects[currentIndex].coderName} started after October 1, 2021, we cant wait to see what they will code for the next CoderFair",
@@ -492,10 +524,8 @@ class _CardScreenState extends State<CardScreen> {
                               if (widget.currentPosition != 0)
                                 TextButton(
                                     onPressed: () {
-                                      widget.currentPosition -= 1;
                                       currentIndex = 0;
-                                      widget._caroController
-                                          .jumpToPage(currentIndex);
+
                                       pageController.previousPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn);
@@ -506,10 +536,9 @@ class _CardScreenState extends State<CardScreen> {
                                   widget.cat.length - 1)
                                 TextButton(
                                     onPressed: () {
-                                      widget.currentPosition += 1;
+                                      print(currentIndex);
                                       currentIndex = 0;
-                                      widget._caroController
-                                          .jumpToPage(currentIndex);
+
                                       pageController.nextPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn);
@@ -554,10 +583,23 @@ class _CardScreenState extends State<CardScreen> {
   }
 
   description(desc) {
-    return Text(
-      '$desc',
-      style: TextStyle(
-          fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal),
+    return Expanded(
+      child: Scrollbar(
+        isAlwaysShown: true,
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(right: 15),
+            child: Text(
+              '$desc',
+              overflow: TextOverflow.visible,
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
