@@ -15,8 +15,8 @@ class CustomVideo extends StatefulWidget {
 class _CustomVideoState extends State<CustomVideo>
     with AutomaticKeepAliveClientMixin {
   Widget playerWidget = Center(child: CircularProgressIndicator());
-  late ChewieController chewieController;
-  late final videoPlayerController;
+  ChewieController? chewieController;
+  VideoPlayerController? videoPlayerController;
   @override
   void initState() {
     super.initState();
@@ -34,7 +34,7 @@ class _CustomVideoState extends State<CustomVideo>
     var link = await x.getQualitiesAsync();
     videoPlayerController = VideoPlayerController.network(link?["360p"]);
 
-    await videoPlayerController.initialize();
+    await videoPlayerController?.initialize();
 
     chewieController = ChewieController(
       materialProgressColors: ChewieProgressColors(
@@ -47,13 +47,13 @@ class _CustomVideoState extends State<CustomVideo>
       showOptions: false,
       autoInitialize: true,
       allowMuting: false,
-      videoPlayerController: videoPlayerController,
+      videoPlayerController: videoPlayerController!,
       autoPlay: true,
       looping: false,
     );
-    chewieController.setVolume(0);
+    chewieController?.setVolume(0);
     playerWidget = Chewie(
-      controller: chewieController,
+      controller: chewieController!,
     );
     if (mounted) {
       setState(() {});
@@ -66,7 +66,7 @@ class _CustomVideoState extends State<CustomVideo>
   @override
   void dispose() {
     super.dispose();
-    videoPlayerController.dispose();
-    chewieController.dispose();
+    videoPlayerController?.dispose();
+    chewieController?.dispose();
   }
 }
