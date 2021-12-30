@@ -1,17 +1,23 @@
 import 'dart:convert';
 
 import 'package:coder_fair/constants/general_constants.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:coder_fair/secrets.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:coder_fair/models/project_model.dart';
 import 'package:coder_fair/models/student_model.dart';
 import 'package:coder_fair/models/user_model.dart';
+import 'package:http/retry.dart';
 import 'package:universal_io/io.dart';
 
 class APIClient {
   // Opens a http client
-  var client = http.Client();
+  var client = RetryClient(
+    http.Client(),
+    onRetry: (p0, p1, retryCount) {
+      print(p0);
+    },
+  );
   var baseDomain = usingEmulator
       ? "http://localhost:9000/"
       : "https://coder-fair-default-rtdb.firebaseio.com/";
@@ -64,7 +70,6 @@ class APIClient {
 
       j.add(project);
     }
-
     return student.copyWith(listOfProjects: j, loadFull: true);
   }
 
@@ -72,8 +77,12 @@ class APIClient {
   Future<User> fetchUser(
       {required String email, required String password}) async {
     UserPayload info = await signIn(email, password);
-    var response = await client
-        .get(Uri.parse("${baseDomain}user/${info.uid}.json${query}"));
+    var response = await client.get(
+      Uri.parse(
+          "${baseDomain}user/${info.uid}.json${query}?auth=${info.token}"),
+      // headers: {"Authorization": "Bearer ${info.token}"}
+    );
+    print(response.body);
     return User.fromJson(response.body, info);
   }
 
@@ -89,12 +98,12 @@ class APIClient {
     var response;
     try {
       print(usingEmulator);
-      response = await http.post(
+      response = await client.post(
           Uri.parse(
-              'http${usingEmulator ? '' : 's'}://${authEmulatorDomain}identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${dotenv.env["API_KEY"]}'),
+              'http${usingEmulator ? '' : 's'}://${authEmulatorDomain}identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(body));
-      print(response.body);
+
       return UserPayload.fromJson(response.body);
     } catch (e) {
       print(e.toString());
@@ -114,9 +123,9 @@ class APIClient {
       String currentProject, String likedCategory, UserPayload payload) async {
     var response;
     try {
-      response = await http.put(
+      response = await client.put(
           Uri.parse(
-              '${baseDomain}like/${currentProject}/${payload.uid}.json${query}${usingEmulator ? '&' : ''}auth=${payload.token}'),
+              '${baseDomain}like/${currentProject}/${payload.uid}.json${query}${usingEmulator ? '&' : ''}'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(likedCategory));
     } catch (e) {

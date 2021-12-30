@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:coder_fair/utils/blend_mask.dart';
 
-class LoginScreen extends GetView<LoginScreenController> {
+class LoginScreen extends GetResponsiveView<LoginScreenController> {
   @override
   Widget build(BuildContext context) {
     // Size _size = MediaQuery.of(context).size;
@@ -56,13 +56,31 @@ class LoginScreen extends GetView<LoginScreenController> {
 
   Center bodySection(BuildContext context) {
     return Center(
-      child: SingleChildScrollView(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          tcsLogo(),
-          tampa2022(),
-          cfLogo(),
-          buildForm(context),
-        ]),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: EdgeInsets.all(20),
+          width: 400,
+
+          // decoration: BoxDecoration(
+          //     gradient: LinearGradient(
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          //   colors: [
+          //     AppColor.lightBlue,
+          //     AppColor.darkBlue,
+          //   ],
+          // )),
+          child: SingleChildScrollView(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              tcsLogo(),
+              tampa2022(),
+              cfLogo(),
+              buildForm(context),
+            ]),
+          ),
+        ),
       ),
     );
   }
@@ -111,7 +129,7 @@ class LoginScreen extends GetView<LoginScreenController> {
         child: Obx(() => Column(
               children: [
                 Container(
-                  width: 60.w,
+                  width: 75.w,
                   child: TextFormField(
                     controller: controller.email,
                     keyboardType: TextInputType.emailAddress,
@@ -120,14 +138,16 @@ class LoginScreen extends GetView<LoginScreenController> {
                       AutofillHints.username
                     ],
                     textInputAction: TextInputAction.next,
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
                       hintText: "Email",
                       hintStyle: TextStyle(
                         fontFamily: 'Raleway',
-                        fontSize: 15,
+                        fontSize: 18,
                         color: Colors.grey,
                       ),
                     ),
@@ -140,7 +160,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                 ),
                 Padding(padding: EdgeInsets.all(10.0)),
                 Container(
-                  width: 60.w,
+                  width: 75.w,
                   child: TextFormField(
                     onChanged: (val) {
                       if (val.length == 0) {
@@ -157,14 +177,14 @@ class LoginScreen extends GetView<LoginScreenController> {
                         return 'Please enter a password';
                       }
                     },
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(fontSize: 18),
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
                       hintText: "Password",
                       hintStyle: TextStyle(
                         fontFamily: 'Raleway',
-                        fontSize: 15,
+                        fontSize: 18,
                         color: Colors.grey,
                       ),
                       suffixIcon: !controller.loadedFromSS
@@ -191,7 +211,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: SizedBox(
-                    width: 60.w,
+                    width: 75.w,
                     child: ElevatedButton(
                       onPressed: () {
                         // Validate returns true if the form is valid, or false otherwise.
@@ -214,7 +234,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                           ? Text('Login',
                               style: TextStyle(
                                 fontFamily: 'Raleway',
-                                fontSize: 15,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ))
@@ -241,7 +261,7 @@ class LoginScreen extends GetView<LoginScreenController> {
       child: Text("Forgot Password?",
           style: TextStyle(
             fontFamily: 'Raleway',
-            fontSize: 14,
+            fontSize: 18,
             color: Colors.white,
           )),
       onPressed: () {
@@ -253,7 +273,7 @@ class LoginScreen extends GetView<LoginScreenController> {
             titleStyle: TextStyle(
               fontFamily: 'RobotoSlab',
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 18,
               color: AppColor.h2Blk,
             ),
             content: Center(
@@ -261,18 +281,20 @@ class LoginScreen extends GetView<LoginScreenController> {
                 alignment: WrapAlignment.center,
                 children: [
                   Text("Contact theCoderSchool at: ",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'Raleway',
-                          fontSize: 14,
+                          fontSize: 18,
                           color: AppColor.h2Blk)),
                   InkWell(
                       child: Text("(813) 422-5566",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 14,
+                              fontSize: 18,
                               color: AppColor.darkBlue)),
                       onTap: () async {
-                        if (!await launch("8134225566"))
+                        if (!await launch("tel: 813-422-5566"))
                           throw 'Could not launch 8134225566';
                       }),
                 ],
@@ -284,9 +306,10 @@ class LoginScreen extends GetView<LoginScreenController> {
 
   Container rememberPassword() {
     return Container(
-      width: 60.0.w,
+      width: 75.w,
       child: Obx(
         () => CheckboxListTile(
+            autofocus: false,
             activeColor: AppColor.buttonGreen,
             dense: true,
             contentPadding: EdgeInsets.only(top: 15),
@@ -298,7 +321,7 @@ class LoginScreen extends GetView<LoginScreenController> {
               maxLines: 2,
               style: TextStyle(
                 fontFamily: 'Raleway',
-                fontSize: 14,
+                fontSize: 20,
                 color: Colors.white,
               ),
             ),

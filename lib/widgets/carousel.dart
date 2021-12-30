@@ -50,11 +50,11 @@ class _CarouselBuilderWithIndicatorState
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     _index = 0;
-    // update();
+    updateScrollPosition();
     setState(() {});
   }
 
-  void update() async {
+  void updateScrollPosition() async {
     await carouselController.onReady;
     if (!widget.cat.isEmpty) carouselController.animateToPage(0);
   }
@@ -70,6 +70,7 @@ class _CarouselBuilderWithIndicatorState
                 child: Text("Nothing here"),
               )
             : Row(
+                // TODO: In this row add the two widgets for the side and set the visibility with if statement Device.width>=1920
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
@@ -93,113 +94,141 @@ class _CarouselBuilderWithIndicatorState
                       )),
                   Flexible(
                     flex: 5,
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context)
-                          .copyWith(scrollbars: false),
-                      child: CarouselSlider.builder(
-                          carouselController: carouselController,
-                          itemCount: widget.cat.asMap().entries.toList().length,
-                          itemBuilder: (context, index, realIndex) {
-                            var entry =
-                                widget.cat.asMap().entries.toList()[index];
+                    child: Container(
+                      width: 500,
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context)
+                            .copyWith(scrollbars: false),
+                        child: CarouselSlider.builder(
+                            carouselController: carouselController,
+                            itemCount:
+                                widget.cat.asMap().entries.toList().length,
+                            itemBuilder: (context, index, realIndex) {
+                              var entry =
+                                  widget.cat.asMap().entries.toList()[index];
 
-                            return Container(
-                              // width: 300,
-                              height: 170,
-                              child: InkWell(
-                                onTap: () {
-                                  if (_index == entry.key) {
-                                    widget.cat[_index].seen = true;
-                                    controller.addToSeen(
-                                        widget.cat[_index].coderName);
-                                    setState(() {});
-                                    Get.dialog(ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Container(
-                                          height: 90.h,
-                                          child: CardScreen(
-                                              student: entry.value,
-                                              categoryName: widget.categoryName,
-                                              cat: widget.cat,
-                                              currentPosition: _index),
-                                        )));
-                                  }
-                                },
-                                child: Stack(
-                                  children: [
-                                    Card(
-                                      elevation: 15,
-                                      child: AnimatedContainer(
-                                        duration: Duration(milliseconds: 200),
-                                        decoration: BoxDecoration(),
-                                        child: Center(
-                                            child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: 40,
-                                                  backgroundImage: NetworkImage(
-                                                      entry.value
-                                                          .profilePictureURL),
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  // margin: EdgeInsets.symmetric(vertical: 30),
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (_index == entry.key) {
+                                        widget.cat[_index].seen = true;
+                                        controller.addToSeen(
+                                            widget.cat[_index].coderName);
+                                        setState(() {});
+                                        Get.dialog(ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Container(
+                                              height: 90.h,
+                                              child: CardScreen(
+                                                  student: entry.value,
+                                                  categoryName:
+                                                      widget.categoryName,
+                                                  cat: widget.cat,
+                                                  currentPosition: _index),
+                                            )));
+                                      }
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Material(
+                                            color: Colors.red,
+                                            elevation: 15,
+                                            child: AspectRatio(
+                                              aspectRatio: 16 / 9,
+                                              child: FittedBox(
+                                                fit: BoxFit.fitHeight,
+                                                child: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Center(
+                                                      child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          CircleAvatar(
+                                                            radius: 40,
+                                                            backgroundImage:
+                                                                NetworkImage(entry
+                                                                    .value
+                                                                    .profilePictureURL),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 50,
+                                                          ),
+                                                          Text(loginState
+                                                                  .currentUser
+                                                                  .coders
+                                                                  .contains(entry
+                                                                      .value
+                                                                      .coderName)
+                                                              ? entry.value
+                                                                  .first_name
+                                                              : entry.value
+                                                                  .coderName)
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          SizedBox(width: 170),
+                                                          Icon(entry.value
+                                                                      .seen ||
+                                                                  listOfSeen
+                                                                      .containsKey(entry
+                                                                          .value
+                                                                          .coderName)
+                                                              ? Icons.visibility
+                                                              : Icons
+                                                                  .visibility_off),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  )),
                                                 ),
-                                                Text(loginState
-                                                        .currentUser.coders
-                                                        .contains(entry
-                                                            .value.coderName)
-                                                    ? entry.value.first_name
-                                                    : entry.value.coderName)
-                                              ],
-                                            ),
-                                            Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: Icon(entry.value.seen ||
-                                                      listOfSeen.containsKey(
-                                                          entry.value.coderName)
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off),
-                                            )
-                                          ],
-                                        )),
-                                      ),
+                                              ),
+                                            )),
+                                        ClipRRect(
+                                          child: BackdropFilter(
+                                            child: Container(),
+                                            filter: ImageFilter.blur(
+                                                sigmaX: entry.key == _index
+                                                    ? 0.001
+                                                    : 4,
+                                                sigmaY: entry.key == _index
+                                                    ? 0.001
+                                                    : 4),
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                    ClipRRect(
-                                      child: BackdropFilter(
-                                        child: Container(),
-                                        filter: ImageFilter.blur(
-                                            sigmaX:
-                                                entry.key == _index ? 0.001 : 4,
-                                            sigmaY: entry.key == _index
-                                                ? 0.001
-                                                : 4),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          options: CarouselOptions(
-                              enableInfiniteScroll: false,
-                              viewportFraction: 0.3,
-                              enlargeCenterPage: true,
-                              height: 50.h,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  _index = index;
-                                  controller.paginateStudents(
-                                      (index),
-                                      controller.categories.keys.toList()[
-                                          controller.categories.keys
-                                              .toList()
-                                              .indexOf(widget.categoryName)]);
-                                });
-                              },
-                              scrollDirection: Axis.vertical)),
+                              );
+                            },
+                            options: CarouselOptions(
+                                enableInfiniteScroll: false,
+                                viewportFraction: 0.3,
+                                height: 510,
+                                enlargeCenterPage: true,
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    _index = index;
+                                    controller.paginateStudents(
+                                        (index),
+                                        controller.categories.keys.toList()[
+                                            controller.categories.keys
+                                                .toList()
+                                                .indexOf(widget.categoryName)]);
+                                  });
+                                },
+                                scrollDirection: Axis.vertical)),
+                      ),
                     ),
                   ),
                   Flexible(

@@ -40,7 +40,7 @@ class _CardScreenState extends State<CardScreen> {
   List<ChewieController> chewieControllerList = [];
   late HomeScreenController controller;
   PageController pageController = PageController(initialPage: 0);
-
+  List<CarouselController> carousel_controllerList = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -48,6 +48,12 @@ class _CardScreenState extends State<CardScreen> {
     loadIfNull();
     print(widget.categoryName);
     pageController = new PageController(initialPage: widget.currentPosition);
+    for (var item in widget.cat) {
+      carousel_controllerList.add(CarouselController());
+    }
+    carousel_controllerList.forEach((element) {
+      print(element.hashCode);
+    });
   }
 
   loadIfNull() async {
@@ -67,7 +73,7 @@ class _CardScreenState extends State<CardScreen> {
             child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Container(
-              width: Device.width >= 900 ? 35.w : 90.w,
+              width: Device.width >= 900 ? 45.w : 90.w,
               height: 90.h,
               color: Colors.white,
               child: widget.cat[widget.currentPosition].loadFull
@@ -78,6 +84,8 @@ class _CardScreenState extends State<CardScreen> {
                               physics: NeverScrollableScrollPhysics(),
                               controller: pageController,
                               onPageChanged: (index) {
+                                widget.currentPosition = index;
+
                                 widget.cat[index].seen = true;
                                 controller
                                     .addToSeen(widget.cat[index].coderName);
@@ -112,10 +120,28 @@ class _CardScreenState extends State<CardScreen> {
                                                 splashRadius: 20,
                                                 onPressed: () => Get.back(),
                                                 icon: Icon(Icons.close)),
-                                            Text(
-                                                "coach: ${widget.cat[now].codeCoach}"),
-                                            Text(
-                                                "coder: ${widget.cat[now].coderName}"),
+                                            Expanded(
+                                              child: Container(
+                                                child: Center(
+                                                  child: SingleChildScrollView(
+                                                    reverse: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Text(
+                                                      "coach: ${widget.cat[now].codeCoach} | coder: ${widget.cat[now].coderName}",
+                                                      maxLines: 1,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      // overflow:
+                                                      //     TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
                                             CircleAvatar(
                                               backgroundImage: NetworkImage(
                                                   widget.cat[now]
@@ -153,8 +179,8 @@ class _CardScreenState extends State<CardScreen> {
                                                               1,
                                                           mini: true,
                                                           onPressed: () {
-                                                            widget
-                                                                ._caroController
+                                                            carousel_controllerList[
+                                                                    now]
                                                                 .previousPage();
                                                           })
                                                       : Container()),
@@ -176,8 +202,9 @@ class _CardScreenState extends State<CardScreen> {
                                                         },
                                                         viewportFraction: 1),
                                                     carouselController:
-                                                        widget._caroController,
-                                                    itemCount: widget.student
+                                                        carousel_controllerList[
+                                                            now],
+                                                    itemCount: widget.cat[now]
                                                         .listOfProjects.length,
                                                     itemBuilder: (context,
                                                         index, realIndex) {
@@ -213,8 +240,8 @@ class _CardScreenState extends State<CardScreen> {
                                                           child: Icon(Icons
                                                               .navigate_next_outlined),
                                                           onPressed: () {
-                                                            widget
-                                                                ._caroController
+                                                            carousel_controllerList[
+                                                                    now]
                                                                 .nextPage();
                                                           })
                                                       : Container()),
@@ -236,13 +263,13 @@ class _CardScreenState extends State<CardScreen> {
                                                     dotColor: Colors.grey),
                                                 onDotClicked: (index) {
                                                   currentIndex = index;
-                                                  widget._caroController
+                                                  carousel_controllerList[now]
                                                       .animateToPage(index);
                                                   setState(() {});
                                                 },
                                                 curve: Curves.easeIn,
                                                 activeIndex: currentIndex,
-                                                count: widget.student
+                                                count: widget.cat[now]
                                                     .listOfProjects.length),
                                             Text(
                                                 "${currentIndex + 1} of ${widget.cat[now].listOfProjects.length} projects")
@@ -253,7 +280,7 @@ class _CardScreenState extends State<CardScreen> {
                                         height: 10,
                                       ),
                                       projTitle(
-                                        widget.student
+                                        widget.cat[now]
                                             .listOfProjects[currentIndex].title,
                                       ),
                                       SizedBox(
@@ -268,24 +295,25 @@ class _CardScreenState extends State<CardScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               language(widget
-                                                  .student
+                                                  .cat[now]
                                                   .listOfProjects[currentIndex]
                                                   .language),
                                               SizedBox(
                                                 height: 10,
                                               ),
                                               version(widget
-                                                  .student
+                                                  .cat[now]
                                                   .listOfProjects[currentIndex]
                                                   .version),
                                             ],
                                           ),
+                                          Spacer(),
                                           Stack(
                                             alignment: Alignment.center,
                                             children: [
                                               CircularProgressIndicator(
                                                 value: int.parse(widget
-                                                        .student
+                                                        .cat[now]
                                                         .listOfProjects[
                                                             currentIndex]
                                                         .status) /
@@ -294,143 +322,162 @@ class _CardScreenState extends State<CardScreen> {
                                                 color: Colors.green,
                                               ),
                                               Text(widget
-                                                  .student
+                                                  .cat[now]
                                                   .listOfProjects[currentIndex]
                                                   .status)
                                             ],
                                           ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
                                           FloatingActionButton(
+                                            // disabledElevation: 0,
                                             backgroundColor: Colors.white,
                                             elevation: 10,
-                                            onPressed: () {
-                                              Get.defaultDialog(
-                                                  barrierDismissible: false,
-                                                  onCancel: () {},
-                                                  onConfirm: () {
-                                                    controller
-                                                        .updateLikedCategory(
-                                                            widget
-                                                                .student
-                                                                .listOfProjects[
-                                                                    currentIndex]
-                                                                .identifier,
-                                                            widget
-                                                                .student
-                                                                .listOfProjects[
-                                                                    currentIndex]
-                                                                .likedCategory);
-                                                    widget
-                                                        .student
-                                                        .listOfProjects[
-                                                            currentIndex]
-                                                        .liked = true;
-                                                    setState(() {});
-                                                    Get.back();
-                                                  },
-                                                  title: "Like this Project",
-                                                  backgroundColor: Colors.white,
-                                                  content: Container(
-                                                    width: 200,
-                                                    height: 200,
-                                                    child: StatefulBuilder(
-                                                        builder: (context,
-                                                            _setState) {
-                                                      return Column(
-                                                        children: [
-                                                          RadioListTile(
-                                                              selected: widget
-                                                                      .student
-                                                                      .listOfProjects[
-                                                                          currentIndex]
-                                                                      .likedCategory ==
-                                                                  "complexity",
-                                                              tileColor:
-                                                                  Colors.white,
-                                                              title: Text(
-                                                                "complexity",
-                                                              ),
-                                                              value:
-                                                                  "complexity",
-                                                              groupValue: widget
-                                                                  .student
+                                            onPressed: widget.cat[now].eligible
+                                                ? () {
+                                                    Get.defaultDialog(
+                                                        barrierDismissible:
+                                                            false,
+                                                        onCancel: () {},
+                                                        onConfirm: () {
+                                                          controller.updateLikedCategory(
+                                                              widget
+                                                                  .cat[now]
                                                                   .listOfProjects[
                                                                       currentIndex]
-                                                                  .likedCategory,
-                                                              onChanged:
-                                                                  (value) =>
-                                                                      _setState(
-                                                                          () {
-                                                                        widget
-                                                                            .student
-                                                                            .listOfProjects[currentIndex]
-                                                                            .likedCategory = value;
-                                                                      })),
-                                                          RadioListTile(
-                                                            selected: widget
-                                                                    .student
-                                                                    .listOfProjects[
-                                                                        currentIndex]
-                                                                    .likedCategory ==
-                                                                "fun",
-                                                            tileColor:
-                                                                Colors.white,
-                                                            title: Text(
-                                                              "fun",
-                                                            ),
-                                                            value: "fun",
-                                                            groupValue: widget
-                                                                .student
-                                                                .listOfProjects[
-                                                                    currentIndex]
-                                                                .likedCategory,
-                                                            onChanged: (value) {
-                                                              _setState(() {
-                                                                widget
-                                                                    .student
-                                                                    .listOfProjects[
-                                                                        currentIndex]
-                                                                    .likedCategory = value;
-                                                              });
-                                                            },
-                                                          ),
-                                                          RadioListTile(
-                                                              activeColor:
-                                                                  Colors.red,
-                                                              selected: widget
-                                                                      .student
-                                                                      .listOfProjects[
-                                                                          currentIndex]
-                                                                      .likedCategory ==
-                                                                  "creativity",
-                                                              tileColor:
-                                                                  Colors.white,
-                                                              title: Text(
-                                                                "creativity",
-                                                              ),
-                                                              value:
-                                                                  "creativity",
-                                                              groupValue: widget
-                                                                  .student
+                                                                  .identifier,
+                                                              widget
+                                                                  .cat[now]
                                                                   .listOfProjects[
                                                                       currentIndex]
-                                                                  .likedCategory,
-                                                              onChanged:
-                                                                  (value) =>
-                                                                      _setState(
-                                                                          () {
-                                                                        widget
-                                                                            .student
-                                                                            .listOfProjects[currentIndex]
-                                                                            .likedCategory = value;
-                                                                      })),
-                                                        ],
-                                                      );
-                                                    }),
-                                                  ));
-                                            },
+                                                                  .likedCategory);
+                                                          widget
+                                                              .cat[now]
+                                                              .listOfProjects[
+                                                                  currentIndex]
+                                                              .liked = true;
+                                                          setState(() {});
+                                                          Get.back();
+                                                        },
+                                                        title:
+                                                            "Like this Project",
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        content: Container(
+                                                          width: 200,
+                                                          height: 200,
+                                                          child: StatefulBuilder(
+                                                              builder: (context,
+                                                                  _setState) {
+                                                            return Column(
+                                                              children: [
+                                                                RadioListTile(
+                                                                    selected: widget
+                                                                            .cat[
+                                                                                now]
+                                                                            .listOfProjects[
+                                                                                currentIndex]
+                                                                            .likedCategory ==
+                                                                        "complexity",
+                                                                    tileColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    title: Text(
+                                                                      "complexity",
+                                                                    ),
+                                                                    value:
+                                                                        "complexity",
+                                                                    groupValue: widget
+                                                                        .cat[
+                                                                            now]
+                                                                        .listOfProjects[
+                                                                            currentIndex]
+                                                                        .likedCategory,
+                                                                    onChanged: (value) =>
+                                                                        _setState(
+                                                                            () {
+                                                                          widget
+                                                                              .cat[now]
+                                                                              .listOfProjects[currentIndex]
+                                                                              .likedCategory = value;
+                                                                        })),
+                                                                RadioListTile(
+                                                                  selected: widget
+                                                                          .cat[
+                                                                              now]
+                                                                          .listOfProjects[
+                                                                              currentIndex]
+                                                                          .likedCategory ==
+                                                                      "fun",
+                                                                  tileColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  title: Text(
+                                                                    "fun",
+                                                                  ),
+                                                                  value: "fun",
+                                                                  groupValue: widget
+                                                                      .cat[now]
+                                                                      .listOfProjects[
+                                                                          currentIndex]
+                                                                      .likedCategory,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    _setState(
+                                                                        () {
+                                                                      widget
+                                                                          .cat[
+                                                                              now]
+                                                                          .listOfProjects[
+                                                                              currentIndex]
+                                                                          .likedCategory = value;
+                                                                    });
+                                                                  },
+                                                                ),
+                                                                RadioListTile(
+                                                                    // TODO:  make sure to revert to actual coder color
+                                                                    activeColor:
+                                                                        Colors
+                                                                            .red,
+                                                                    selected: widget
+                                                                            .cat[
+                                                                                now]
+                                                                            .listOfProjects[
+                                                                                currentIndex]
+                                                                            .likedCategory ==
+                                                                        "creativity",
+                                                                    tileColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    title: Text(
+                                                                      "creativity",
+                                                                    ),
+                                                                    value:
+                                                                        "creativity",
+                                                                    groupValue: widget
+                                                                        .cat[
+                                                                            now]
+                                                                        .listOfProjects[
+                                                                            currentIndex]
+                                                                        .likedCategory,
+                                                                    onChanged: (value) =>
+                                                                        _setState(
+                                                                            () {
+                                                                          widget
+                                                                              .cat[now]
+                                                                              .listOfProjects[currentIndex]
+                                                                              .likedCategory = value;
+                                                                        })),
+                                                              ],
+                                                            );
+                                                          }),
+                                                        ));
+                                                  }
+                                                : null,
                                             child: Icon(
                                                 widget
-                                                        .student
+                                                        .cat[now]
                                                         .listOfProjects[
                                                             currentIndex]
                                                         .liked
@@ -455,7 +502,15 @@ class _CardScreenState extends State<CardScreen> {
                                             .listOfProjects[currentIndex]
                                             .description,
                                       ),
-                                      Spacer(),
+                                      SizedBox(height: 20),
+                                      if (!widget.cat[now].eligible)
+                                        Text(
+                                          "NOTE: ${widget.cat[now].listOfProjects[currentIndex].coderName} started after October 1, 2021, we cant wait to see what they will code for the next CoderFair",
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )
                                     ],
                                   ),
                                 );
@@ -466,29 +521,30 @@ class _CardScreenState extends State<CardScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              widget.currentPosition != 0
-                                  ? TextButton(
-                                      onPressed: () {
-                                        widget.currentPosition -= 1;
+                              if (widget.currentPosition != 0)
+                                TextButton(
+                                    onPressed: () {
+                                      currentIndex = 0;
 
-                                        pageController.previousPage(
-                                            duration:
-                                                Duration(milliseconds: 300),
-                                            curve: Curves.easeIn);
-                                      },
-                                      child: Text("Prev coder"))
-                                  : Container(),
-                              widget.currentPosition != widget.cat.length - 1
-                                  ? TextButton(
-                                      onPressed: () {
-                                        widget.currentPosition += 1;
-                                        pageController.nextPage(
-                                            duration:
-                                                Duration(milliseconds: 300),
-                                            curve: Curves.easeIn);
-                                      },
-                                      child: Text("Next coder"))
-                                  : Container()
+                                      pageController.previousPage(
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.easeIn);
+                                      setState(() {});
+                                    },
+                                    child: Text("Prev coder")),
+                              if (widget.currentPosition !=
+                                  widget.cat.length - 1)
+                                TextButton(
+                                    onPressed: () {
+                                      print(currentIndex);
+                                      currentIndex = 0;
+
+                                      pageController.nextPage(
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.easeIn);
+                                      setState(() {});
+                                    },
+                                    child: Text("Next coder"))
                             ],
                           ),
                         ),
@@ -527,10 +583,23 @@ class _CardScreenState extends State<CardScreen> {
   }
 
   description(desc) {
-    return Text(
-      '$desc',
-      style: TextStyle(
-          fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal),
+    return Expanded(
+      child: Scrollbar(
+        isAlwaysShown: true,
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(right: 15),
+            child: Text(
+              '$desc',
+              overflow: TextOverflow.visible,
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal),
+            ),
+          ),
+        ),
+      ),
     );
   }
 

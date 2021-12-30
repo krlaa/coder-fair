@@ -61,12 +61,10 @@ class _CustomVideoState extends State<CustomVideo>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     videoPlayerController.dispose();
     chewieController.dispose();

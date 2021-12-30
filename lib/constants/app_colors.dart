@@ -17,5 +17,6 @@ class AppColor {
 
   static Color h2Yellow = Color(0xFFF0A31D);
 
+  static Color metaBlue = Color(0xFF00111B);
   static Color formField = Color(0xFFE3E3E3);
 }

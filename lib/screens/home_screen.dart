@@ -16,6 +16,11 @@ class HomeScreen extends GetView<HomeScreenController> {
     return DefaultTextStyle(
       style: TextStyle(fontFamily: 'Raleway', color: AppColor.h2Blk),
       child: Scaffold(
+          drawer: Drawer(
+            child: ListTile(
+              title: Text("Sign Out"),
+            ),
+          ),
           backgroundColor: Color(0xFFFFFFFF),
           body: Obx(() {
             List keys = controller.categories.keys.toList();
@@ -52,22 +57,32 @@ class HomeScreen extends GetView<HomeScreenController> {
                                     return ValueBuilder<List?>(
                                         initialValue: controller
                                             .categories.values
-                                            .toList()[entry.key],
+                                            .toList()[entry.key]
+                                            .where((x) => (x.eligible == true ||
+                                                controller.loginState
+                                                    .currentUser.coders
+                                                    .contains(x.coderName)))
+                                            .toList(),
                                         builder: (value, update) {
                                           return Column(
                                             children: [
                                               TextFormField(
-                                                  decoration: InputDecoration(
-                                                      hintStyle: TextStyle(
-                                                          color: AppColor
-                                                              .lightBlue),
-                                                      hintText: "Search"),
                                                   autofillHints: ["hi"],
                                                   onChanged: (x) {
                                                     if (x.isEmpty) {
                                                       update(controller
                                                           .categories.values
-                                                          .toList()[entry.key]);
+                                                          .toList()[entry.key]
+                                                          .where((x) => (x
+                                                                      .eligible ==
+                                                                  true ||
+                                                              controller
+                                                                  .loginState
+                                                                  .currentUser
+                                                                  .coders
+                                                                  .contains(x
+                                                                      .coderName)))
+                                                          .toList());
                                                     } else {
                                                       update(controller
                                                           .categories.values

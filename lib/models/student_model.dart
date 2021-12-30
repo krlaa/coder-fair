@@ -19,16 +19,17 @@ class Student {
   String first_name;
   String codeCoach;
   bool loadFull;
+  bool eligible;
   late bool seen = false;
 
-  Student({
-    this.coderName = "",
-    this.first_name = "",
-    this.profilePictureURL = "",
-    this.listOfProjects = const [],
-    this.codeCoach = "",
-    this.loadFull = false,
-  });
+  Student(
+      {this.coderName = "",
+      this.first_name = "",
+      this.profilePictureURL = "",
+      this.listOfProjects = const [],
+      this.codeCoach = "",
+      this.loadFull = false,
+      this.eligible = false});
 
   set seenStudent(value) => this.seen = value;
 
@@ -37,6 +38,7 @@ class Student {
         codeCoach: parsedJson["coach"],
         first_name: parsedJson["first_name"],
         coderName: name,
+        eligible: parsedJson["eligible"],
         profilePictureURL: parsedJson["coder_pic_url"]);
   }
   @override
@@ -44,15 +46,16 @@ class Student {
     return 'Student(firstName: $first_name, profilePictureURL: $profilePictureURL, listOfProjects: $listOfProjects, codeCoach: $codeCoach, loadFull: $loadFull)';
   }
 
-  Student copyWith({
-    String? coderName,
-    String? profilePictureURL,
-    List<Project>? listOfProjects,
-    String? codeCoach,
-    String? first_name,
-    bool? loadFull,
-  }) {
+  Student copyWith(
+      {String? coderName,
+      String? profilePictureURL,
+      List<Project>? listOfProjects,
+      String? codeCoach,
+      String? first_name,
+      bool? loadFull,
+      bool? eligible}) {
     return Student(
+      eligible: eligible ?? this.eligible,
       first_name: first_name ?? this.first_name,
       coderName: coderName ?? this.coderName,
       profilePictureURL: profilePictureURL ?? this.profilePictureURL,
