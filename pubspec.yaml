@@ -60,6 +60,7 @@ flutter:
     - images/cf-logo.png
     - images/bg-1.jpg
     - images/3-in-1.png
+    - images/carousel_card_bg.png
 
   fonts:
     - family: Raleway
