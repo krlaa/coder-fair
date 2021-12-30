@@ -85,7 +85,7 @@ class _CardScreenState extends State<CardScreen> {
                               controller: pageController,
                               onPageChanged: (index) {
                                 widget.currentPosition = index;
-
+                                carousel_controllerList[index].jumpToPage(0);
                                 widget.cat[index].seen = true;
                                 controller
                                     .addToSeen(widget.cat[index].coderName);
@@ -208,6 +208,10 @@ class _CardScreenState extends State<CardScreen> {
                                                         .listOfProjects.length,
                                                     itemBuilder: (context,
                                                         index, realIndex) {
+                                                      print(
+                                                          "this is the index: $index");
+                                                      print(
+                                                          "this is the real index: $realIndex");
                                                       return CustomVideo(
                                                         videoId: widget
                                                             .cat[now]
@@ -262,6 +266,10 @@ class _CardScreenState extends State<CardScreen> {
                                                         AppColor.buttonGreen,
                                                     dotColor: Colors.grey),
                                                 onDotClicked: (index) {
+                                                  print(
+                                                      " this is the current postion ${widget.currentPosition}");
+                                                  print(
+                                                      " this is the current index in ${widget.currentPosition}");
                                                   currentIndex = index;
                                                   carousel_controllerList[now]
                                                       .animateToPage(index);
@@ -280,7 +288,7 @@ class _CardScreenState extends State<CardScreen> {
                                         height: 10,
                                       ),
                                       projTitle(
-                                        widget.cat[now]
+                                        widget.cat[widget.currentPosition]
                                             .listOfProjects[currentIndex].title,
                                       ),
                                       SizedBox(
@@ -295,14 +303,14 @@ class _CardScreenState extends State<CardScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               language(widget
-                                                  .cat[now]
+                                                  .cat[widget.currentPosition]
                                                   .listOfProjects[currentIndex]
                                                   .language),
                                               SizedBox(
                                                 height: 10,
                                               ),
                                               version(widget
-                                                  .cat[now]
+                                                  .cat[widget.currentPosition]
                                                   .listOfProjects[currentIndex]
                                                   .version),
                                             ],
@@ -313,7 +321,8 @@ class _CardScreenState extends State<CardScreen> {
                                             children: [
                                               CircularProgressIndicator(
                                                 value: int.parse(widget
-                                                        .cat[now]
+                                                        .cat[widget
+                                                            .currentPosition]
                                                         .listOfProjects[
                                                             currentIndex]
                                                         .status) /
@@ -322,7 +331,7 @@ class _CardScreenState extends State<CardScreen> {
                                                 color: Colors.green,
                                               ),
                                               Text(widget
-                                                  .cat[now]
+                                                  .cat[widget.currentPosition]
                                                   .listOfProjects[currentIndex]
                                                   .status)
                                             ],
@@ -477,7 +486,8 @@ class _CardScreenState extends State<CardScreen> {
                                                 : null,
                                             child: Icon(
                                                 widget
-                                                        .cat[now]
+                                                        .cat[widget
+                                                            .currentPosition]
                                                         .listOfProjects[
                                                             currentIndex]
                                                         .liked
@@ -498,14 +508,15 @@ class _CardScreenState extends State<CardScreen> {
                                               fontWeight: FontWeight.w600)),
                                       description(
                                         widget
-                                            .cat[now]
+                                            .cat[widget.currentPosition]
                                             .listOfProjects[currentIndex]
                                             .description,
                                       ),
                                       SizedBox(height: 20),
-                                      if (!widget.cat[now].eligible)
+                                      if (!widget
+                                          .cat[widget.currentPosition].eligible)
                                         Text(
-                                          "NOTE: ${widget.cat[now].listOfProjects[currentIndex].coderName} started after October 1, 2021, we cant wait to see what they will code for the next CoderFair",
+                                          "NOTE: ${widget.cat[widget.currentPosition].listOfProjects[currentIndex].coderName} started after October 1, 2021, we cant wait to see what they will code for the next CoderFair",
                                           style: TextStyle(
                                             color: Colors.red,
                                           ),
@@ -536,12 +547,12 @@ class _CardScreenState extends State<CardScreen> {
                                   widget.cat.length - 1)
                                 TextButton(
                                     onPressed: () {
-                                      print(currentIndex);
                                       currentIndex = 0;
 
                                       pageController.nextPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.easeIn);
+
                                       setState(() {});
                                     },
                                     child: Text("Next coder"))
@@ -591,7 +602,7 @@ class _CardScreenState extends State<CardScreen> {
             margin: EdgeInsets.only(right: 15),
             child: Text(
               '$desc',
-              overflow: TextOverflow.visible,
+              overflow: TextOverflow.clip,
               style: TextStyle(
                   fontSize: 16,
                   color: Colors.black,
