@@ -11,9 +11,12 @@ class AppColor {
 
   static Color buttonGreen = Color(0xFF00cc00);
 
-  static Color h2Blk = Color(0xFF222222);
+  static Color buttonDrkGreen = Color(0xFF00A900);
+
+  static Color h2Blk = Color(0xFF333333);
 
   static Color h2Yellow = Color(0xFFF0A31D);
 
   static Color metaBlue = Color(0xFF00111B);
+  static Color formField = Color(0xFFE3E3E3);
 }

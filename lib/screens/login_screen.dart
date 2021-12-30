@@ -114,7 +114,7 @@ class LoginScreen extends GetResponsiveView<LoginScreenController> {
         'Tampa 2022',
         style: TextStyle(
             fontFamily: 'RobotoSlab',
-            fontSize: 30,
+            fontSize: 20,
             // fontWeight: FontWeight.bold,
             color: Colors.white),
       ),
@@ -238,8 +238,13 @@ class LoginScreen extends GetResponsiveView<LoginScreenController> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ))
-                          : CircularProgressIndicator(
-                              color: Colors.white,
+                          : SizedBox(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.0,
+                              ),
+                              height: 15.0,
+                              width: 15.0,
                             ),
                     ),
                   ),
