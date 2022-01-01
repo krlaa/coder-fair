@@ -14,7 +14,10 @@ class CustomVideo extends StatefulWidget {
 
 class _CustomVideoState extends State<CustomVideo>
     with AutomaticKeepAliveClientMixin {
-  Widget playerWidget = Center(child: CircularProgressIndicator());
+  Widget playerWidget = Center(
+      child: CircularProgressIndicator(
+    color: AppColor.buttonGreen,
+  ));
   ChewieController? chewieController;
   VideoPlayerController? videoPlayerController;
   @override
@@ -52,8 +55,14 @@ class _CustomVideoState extends State<CustomVideo>
       looping: false,
     );
     chewieController?.setVolume(0);
-    playerWidget = Chewie(
-      controller: chewieController!,
+    playerWidget = Theme(
+      data: ThemeData(
+        progressIndicatorTheme: ProgressIndicatorTheme.of(context)
+            .copyWith(color: AppColor.buttonGreen),
+      ),
+      child: Chewie(
+        controller: chewieController!,
+      ),
     );
     if (mounted) {
       setState(() {});

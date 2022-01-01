@@ -46,14 +46,10 @@ class _CardScreenState extends State<CardScreen> {
     // TODO: implement initState
     super.initState();
     loadIfNull();
-    print(widget.categoryName);
     pageController = new PageController(initialPage: widget.currentPosition);
     for (var item in widget.cat) {
       carousel_controllerList.add(CarouselController());
     }
-    carousel_controllerList.forEach((element) {
-      print(element.hashCode);
-    });
   }
 
   loadIfNull() async {
@@ -77,492 +73,476 @@ class _CardScreenState extends State<CardScreen> {
               height: 90.h,
               color: Colors.white,
               child: widget.cat[widget.currentPosition].loadFull
-                  ? Column(
-                      children: [
-                        Expanded(
-                          child: PageView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              controller: pageController,
-                              onPageChanged: (index) {
-                                widget.currentPosition = index;
-                                carousel_controllerList[index].jumpToPage(0);
-                                widget.cat[index].seen = true;
-                                controller
-                                    .addToSeen(widget.cat[index].coderName);
+                  ? Container(
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: PageView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                controller: pageController,
+                                onPageChanged: (index) {
+                                  widget.currentPosition = index;
+                                  carousel_controllerList[index].jumpToPage(0);
+                                  widget.cat[index].seen = true;
+                                  controller
+                                      .addToSeen(widget.cat[index].coderName);
 
-                                controller.paginateStudents(
-                                    (index),
-                                    controller.categories.keys.toList()[
-                                        controller.categories.keys
-                                            .toList()
-                                            .indexOf(widget.categoryName)]);
-                                setState(() {});
-                              },
-                              itemCount: widget.cat.length,
-                              itemBuilder: (context, now) {
-                                return Container(
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 15.sp),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            IconButton(
-                                                splashRadius: 20,
-                                                onPressed: () => Get.back(),
-                                                icon: Icon(Icons.close)),
-                                            Expanded(
-                                              child: Container(
-                                                child: Center(
-                                                  child: SingleChildScrollView(
-                                                    reverse: true,
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Text(
-                                                      "coach: ${widget.cat[now].codeCoach} | coder: ${widget.cat[now].coderName}",
-                                                      maxLines: 1,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      // overflow:
-                                                      //     TextOverflow.ellipsis,
+                                  controller.paginateStudents(
+                                      (index),
+                                      controller.categories.keys.toList()[
+                                          controller.categories.keys
+                                              .toList()
+                                              .indexOf(widget.categoryName)]);
+                                  setState(() {});
+                                },
+                                itemCount: widget.cat.length,
+                                itemBuilder: (context, now) {
+                                  return Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 15.sp),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              IconButton(
+                                                  splashRadius: 20,
+                                                  onPressed: () => Get.back(),
+                                                  icon: Icon(Icons.close)),
+                                              Expanded(
+                                                child: Container(
+                                                  child: Center(
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      reverse: true,
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Text(
+                                                        "coach: ${widget.cat[now].codeCoach} | coder: ${widget.cat[now].coderName}",
+                                                        maxLines: 1,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        // overflow:
+                                                        //     TextOverflow.ellipsis,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  widget.cat[now]
-                                                      .profilePictureURL),
-                                            ),
-                                          ],
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    widget.cat[now]
+                                                        .profilePictureURL),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            if (Device.width >= 900)
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              if (Device.width >= 900)
+                                                Flexible(
+                                                    flex: 1,
+                                                    child: (widget
+                                                                .cat[now]
+                                                                .listOfProjects
+                                                                .length >
+                                                            1)
+                                                        ? FloatingActionButton(
+                                                            backgroundColor:
+                                                                AppColor
+                                                                    .buttonGreen,
+                                                            child: Icon(Icons
+                                                                .navigate_before_outlined),
+                                                            heroTag: widget
+                                                                    .cat[now]
+                                                                    .hashCode +
+                                                                1,
+                                                            mini: true,
+                                                            onPressed: () {
+                                                              carousel_controllerList[
+                                                                      now]
+                                                                  .previousPage();
+                                                            })
+                                                        : Container()),
                                               Flexible(
-                                                  flex: 1,
-                                                  child: (widget
+                                                flex: 6,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: AspectRatio(
+                                                    aspectRatio: 16 / 9,
+                                                    child:
+                                                        CarouselSlider.builder(
+                                                      options: CarouselOptions(
+                                                          enableInfiniteScroll:
+                                                              false,
+                                                          onPageChanged:
+                                                              (index, reason) {
+                                                            currentIndex =
+                                                                index;
+                                                            setState(() {});
+                                                          },
+                                                          viewportFraction: 1),
+                                                      carouselController:
+                                                          carousel_controllerList[
+                                                              now],
+                                                      itemCount: widget
+                                                          .cat[now]
+                                                          .listOfProjects
+                                                          .length,
+                                                      itemBuilder: (context,
+                                                          index, realIndex) {
+                                                        return CustomVideo(
+                                                          videoId: widget
                                                               .cat[now]
-                                                              .listOfProjects
-                                                              .length >
-                                                          1)
-                                                      ? FloatingActionButton(
-                                                          backgroundColor:
-                                                              AppColor
-                                                                  .buttonGreen,
-                                                          child: Icon(Icons
-                                                              .navigate_before_outlined),
-                                                          heroTag: widget
-                                                                  .cat[now]
-                                                                  .hashCode +
-                                                              1,
-                                                          mini: true,
-                                                          onPressed: () {
-                                                            carousel_controllerList[
-                                                                    now]
-                                                                .previousPage();
-                                                          })
-                                                      : Container()),
-                                            Flexible(
-                                              flex: 6,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: AspectRatio(
-                                                  aspectRatio: 16 / 9,
-                                                  child: CarouselSlider.builder(
-                                                    options: CarouselOptions(
-                                                        enableInfiniteScroll:
-                                                            false,
-                                                        onPageChanged:
-                                                            (index, reason) {
-                                                          currentIndex = index;
-                                                          setState(() {});
-                                                        },
-                                                        viewportFraction: 1),
-                                                    carouselController:
-                                                        carousel_controllerList[
-                                                            now],
-                                                    itemCount: widget.cat[now]
-                                                        .listOfProjects.length,
-                                                    itemBuilder: (context,
-                                                        index, realIndex) {
-                                                      print(
-                                                          "this is the index: $index");
-                                                      print(
-                                                          "this is the real index: $realIndex");
-                                                      return CustomVideo(
-                                                        videoId: widget
-                                                            .cat[now]
-                                                            .listOfProjects[
-                                                                index]
-                                                            .videoURL,
-                                                      );
-                                                    },
+                                                              .listOfProjects[
+                                                                  index]
+                                                              .videoURL,
+                                                        );
+                                                      },
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            if (Device.width >= 900)
-                                              Flexible(
-                                                  flex: 1,
-                                                  child: (widget
-                                                              .cat[now]
-                                                              .listOfProjects
-                                                              .length >
-                                                          1)
-                                                      ? FloatingActionButton(
-                                                          backgroundColor:
-                                                              AppColor
-                                                                  .buttonGreen,
-                                                          heroTag: widget
-                                                                  .cat[now]
-                                                                  .hashCode -
-                                                              1,
-                                                          mini: true,
-                                                          child: Icon(Icons
-                                                              .navigate_next_outlined),
-                                                          onPressed: () {
-                                                            carousel_controllerList[
-                                                                    now]
-                                                                .nextPage();
-                                                          })
-                                                      : Container()),
-                                          ],
+                                              if (Device.width >= 900)
+                                                Flexible(
+                                                    flex: 1,
+                                                    child: (widget
+                                                                .cat[now]
+                                                                .listOfProjects
+                                                                .length >
+                                                            1)
+                                                        ? FloatingActionButton(
+                                                            backgroundColor:
+                                                                AppColor
+                                                                    .buttonGreen,
+                                                            heroTag: widget
+                                                                    .cat[now]
+                                                                    .hashCode -
+                                                                1,
+                                                            mini: true,
+                                                            child: Icon(Icons
+                                                                .navigate_next_outlined),
+                                                            onPressed: () {
+                                                              carousel_controllerList[
+                                                                      now]
+                                                                  .nextPage();
+                                                            })
+                                                        : Container()),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Center(
-                                        child: Row(
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Center(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              AnimatedSmoothIndicator(
+                                                  effect: WormEffect(
+                                                      activeDotColor:
+                                                          AppColor.buttonGreen,
+                                                      dotColor: Colors.grey),
+                                                  onDotClicked: (index) {
+                                                    print(
+                                                        " this is the current postion ${widget.currentPosition}");
+                                                    print(
+                                                        " this is the current index in ${widget.currentPosition}");
+                                                    currentIndex = index;
+                                                    carousel_controllerList[now]
+                                                        .animateToPage(index);
+                                                    setState(() {});
+                                                  },
+                                                  curve: Curves.easeIn,
+                                                  activeIndex: currentIndex,
+                                                  count: widget.cat[now]
+                                                      .listOfProjects.length),
+                                              Text(
+                                                  "${currentIndex + 1} of ${widget.cat[now].listOfProjects.length} projects")
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        projTitle(
+                                          widget
+                                              .cat[widget.currentPosition]
+                                              .listOfProjects[currentIndex]
+                                              .title,
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            AnimatedSmoothIndicator(
-                                                effect: WormEffect(
-                                                    activeDotColor:
-                                                        AppColor.buttonGreen,
-                                                    dotColor: Colors.grey),
-                                                onDotClicked: (index) {
-                                                  print(
-                                                      " this is the current postion ${widget.currentPosition}");
-                                                  print(
-                                                      " this is the current index in ${widget.currentPosition}");
-                                                  currentIndex = index;
-                                                  carousel_controllerList[now]
-                                                      .animateToPage(index);
-                                                  setState(() {});
-                                                },
-                                                curve: Curves.easeIn,
-                                                activeIndex: currentIndex,
-                                                count: widget.cat[now]
-                                                    .listOfProjects.length),
-                                            Text(
-                                                "${currentIndex + 1} of ${widget.cat[now].listOfProjects.length} projects")
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                language(widget
+                                                    .cat[widget.currentPosition]
+                                                    .listOfProjects[
+                                                        currentIndex]
+                                                    .language),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                version(widget
+                                                    .cat[widget.currentPosition]
+                                                    .listOfProjects[
+                                                        currentIndex]
+                                                    .version),
+                                              ],
+                                            ),
+                                            Spacer(),
+                                            Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                CircularProgressIndicator(
+                                                  value: int.parse(widget
+                                                          .cat[widget
+                                                              .currentPosition]
+                                                          .listOfProjects[
+                                                              currentIndex]
+                                                          .status) /
+                                                      100,
+                                                  backgroundColor: Colors.grey,
+                                                  color: Colors.green,
+                                                ),
+                                                Text(widget
+                                                    .cat[widget.currentPosition]
+                                                    .listOfProjects[
+                                                        currentIndex]
+                                                    .status)
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            FloatingActionButton(
+                                              // disabledElevation: 0,
+                                              backgroundColor: Colors.white,
+                                              elevation: 10,
+                                              onPressed:
+                                                  widget.cat[now].eligible
+                                                      ? () {
+                                                          Get.defaultDialog(
+                                                              barrierDismissible:
+                                                                  false,
+                                                              onCancel: () {},
+                                                              onConfirm: () {
+                                                                controller.updateLikedCategory(
+                                                                    widget
+                                                                        .cat[
+                                                                            now]
+                                                                        .listOfProjects[
+                                                                            currentIndex]
+                                                                        .identifier,
+                                                                    widget
+                                                                        .cat[
+                                                                            now]
+                                                                        .listOfProjects[
+                                                                            currentIndex]
+                                                                        .likedCategory);
+                                                                widget
+                                                                    .cat[now]
+                                                                    .listOfProjects[
+                                                                        currentIndex]
+                                                                    .liked = true;
+                                                                setState(() {});
+                                                                Get.back();
+                                                              },
+                                                              title:
+                                                                  "Like this Project",
+                                                              backgroundColor:
+                                                                  AppColor
+                                                                      .buttonGreen,
+                                                              content:
+                                                                  Container(
+                                                                width: 200,
+                                                                height: 200,
+                                                                child: StatefulBuilder(
+                                                                    builder:
+                                                                        (context,
+                                                                            _setState) {
+                                                                  return Column(
+                                                                    children: [
+                                                                      RadioListTile(
+                                                                          selected: widget.cat[now].listOfProjects[currentIndex].likedCategory ==
+                                                                              "complexity",
+                                                                          tileColor: Colors
+                                                                              .white,
+                                                                          title:
+                                                                              Text(
+                                                                            "complexity",
+                                                                          ),
+                                                                          value:
+                                                                              "complexity",
+                                                                          groupValue: widget
+                                                                              .cat[now]
+                                                                              .listOfProjects[currentIndex]
+                                                                              .likedCategory,
+                                                                          onChanged: (value) => _setState(() {
+                                                                                widget.cat[now].listOfProjects[currentIndex].likedCategory = value;
+                                                                              })),
+                                                                      RadioListTile(
+                                                                        selected:
+                                                                            widget.cat[now].listOfProjects[currentIndex].likedCategory ==
+                                                                                "fun",
+                                                                        tileColor:
+                                                                            Colors.white,
+                                                                        title:
+                                                                            Text(
+                                                                          "fun",
+                                                                        ),
+                                                                        value:
+                                                                            "fun",
+                                                                        groupValue: widget
+                                                                            .cat[now]
+                                                                            .listOfProjects[currentIndex]
+                                                                            .likedCategory,
+                                                                        onChanged:
+                                                                            (value) {
+                                                                          _setState(
+                                                                              () {
+                                                                            widget.cat[now].listOfProjects[currentIndex].likedCategory =
+                                                                                value;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      RadioListTile(
+                                                                          // TODO:  make sure to revert to actual coder color
+                                                                          activeColor: Colors
+                                                                              .red,
+                                                                          selected: widget.cat[now].listOfProjects[currentIndex].likedCategory ==
+                                                                              "creativity",
+                                                                          tileColor: Colors
+                                                                              .white,
+                                                                          title:
+                                                                              Text(
+                                                                            "creativity",
+                                                                          ),
+                                                                          value:
+                                                                              "creativity",
+                                                                          groupValue: widget
+                                                                              .cat[now]
+                                                                              .listOfProjects[currentIndex]
+                                                                              .likedCategory,
+                                                                          onChanged: (value) => _setState(() {
+                                                                                widget.cat[now].listOfProjects[currentIndex].likedCategory = value;
+                                                                              })),
+                                                                    ],
+                                                                  );
+                                                                }),
+                                                              ));
+                                                        }
+                                                      : null,
+                                              child: Icon(
+                                                  widget
+                                                          .cat[widget
+                                                              .currentPosition]
+                                                          .listOfProjects[
+                                                              currentIndex]
+                                                          .liked
+                                                      ? Icons.favorite
+                                                      : Icons
+                                                          .favorite_outline_outlined,
+                                                  color: AppColor.buttonGreen),
+                                            )
                                           ],
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      projTitle(
-                                        widget.cat[widget.currentPosition]
-                                            .listOfProjects[currentIndex].title,
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              language(widget
-                                                  .cat[widget.currentPosition]
-                                                  .listOfProjects[currentIndex]
-                                                  .language),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              version(widget
-                                                  .cat[widget.currentPosition]
-                                                  .listOfProjects[currentIndex]
-                                                  .version),
-                                            ],
-                                          ),
-                                          Spacer(),
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              CircularProgressIndicator(
-                                                value: int.parse(widget
-                                                        .cat[widget
-                                                            .currentPosition]
-                                                        .listOfProjects[
-                                                            currentIndex]
-                                                        .status) /
-                                                    100,
-                                                backgroundColor: Colors.grey,
-                                                color: Colors.green,
-                                              ),
-                                              Text(widget
-                                                  .cat[widget.currentPosition]
-                                                  .listOfProjects[currentIndex]
-                                                  .status)
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          FloatingActionButton(
-                                            // disabledElevation: 0,
-                                            backgroundColor: Colors.white,
-                                            elevation: 10,
-                                            onPressed: widget.cat[now].eligible
-                                                ? () {
-                                                    Get.defaultDialog(
-                                                        barrierDismissible:
-                                                            false,
-                                                        onCancel: () {},
-                                                        onConfirm: () {
-                                                          controller.updateLikedCategory(
-                                                              widget
-                                                                  .cat[now]
-                                                                  .listOfProjects[
-                                                                      currentIndex]
-                                                                  .identifier,
-                                                              widget
-                                                                  .cat[now]
-                                                                  .listOfProjects[
-                                                                      currentIndex]
-                                                                  .likedCategory);
-                                                          widget
-                                                              .cat[now]
-                                                              .listOfProjects[
-                                                                  currentIndex]
-                                                              .liked = true;
-                                                          setState(() {});
-                                                          Get.back();
-                                                        },
-                                                        title:
-                                                            "Like this Project",
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        content: Container(
-                                                          width: 200,
-                                                          height: 200,
-                                                          child: StatefulBuilder(
-                                                              builder: (context,
-                                                                  _setState) {
-                                                            return Column(
-                                                              children: [
-                                                                RadioListTile(
-                                                                    selected: widget
-                                                                            .cat[
-                                                                                now]
-                                                                            .listOfProjects[
-                                                                                currentIndex]
-                                                                            .likedCategory ==
-                                                                        "complexity",
-                                                                    tileColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    title: Text(
-                                                                      "complexity",
-                                                                    ),
-                                                                    value:
-                                                                        "complexity",
-                                                                    groupValue: widget
-                                                                        .cat[
-                                                                            now]
-                                                                        .listOfProjects[
-                                                                            currentIndex]
-                                                                        .likedCategory,
-                                                                    onChanged: (value) =>
-                                                                        _setState(
-                                                                            () {
-                                                                          widget
-                                                                              .cat[now]
-                                                                              .listOfProjects[currentIndex]
-                                                                              .likedCategory = value;
-                                                                        })),
-                                                                RadioListTile(
-                                                                  selected: widget
-                                                                          .cat[
-                                                                              now]
-                                                                          .listOfProjects[
-                                                                              currentIndex]
-                                                                          .likedCategory ==
-                                                                      "fun",
-                                                                  tileColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  title: Text(
-                                                                    "fun",
-                                                                  ),
-                                                                  value: "fun",
-                                                                  groupValue: widget
-                                                                      .cat[now]
-                                                                      .listOfProjects[
-                                                                          currentIndex]
-                                                                      .likedCategory,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    _setState(
-                                                                        () {
-                                                                      widget
-                                                                          .cat[
-                                                                              now]
-                                                                          .listOfProjects[
-                                                                              currentIndex]
-                                                                          .likedCategory = value;
-                                                                    });
-                                                                  },
-                                                                ),
-                                                                RadioListTile(
-                                                                    // TODO:  make sure to revert to actual coder color
-                                                                    activeColor:
-                                                                        Colors
-                                                                            .red,
-                                                                    selected: widget
-                                                                            .cat[
-                                                                                now]
-                                                                            .listOfProjects[
-                                                                                currentIndex]
-                                                                            .likedCategory ==
-                                                                        "creativity",
-                                                                    tileColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    title: Text(
-                                                                      "creativity",
-                                                                    ),
-                                                                    value:
-                                                                        "creativity",
-                                                                    groupValue: widget
-                                                                        .cat[
-                                                                            now]
-                                                                        .listOfProjects[
-                                                                            currentIndex]
-                                                                        .likedCategory,
-                                                                    onChanged: (value) =>
-                                                                        _setState(
-                                                                            () {
-                                                                          widget
-                                                                              .cat[now]
-                                                                              .listOfProjects[currentIndex]
-                                                                              .likedCategory = value;
-                                                                        })),
-                                                              ],
-                                                            );
-                                                          }),
-                                                        ));
-                                                  }
-                                                : null,
-                                            child: Icon(
-                                                widget
-                                                        .cat[widget
-                                                            .currentPosition]
-                                                        .listOfProjects[
-                                                            currentIndex]
-                                                        .liked
-                                                    ? Icons.favorite
-                                                    : Icons
-                                                        .favorite_outline_outlined,
-                                                color: AppColor.buttonGreen),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text('Description:',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600)),
+                                        description(
+                                          widget
+                                              .cat[widget.currentPosition]
+                                              .listOfProjects[currentIndex]
+                                              .description,
+                                        ),
+                                        SizedBox(height: 20),
+                                        if (!widget.cat[widget.currentPosition]
+                                            .eligible)
+                                          Text(
+                                            "NOTE: ${widget.cat[widget.currentPosition].listOfProjects[currentIndex].coderName} started after October 1, 2021, we cant wait to see what they will code for the next CoderFair",
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                            ),
+                                            textAlign: TextAlign.center,
                                           )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text('Description:',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600)),
-                                      description(
-                                        widget
-                                            .cat[widget.currentPosition]
-                                            .listOfProjects[currentIndex]
-                                            .description,
-                                      ),
-                                      SizedBox(height: 20),
-                                      if (!widget
-                                          .cat[widget.currentPosition].eligible)
-                                        Text(
-                                          "NOTE: ${widget.cat[widget.currentPosition].listOfProjects[currentIndex].coderName} started after October 1, 2021, we cant wait to see what they will code for the next CoderFair",
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        )
-                                    ],
-                                  ),
-                                );
-                              }),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              if (widget.currentPosition != 0)
-                                TextButton(
-                                    onPressed: () {
-                                      currentIndex = 0;
-
-                                      pageController.previousPage(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.easeIn);
-                                      setState(() {});
-                                    },
-                                    child: Text("Prev coder")),
-                              if (widget.currentPosition !=
-                                  widget.cat.length - 1)
-                                TextButton(
-                                    onPressed: () {
-                                      currentIndex = 0;
-
-                                      pageController.nextPage(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.easeIn);
-
-                                      setState(() {});
-                                    },
-                                    child: Text("Next coder"))
-                            ],
+                                      ],
+                                    ),
+                                  );
+                                }),
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                if (widget.currentPosition != 0)
+                                  TextButton(
+                                      onPressed: () {
+                                        currentIndex = 0;
+
+                                        pageController.previousPage(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            curve: Curves.easeIn);
+                                        setState(() {});
+                                      },
+                                      child: Text("Prev coder")),
+                                if (widget.currentPosition !=
+                                    widget.cat.length - 1)
+                                  TextButton(
+                                      onPressed: () {
+                                        currentIndex = 0;
+
+                                        pageController.nextPage(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            curve: Curves.easeIn);
+
+                                        setState(() {});
+                                      },
+                                      child: Text("Next coder"))
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
                     )
                   : Center(child: CircularProgressIndicator())),
         )));
@@ -594,10 +574,14 @@ class _CardScreenState extends State<CardScreen> {
   }
 
   description(desc) {
+    ScrollController scrollController = ScrollController();
+
     return Expanded(
       child: Scrollbar(
+        controller: scrollController,
         isAlwaysShown: true,
         child: SingleChildScrollView(
+          controller: scrollController,
           child: Container(
             margin: EdgeInsets.only(right: 15),
             child: Text(

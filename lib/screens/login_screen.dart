@@ -9,7 +9,25 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:coder_fair/utils/blend_mask.dart';
 
-class LoginScreen extends GetResponsiveView<LoginScreenController> {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late LoginScreenController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.find<LoginScreenController>();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Size _size = MediaQuery.of(context).size;

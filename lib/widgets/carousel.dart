@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:coder_fair/constants/app_colors.dart';
 import 'package:coder_fair/controllers/home_screen_controller.dart';
 import 'package:coder_fair/controllers/login_screen_controller.dart';
 import 'package:coder_fair/screens/card_screen.dart';
@@ -33,6 +34,7 @@ class _CarouselBuilderWithIndicatorState
   Map listOfSeen = {};
   int _index = 0;
   bool get wantKeepAlive => true;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -41,8 +43,6 @@ class _CarouselBuilderWithIndicatorState
     loginState = Get.find();
     var box = Hive.box('userPreferences');
     listOfSeen = box.get('listOfSeen');
-
-    setState(() {});
   }
 
   @override
@@ -71,7 +71,7 @@ class _CarouselBuilderWithIndicatorState
               )
             : Row(
                 // TODO: In this row add the two widgets for the side and set the visibility with if statement Device.width>=1920
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Flexible(
                       flex: 1,
@@ -94,140 +94,190 @@ class _CarouselBuilderWithIndicatorState
                       )),
                   Flexible(
                     flex: 5,
-                    child: Container(
-                      width: 500,
-                      child: ScrollConfiguration(
-                        behavior: ScrollConfiguration.of(context)
-                            .copyWith(scrollbars: false),
-                        child: CarouselSlider.builder(
-                            carouselController: carouselController,
-                            itemCount:
-                                widget.cat.asMap().entries.toList().length,
-                            itemBuilder: (context, index, realIndex) {
-                              var entry =
-                                  widget.cat.asMap().entries.toList()[index];
+                    child: Scrollbar(
+                      controller: scrollController,
+                      isAlwaysShown: true,
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        reverse: true,
+                        child: Container(
+                          width: 80.w,
+                          child: CarouselSlider.builder(
+                              carouselController: carouselController,
+                              itemCount:
+                                  widget.cat.asMap().entries.toList().length,
+                              itemBuilder: (context, index, realIndex) {
+                                var entry =
+                                    widget.cat.asMap().entries.toList()[index];
 
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Container(
-                                  // margin: EdgeInsets.symmetric(vertical: 30),
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (_index == entry.key) {
-                                        widget.cat[_index].seen = true;
-                                        controller.addToSeen(
-                                            widget.cat[_index].coderName);
-                                        setState(() {});
-                                        Get.dialog(ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: Container(
-                                              height: 90.h,
-                                              child: CardScreen(
-                                                  student: entry.value,
-                                                  categoryName:
-                                                      widget.categoryName,
-                                                  cat: widget.cat,
-                                                  currentPosition: _index),
-                                            )));
-                                      }
-                                    },
-                                    child: Stack(
-                                      alignment: Alignment.center,
+                                return Column(
+                                  children: [
+                                    Stack(
                                       children: [
-                                        Material(
-                                            color: Colors.red,
-                                            elevation: 15,
-                                            child: AspectRatio(
-                                              aspectRatio: 16 / 9,
-                                              child: FittedBox(
-                                                fit: BoxFit.fitHeight,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Center(
-                                                      child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          CircleAvatar(
-                                                            radius: 40,
-                                                            backgroundImage:
-                                                                NetworkImage(entry
-                                                                    .value
-                                                                    .profilePictureURL),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 50,
-                                                          ),
-                                                          Text(loginState
-                                                                  .currentUser
-                                                                  .coders
-                                                                  .contains(entry
-                                                                      .value
-                                                                      .coderName)
-                                                              ? entry.value
-                                                                  .first_name
-                                                              : entry.value
-                                                                  .coderName)
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          SizedBox(width: 170),
-                                                          Icon(entry.value
-                                                                      .seen ||
-                                                                  listOfSeen
-                                                                      .containsKey(entry
-                                                                          .value
-                                                                          .coderName)
-                                                              ? Icons.visibility
-                                                              : Icons
-                                                                  .visibility_off),
-                                                        ],
-                                                      )
-                                                    ],
-                                                  )),
-                                                ),
-                                              ),
-                                            )),
                                         ClipRRect(
-                                          child: BackdropFilter(
-                                            child: Container(),
-                                            filter: ImageFilter.blur(
-                                                sigmaX: entry.key == _index
-                                                    ? 0.001
-                                                    : 4,
-                                                sigmaY: entry.key == _index
-                                                    ? 0.001
-                                                    : 4),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Container(
+                                            // margin: EdgeInsets.symmetric(vertical: 30),
+                                            child: InkWell(
+                                              onTap: () {
+                                                if (_index == entry.key) {
+                                                  widget.cat[_index].seen =
+                                                      true;
+                                                  controller.addToSeen(widget
+                                                      .cat[_index].coderName);
+                                                  setState(() {});
+                                                  Get.dialog(ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: Container(
+                                                        height: 90.h,
+                                                        child: CardScreen(
+                                                            student:
+                                                                entry.value,
+                                                            categoryName: widget
+                                                                .categoryName,
+                                                            cat: widget.cat,
+                                                            currentPosition:
+                                                                _index),
+                                                      )));
+                                                }
+                                              },
+                                              child: Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  Material(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color:
+                                                          AppColor.buttonGreen,
+                                                      // elevation: 15,
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            image: DecorationImage(
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                image: AssetImage(
+                                                                    "images/carousel_card_bg.png"))),
+                                                        child: AspectRatio(
+                                                          aspectRatio: 16 / 9,
+                                                          child: Container(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    10),
+                                                            child: Center(
+                                                                child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              20,
+                                                                          top:
+                                                                              5),
+                                                                      child:
+                                                                          CircleAvatar(
+                                                                        radius:
+                                                                            40,
+                                                                        foregroundImage:
+                                                                            NetworkImage(
+                                                                          entry
+                                                                              .value
+                                                                              .profilePictureURL,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    FittedBox(
+                                                                      fit: BoxFit
+                                                                          .fitHeight,
+                                                                      child: Icon(entry.value.seen ||
+                                                                              listOfSeen.containsKey(entry
+                                                                                  .value.coderName)
+                                                                          ? Icons
+                                                                              .visibility
+                                                                          : Icons
+                                                                              .visibility_off),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            )),
+                                                          ),
+                                                        ),
+                                                      )),
+                                                  ClipRRect(
+                                                    child: BackdropFilter(
+                                                      child: AspectRatio(
+                                                          aspectRatio: 16 / 9,
+                                                          child: Container()),
+                                                      filter: ImageFilter.blur(
+                                                          sigmaX: entry.key ==
+                                                                  _index
+                                                              ? 0.001
+                                                              : 4,
+                                                          sigmaY: entry.key ==
+                                                                  _index
+                                                              ? 0.001
+                                                              : 4),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                            options: CarouselOptions(
-                                enableInfiniteScroll: false,
-                                viewportFraction: 0.3,
-                                height: 510,
-                                enlargeCenterPage: true,
-                                onPageChanged: (index, reason) {
-                                  setState(() {
-                                    _index = index;
-                                    controller.paginateStudents(
-                                        (index),
-                                        controller.categories.keys.toList()[
-                                            controller.categories.keys
-                                                .toList()
-                                                .indexOf(widget.categoryName)]);
-                                  });
-                                },
-                                scrollDirection: Axis.vertical)),
+                                    Text(loginState.currentUser.coders
+                                            .contains(entry.value.coderName)
+                                        ? entry.value.first_name
+                                        : entry.value.coderName),
+                                  ],
+                                );
+                              },
+                              options: CarouselOptions(
+                                  onScrolled: (value) {
+                                    scrollController.jumpTo(scrollController
+                                            .position.maxScrollExtent /
+                                        2);
+                                  },
+                                  enableInfiniteScroll: false,
+                                  viewportFraction: 0.37,
+                                  height: 500,
+                                  scrollPhysics: const ClampingScrollPhysics(),
+                                  enlargeCenterPage: true,
+                                  onPageChanged: (index, reason) {
+                                    setState(() {
+                                      _index = index;
+                                      controller.paginateStudents(
+                                          (index),
+                                          controller.categories.keys.toList()[
+                                              controller.categories.keys
+                                                  .toList()
+                                                  .indexOf(
+                                                      widget.categoryName)]);
+                                    });
+                                  },
+                                  scrollDirection: Axis.vertical)),
+                        ),
                       ),
                     ),
                   ),

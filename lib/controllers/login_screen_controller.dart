@@ -34,6 +34,7 @@ class LoginScreenController extends GetxController {
   // Form
   var _formKey = GlobalKey<FormState>();
   get formKey => _formKey;
+  set formKey(value) => _formKey = value;
 
   // show or hide password
   var _obscurePassword = true.obs;
@@ -75,19 +76,20 @@ class LoginScreenController extends GetxController {
     } finally {
       _isLoading(false);
     }
-
-    Get.to(HomeScreen());
+    formKey.currentState?.dispose();
+    formKey = GlobalKey<FormState>();
+    await Get.to(HomeScreen());
   }
 
   @override
   void onInit() async {
+    super.onInit();
     var box = Hive.box('userPreferences');
     var exists = box.get('rememberPassword');
     _rememberPassword.value = exists;
     if (exists) {
       await getSecret();
     }
-    super.onInit();
   }
 
   // Ensure the key is available to write to
@@ -124,5 +126,12 @@ class LoginScreenController extends GetxController {
     email.text = encryptedBox.get('email');
     password.text = encryptedBox.get('password');
     _loadedFromSS.value = true;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    formKey.currentState?.dispose();
   }
 }

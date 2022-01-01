@@ -1,5 +1,5 @@
 import 'package:coder_fair/screens/home_screen.dart';
-import 'package:coder_fair/screens/home_screen_backup.dart';
+
 import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -43,9 +43,15 @@ class MyApp extends StatelessWidget {
         scrollBehavior: AppScrollBehavior(),
         onInit: () {
           Get.put(LoginScreenController());
-          Get.lazyPut<HomeScreenController>(() => HomeScreenController());
         },
-        theme: ThemeData(scaffoldBackgroundColor: AppColor.mainBg),
+        theme: ThemeData(
+            scaffoldBackgroundColor: AppColor.mainBg,
+            scrollbarTheme: ScrollbarThemeData(
+              isAlwaysShown: false,
+              thumbColor: MaterialStateProperty.all(Colors.transparent),
+              trackBorderColor: MaterialStateProperty.all(Colors.transparent),
+              trackColor: MaterialStateProperty.all(Colors.transparent),
+            )),
         title: 'TCS Tampa CF',
         home: LoginScreen(),
       ),
