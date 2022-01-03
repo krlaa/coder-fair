@@ -81,6 +81,7 @@ class _CarouselBuilderWithIndicatorState
                             duration: Duration(milliseconds: 300),
                             child: _index != 0
                                 ? FloatingActionButton(
+                                    backgroundColor: AppColor.buttonGreen,
                                     child: RotatedBox(
                                         quarterTurns: 1,
                                         child: Icon(
@@ -288,6 +289,7 @@ class _CarouselBuilderWithIndicatorState
                         child: AnimatedSwitcher(
                           child: _index != widget.cat.length - 1
                               ? FloatingActionButton(
+                                  backgroundColor: AppColor.buttonGreen,
                                   child: RotatedBox(
                                       quarterTurns: 3,
                                       child:

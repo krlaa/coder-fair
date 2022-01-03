@@ -76,24 +76,22 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       extendBodyBehindAppBar: true,
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Expanded(
-            child: BlendMask(
-                blendMode: BlendMode.multiply,
-                child: SizedBox(
-                  width: 100.w,
-                  height: 100.h,
-                  child: Opacity(
-                    opacity: 0.2,
-                    child: Image.asset(
-                      'images/bg-1.jpg',
-                      repeat: ImageRepeat.repeat,
-                    ),
+          BlendMask(
+              blendMode: BlendMode.multiply,
+              child: SizedBox(
+                width: 100.w,
+                height: 100.h,
+                child: Opacity(
+                  opacity: 0.3,
+                  child: Image.asset(
+                    'images/bg-1.jpg',
+                    repeat: ImageRepeat.repeat,
                   ),
-                )),
-          ),
+                ),
+              )),
           DefaultTextStyle(
               style: TextStyle(fontFamily: 'Raleway', color: AppColor.h2Blk),
               child: Column(
@@ -121,15 +119,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 TabBar(
-                                  labelColor: Color(0xFFFFFFFF),
+                                  labelColor: AppColor.buttonDrkGreen,
                                   unselectedLabelColor: AppColor.h2Blk,
-                                  indicatorSize: TabBarIndicatorSize.tab,
-                                  indicator: BoxDecoration(
-                                    gradient: LinearGradient(colors: [
-                                      AppColor.buttonGreen,
-                                      AppColor.buttonDrkGreen,
-                                    ]),
-                                  ),
+                                  // indicatorSize: TabBarIndicatorSize.label,
+                                  indicator: UnderlineTabIndicator(
+                                      borderSide: BorderSide(
+                                          width: 5.0,
+                                          color: AppColor.buttonDrkGreen),
+                                      insets: EdgeInsets.symmetric(
+                                          horizontal: 16.0)),
                                   onTap: (value) {
                                     controller.currentCategory = controller
                                         .categories.keys
@@ -252,12 +250,14 @@ Widget genericTab(String tabTitle) {
     message: tabTitle,
     child: Tab(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Align(
             alignment: Alignment.center,
             child: Text(
               tabTitle,
-              style: TextStyle(fontFamily: 'RobotoSlab'),
+              style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 15),
               textAlign: TextAlign.center,
             ),
           ),
