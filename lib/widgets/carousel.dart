@@ -95,14 +95,13 @@ class _CarouselBuilderWithIndicatorState
                       )),
                   Flexible(
                     flex: 5,
-                    child: Scrollbar(
-                      controller: scrollController,
-                      isAlwaysShown: true,
-                      child: SingleChildScrollView(
+                    child: SizedBox(
+                      child: Scrollbar(
                         controller: scrollController,
-                        reverse: true,
-                        child: Container(
-                          width: 80.w,
+                        isAlwaysShown: true,
+                        child: SingleChildScrollView(
+                          controller: scrollController,
+                          reverse: true,
                           child: CarouselSlider.builder(
                               carouselController: carouselController,
                               itemCount:
@@ -111,146 +110,138 @@ class _CarouselBuilderWithIndicatorState
                                 var entry =
                                     widget.cat.asMap().entries.toList()[index];
 
-                                return Column(
+                                return Stack(
                                   children: [
-                                    Stack(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Container(
-                                            // margin: EdgeInsets.symmetric(vertical: 30),
-                                            child: InkWell(
-                                              onTap: () {
-                                                if (_index == entry.key) {
-                                                  widget.cat[_index].seen =
-                                                      true;
-                                                  controller.addToSeen(widget
-                                                      .cat[_index].coderName);
-                                                  setState(() {});
-                                                  Get.dialog(ClipRRect(
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        // margin: EdgeInsets.symmetric(vertical: 30),
+                                        child: InkWell(
+                                          onTap: () {
+                                            if (_index == entry.key) {
+                                              widget.cat[_index].seen = true;
+                                              controller.addToSeen(
+                                                  widget.cat[_index].coderName);
+                                              setState(() {});
+                                              Get.dialog(ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Container(
+                                                    height: 90.h,
+                                                    child: CardScreen(
+                                                        student: entry.value,
+                                                        categoryName:
+                                                            widget.categoryName,
+                                                        cat: widget.cat,
+                                                        currentPosition:
+                                                            _index),
+                                                  )));
+                                            }
+                                          },
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Material(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: AppColor.black,
+                                                  // elevation: 15,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10),
-                                                      child: Container(
-                                                        height: 90.h,
-                                                        child: CardScreen(
-                                                            student:
-                                                                entry.value,
-                                                            categoryName: widget
-                                                                .categoryName,
-                                                            cat: widget.cat,
-                                                            currentPosition:
-                                                                _index),
-                                                      )));
-                                                }
-                                              },
-                                              child: Stack(
-                                                alignment: Alignment.center,
-                                                children: [
-                                                  Material(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color:
-                                                          AppColor.buttonGreen,
-                                                      // elevation: 15,
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                            image: DecorationImage(
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                image: AssetImage(
-                                                                    "images/carousel_card_bg.png"))),
-                                                        child: AspectRatio(
-                                                          aspectRatio: 16 / 9,
-                                                          child: Container(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child: Center(
-                                                                child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
-                                                              children: [
-                                                                Row(
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              20,
-                                                                          top:
-                                                                              5),
-                                                                      child:
-                                                                          CircleAvatar(
-                                                                        radius:
-                                                                            40,
-                                                                        foregroundImage:
-                                                                            NetworkImage(
-                                                                          entry
-                                                                              .value
-                                                                              .profilePictureURL,
-                                                                        ),
+                                                    ),
+                                                    child: AspectRatio(
+                                                      aspectRatio: 16 / 9,
+                                                      child: SizedBox(
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                          child: Center(
+                                                              child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            20,
+                                                                        top: 5),
+                                                                    child:
+                                                                        CircleAvatar(
+                                                                      radius:
+                                                                          35,
+                                                                      foregroundImage:
+                                                                          NetworkImage(
+                                                                        entry
+                                                                            .value
+                                                                            .profilePictureURL,
                                                                       ),
                                                                     ),
-                                                                  ],
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    FittedBox(
-                                                                      fit: BoxFit
-                                                                          .fitHeight,
-                                                                      child: Icon(entry.value.seen ||
-                                                                              listOfSeen.containsKey(entry
-                                                                                  .value.coderName)
-                                                                          ? Icons
-                                                                              .visibility
-                                                                          : Icons
-                                                                              .visibility_off),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            )),
-                                                          ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  FittedBox(
+                                                                    fit: BoxFit
+                                                                        .fitHeight,
+                                                                    child: Icon(entry.value.seen ||
+                                                                            listOfSeen.containsKey(entry
+                                                                                .value.coderName)
+                                                                        ? Icons
+                                                                            .visibility
+                                                                        : Icons
+                                                                            .visibility_off),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Text(loginState
+                                                                      .currentUser
+                                                                      .coders
+                                                                      .contains(entry
+                                                                          .value
+                                                                          .coderName)
+                                                                  ? entry.value
+                                                                      .first_name
+                                                                  : entry.value
+                                                                      .coderName),
+                                                            ],
+                                                          )),
                                                         ),
-                                                      )),
-                                                  ClipRRect(
-                                                    child: BackdropFilter(
-                                                      child: AspectRatio(
-                                                          aspectRatio: 16 / 9,
-                                                          child: Container()),
-                                                      filter: ImageFilter.blur(
-                                                          sigmaX: entry.key ==
-                                                                  _index
+                                                      ),
+                                                    ),
+                                                  )),
+                                              ClipRRect(
+                                                child: BackdropFilter(
+                                                  child: AspectRatio(
+                                                      aspectRatio: 16 / 9,
+                                                      child: Container()),
+                                                  filter: ImageFilter.blur(
+                                                      sigmaX:
+                                                          entry.key == _index
                                                               ? 0.001
                                                               : 4,
-                                                          sigmaY: entry.key ==
-                                                                  _index
+                                                      sigmaY:
+                                                          entry.key == _index
                                                               ? 0.001
                                                               : 4),
-                                                    ),
-                                                  ),
-                                                ],
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                    Text(loginState.currentUser.coders
-                                            .contains(entry.value.coderName)
-                                        ? entry.value.first_name
-                                        : entry.value.coderName),
                                   ],
                                 );
                               },
@@ -261,7 +252,7 @@ class _CarouselBuilderWithIndicatorState
                                         2);
                                   },
                                   enableInfiniteScroll: false,
-                                  viewportFraction: 0.37,
+                                  viewportFraction: 0.38,
                                   height: 500,
                                   scrollPhysics: const ClampingScrollPhysics(),
                                   enlargeCenterPage: true,

@@ -45,6 +45,28 @@ class MyApp extends StatelessWidget {
           Get.put(LoginScreenController());
         },
         theme: ThemeData(
+            inputDecorationTheme: InputDecorationTheme(
+              helperStyle: TextStyle(color: Colors.white),
+              hoverColor: AppColor.mediumGrey,
+              border: OutlineInputBorder(borderSide: BorderSide.none),
+              focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFFF0A31D))),
+              errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFFF0A31D))),
+              errorStyle: TextStyle(
+                color: Color(0xFFF0A31D),
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColor.accentGreen)),
+              fillColor: AppColor.darkGrey,
+              filled: true,
+              counterStyle: TextStyle(color: AppColor.white),
+              hintStyle: TextStyle(
+                fontFamily: 'Raleway',
+                fontSize: 18,
+                color: Colors.grey,
+              ),
+            ),
             scaffoldBackgroundColor: AppColor.mainBg,
             scrollbarTheme: ScrollbarThemeData(
               isAlwaysShown: false,

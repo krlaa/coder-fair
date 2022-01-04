@@ -65,6 +65,7 @@ class HomeScreenController extends GetxController {
 
   // fetchStudents function calls APICLient class' fetchStudents() and ensure loading is set to false after completion
   Future<void> fetchStudents() async {
+    Stopwatch stopwatch = new Stopwatch()..start();
     loadingStudentNames = true;
 
     categories = await client.fetchStudents();
@@ -73,7 +74,7 @@ class HomeScreenController extends GetxController {
         categories.values.map((e) => CarouselController()).toList();
     for (var entry in categories.entries) {
       List<Student> shuffledList = entry.value;
-      shuffledList.shuffle();
+      // shuffledList.shuffle();
 
       List<Student> newList = [];
       for (var student in shuffledList) {
@@ -89,6 +90,7 @@ class HomeScreenController extends GetxController {
       categories1.add(category);
       categories[entry.key] = newList;
     }
+    print('doSomething() executed in ${stopwatch.elapsed}');
   }
 
   loadStudent(category, index) async {
@@ -142,6 +144,27 @@ class HomeScreenController extends GetxController {
     }
   }
 
+  // returnPaginateStudents(int index, List cat) async {
+  //   if (cat.length > 1 &&
+  //       cat.length > index + 1) {
+  //     if (!(cat[index + 1].loadFull)) {
+  //       var subI = sublistIndex(index, category);
+  //       List<Student> result = [];
+  //       await Future.forEach(categories[category].sublist(index + 1, subI),
+  //           (Student element) async {
+  //         var x = await loadAndReturn(category, element);
+  //         result.add(x);
+  //       });
+
+  //       categories[category].replaceRange(index + 1, subI, result);
+  //     }
+
+  //     await loadStudent(category, index);
+  //   } else {
+  //     await loadStudent(category, index);
+  //   }
+  // }
+
   updateLikedCategory(String currentProject, String likedCategory) {
     client.updateLikedCategory(
         currentProject, likedCategory, _loginState.currentUser.token);
@@ -159,7 +182,6 @@ class HomeScreenController extends GetxController {
     super.onInit();
 
     await fetchStudents();
-    Get.dialog(SummerCampDialog());
 
     await Future.forEach(categories.keys.toList(), (String x) async {
       await paginateStudents(0, x);

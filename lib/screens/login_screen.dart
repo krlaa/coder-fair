@@ -35,20 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
       style: TextStyle(fontFamily: 'Raleway'),
       child: Scaffold(
           body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppColor.lightBlue,
-            AppColor.darkBlue,
-          ],
-        )),
+        decoration: BoxDecoration(color: AppColor.black),
 
         // alignment: Alignment.center,
         child: Stack(
           children: [
-            blendMask(),
+            // blendMask(),
             bodySection(context),
           ],
         ),
@@ -157,21 +149,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                     textInputAction: TextInputAction.next,
                     style: TextStyle(
+                      color: AppColor.white,
                       fontSize: 18,
                     ),
                     decoration: InputDecoration(
-                      fillColor: Colors.white,
                       filled: true,
                       hintText: "Email",
-                      hintStyle: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 18,
-                        color: Colors.grey,
-                      ),
                     ),
                     validator: (value) {
                       if (value == null || !GetUtils.isEmail(value)) {
-                        return 'Please enter valid email';
+                        return '!!! Please enter valid email';
                       }
                     },
                   ),
@@ -192,28 +179,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter a password';
+                        return '!!! Please enter a password';
                       }
                     },
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: AppColor.white,
+                    ),
                     decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
                       hintText: "Password",
-                      hintStyle: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 18,
-                        color: Colors.grey,
-                      ),
                       suffixIcon: !controller.loadedFromSS
                           ? IconButton(
                               splashRadius: 20,
                               icon: Icon(
-                                // Based on passwordVisible state choose the icon
                                 controller.obscurePassword
                                     ? Icons.visibility
                                     : Icons.visibility_off,
-                                color: Theme.of(context).primaryColorDark,
+                                color: AppColor.accentGreen,
                               ),
                               onPressed: () {
                                 controller.obscurePassword =
@@ -239,7 +221,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         } else {
                           Get.snackbar(
                             "Error",
-                            "Nope",
+                            "Email or Password was not correct or entered. Please try again",
+                            backgroundColor: AppColor.mediumGrey,
+                            colorText: AppColor.white,
+                            borderRadius: 5,
                           );
                         }
                       },
@@ -310,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                               fontFamily: 'Raleway',
                               fontSize: 18,
-                              color: AppColor.darkBlue)),
+                              color: AppColor.accentBlue)),
                       onTap: () async {
                         if (!await launch("tel: 813-422-5566"))
                           throw 'Could not launch 8134225566';
@@ -326,25 +311,29 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       width: 75.w,
       child: Obx(
-        () => CheckboxListTile(
-            autofocus: false,
-            activeColor: AppColor.buttonGreen,
-            dense: true,
-            contentPadding: EdgeInsets.only(top: 15),
-            tileColor: Colors.white,
-            selectedTileColor: Colors.white,
-            controlAffinity: ListTileControlAffinity.leading,
-            title: Text(
-              'Remember Password?',
-              maxLines: 2,
-              style: TextStyle(
-                fontFamily: 'Raleway',
-                fontSize: 20,
-                color: Colors.white,
+        () => Theme(
+          // For Color Change,
+          data: ThemeData(unselectedWidgetColor: AppColor.white),
+          child: CheckboxListTile(
+              autofocus: false,
+              activeColor: AppColor.buttonGreen,
+              dense: true,
+              contentPadding: EdgeInsets.only(top: 15),
+              tileColor: Colors.white,
+              selectedTileColor: Colors.white,
+              controlAffinity: ListTileControlAffinity.leading,
+              title: Text(
+                'Remember Password?',
+                maxLines: 2,
+                style: TextStyle(
+                  fontFamily: 'Raleway',
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            value: controller.rememberPassword,
-            onChanged: (val) => controller.rememberPassword = val),
+              value: controller.rememberPassword,
+              onChanged: (val) => controller.rememberPassword = val),
+        ),
       ),
     );
   }

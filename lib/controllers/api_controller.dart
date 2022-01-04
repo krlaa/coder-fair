@@ -12,12 +12,7 @@ import 'package:universal_io/io.dart';
 
 class APIClient {
   // Opens a http client
-  var client = RetryClient(
-    http.Client(),
-    onRetry: (p0, p1, retryCount) {
-      print(p0);
-    },
-  );
+  var client = http.Client();
   var baseDomain = usingEmulator
       ? "http://localhost:9000/"
       : "https://coder-fair-default-rtdb.firebaseio.com/";
