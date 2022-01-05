@@ -71,7 +71,7 @@ class _CardScreenState extends State<CardScreen> {
           child: Container(
               width: Device.width >= 900 ? 45.w : 90.w,
               height: 90.h,
-              color: AppColor.black,
+              color: AppColor.mediumGrey,
               child: widget.cat[widget.currentPosition].loadFull
                   ? Container(
                       child: Column(
@@ -274,7 +274,8 @@ class _CardScreenState extends State<CardScreen> {
                                                       dotHeight: 10,
                                                       activeDotColor:
                                                           AppColor.buttonGreen,
-                                                      dotColor: Colors.grey),
+                                                      dotColor:
+                                                          AppColor.lightGrey),
                                                   onDotClicked: (index) {
                                                     print(
                                                         " this is the current postion ${widget.currentPosition}");
@@ -352,7 +353,7 @@ class _CardScreenState extends State<CardScreen> {
                                                               .status) /
                                                           100,
                                                       backgroundColor:
-                                                          Colors.grey,
+                                                          AppColor.black,
                                                       color:
                                                           AppColor.buttonGreen,
                                                     )),
@@ -384,6 +385,7 @@ class _CardScreenState extends State<CardScreen> {
                                                       widget.cat[now].eligible
                                                           ? () {
                                                               Get.defaultDialog(
+                                                                  radius: 10,
                                                                   cancel:
                                                                       RawMaterialButton(
                                                                     fillColor:
@@ -467,68 +469,74 @@ class _CardScreenState extends State<CardScreen> {
                                                                           .white),
                                                                   backgroundColor:
                                                                       AppColor
-                                                                          .black,
+                                                                          .mediumGrey,
+                                                                  titlePadding:
+                                                                      EdgeInsets.only(
+                                                                          top:
+                                                                              20),
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              20),
                                                                   content:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .all(
-                                                                        18.0),
-                                                                    child:
-                                                                        Container(
-                                                                      width:
-                                                                          200,
-                                                                      height:
-                                                                          200,
-                                                                      child: StatefulBuilder(builder:
-                                                                          (context,
-                                                                              _setState) {
-                                                                        return Column(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                          children: [
-                                                                            RadioListTile(
-                                                                                activeColor: AppColor.buttonGreen,
-                                                                                selected: widget.cat[now].listOfProjects[currentIndex].likedCategory == "Complexity",
-                                                                                title: Text(
-                                                                                  "Complexity",
-                                                                                  style: TextStyle(fontFamily: 'Raleway', color: AppColor.white),
-                                                                                ),
-                                                                                value: "Complexity",
-                                                                                groupValue: widget.cat[now].listOfProjects[currentIndex].likedCategory,
-                                                                                onChanged: (value) => _setState(() {
-                                                                                      widget.cat[now].listOfProjects[currentIndex].likedCategory = value;
-                                                                                    })),
-                                                                            RadioListTile(
+                                                                      Container(
+                                                                    width: 200,
+                                                                    height: 200,
+                                                                    child: StatefulBuilder(builder:
+                                                                        (context,
+                                                                            _setState) {
+                                                                      return Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceEvenly,
+                                                                        children: [
+                                                                          RadioListTile(
                                                                               activeColor: AppColor.buttonGreen,
-                                                                              selected: widget.cat[now].listOfProjects[currentIndex].likedCategory == "Fun",
+                                                                              selected: widget.cat[now].listOfProjects[currentIndex].likedCategory == "Complexity",
                                                                               title: Text(
-                                                                                "Fun",
+                                                                                "Complexity",
                                                                                 style: TextStyle(fontFamily: 'Raleway', color: AppColor.white),
                                                                               ),
-                                                                              value: "Fun",
+                                                                              value: "Complexity",
                                                                               groupValue: widget.cat[now].listOfProjects[currentIndex].likedCategory,
-                                                                              onChanged: (value) {
-                                                                                _setState(() {
-                                                                                  widget.cat[now].listOfProjects[currentIndex].likedCategory = value;
-                                                                                });
-                                                                              },
+                                                                              onChanged: (value) => _setState(() {
+                                                                                    widget.cat[now].listOfProjects[currentIndex].likedCategory = value;
+                                                                                  })),
+                                                                          RadioListTile(
+                                                                            activeColor:
+                                                                                AppColor.buttonGreen,
+                                                                            selected:
+                                                                                widget.cat[now].listOfProjects[currentIndex].likedCategory == "Fun",
+                                                                            title:
+                                                                                Text(
+                                                                              "Fun",
+                                                                              style: TextStyle(fontFamily: 'Raleway', color: AppColor.white),
                                                                             ),
-                                                                            RadioListTile(
-                                                                                activeColor: AppColor.buttonGreen,
-                                                                                selected: widget.cat[now].listOfProjects[currentIndex].likedCategory == "Creativity",
-                                                                                title: Text(
-                                                                                  "Creativity",
-                                                                                  style: TextStyle(fontFamily: 'Raleway', color: AppColor.white),
-                                                                                ),
-                                                                                value: "Creativity",
-                                                                                groupValue: widget.cat[now].listOfProjects[currentIndex].likedCategory,
-                                                                                onChanged: (value) => _setState(() {
-                                                                                      widget.cat[now].listOfProjects[currentIndex].likedCategory = value;
-                                                                                    })),
-                                                                          ],
-                                                                        );
-                                                                      }),
-                                                                    ),
+                                                                            value:
+                                                                                "Fun",
+                                                                            groupValue:
+                                                                                widget.cat[now].listOfProjects[currentIndex].likedCategory,
+                                                                            onChanged:
+                                                                                (value) {
+                                                                              _setState(() {
+                                                                                widget.cat[now].listOfProjects[currentIndex].likedCategory = value;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          RadioListTile(
+                                                                              activeColor: AppColor.buttonGreen,
+                                                                              selected: widget.cat[now].listOfProjects[currentIndex].likedCategory == "Creativity",
+                                                                              title: Text(
+                                                                                "Creativity",
+                                                                                style: TextStyle(fontFamily: 'Raleway', color: AppColor.white),
+                                                                              ),
+                                                                              value: "Creativity",
+                                                                              groupValue: widget.cat[now].listOfProjects[currentIndex].likedCategory,
+                                                                              onChanged: (value) => _setState(() {
+                                                                                    widget.cat[now].listOfProjects[currentIndex].likedCategory = value;
+                                                                                  })),
+                                                                        ],
+                                                                      );
+                                                                    }),
                                                                   ));
                                                             }
                                                           : null,
