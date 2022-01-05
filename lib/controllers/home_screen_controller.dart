@@ -69,6 +69,7 @@ class HomeScreenController extends GetxController {
     loadingStudentNames = true;
 
     categories = await client.fetchStudents();
+    print('loadingstudent() executed in ${stopwatch.elapsed}');
 
     listOfControllers =
         categories.values.map((e) => CarouselController()).toList();
@@ -77,18 +78,18 @@ class HomeScreenController extends GetxController {
       // shuffledList.shuffle();
 
       List<Student> newList = [];
-      for (var student in shuffledList) {
-        var alteredStudent = student;
+      // for (var student in shuffledList) {
+      //   var alteredStudent = student;
 
-        if (_loginState.currentUser.coders.contains(student.coderName)) {
-          newList.insert(0, alteredStudent);
-        } else {
-          newList.add(alteredStudent);
-        }
-      }
-      var category = Category(name: entry.key, values: newList);
-      categories1.add(category);
-      categories[entry.key] = newList;
+      //   if (_loginState.currentUser.coders.contains(student.coderName)) {
+      //     newList.insert(0, alteredStudent);
+      //   } else {
+      //     newList.add(alteredStudent);
+      //   }
+      // }
+      // var category = Category(name: entry.key, values: newList);
+      // categories1.add(category);
+      categories[entry.key] = entry.value;
     }
     print('doSomething() executed in ${stopwatch.elapsed}');
   }
@@ -108,6 +109,7 @@ class HomeScreenController extends GetxController {
 
     if ((element.loadFull)) {
       loadingStudentInfo = false;
+      print(element.hashCode);
 
       return element;
     } else {
@@ -119,8 +121,13 @@ class HomeScreenController extends GetxController {
           student = x;
         }
       }
+      print(x.hashCode);
       return x;
     }
+  }
+
+  loadIn(element) async {
+    return await client.loadInfo(element, _loginState.currentUser.token.uid);
   }
 
   paginateStudents(int index, String category) async {
@@ -141,6 +148,23 @@ class HomeScreenController extends GetxController {
       await loadStudent(category, index);
     } else {
       await loadStudent(category, index);
+    }
+  }
+
+  cardPaginate(int index, cat) async {
+    if (cat.length > 1 && cat.length > index + 1) {
+      if (!(cat[index + 1].loadFull)) {
+        List<Student> result = [];
+
+        var subI = sublistIndex2(index, cat);
+        await Future.forEach(cat.sublist(index + 1, subI),
+            (Student element) async {
+          var x = await loadAndReturn(cat, element);
+          result.add(x);
+        });
+        cat.replaceRange(index + 1, subI, result);
+        return cat;
+      }
     }
   }
 
@@ -194,6 +218,12 @@ class HomeScreenController extends GetxController {
     return (index + 4 > categories[category].length ||
             index == categories[category].length - 1)
         ? index + (categories[category].length - index)
+        : index + 4;
+  }
+
+  int sublistIndex2(index, category) {
+    return (index + 4 > category.length || index == category.length - 1)
+        ? index + (category.length - index)
         : index + 4;
   }
 }

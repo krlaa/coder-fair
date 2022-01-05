@@ -35,11 +35,11 @@ class Student {
 
   factory Student.fromJson(Map<String, dynamic> parsedJson, String name) {
     return Student(
-        codeCoach: parsedJson["coach"],
-        first_name: parsedJson["first_name"],
+        codeCoach: parsedJson["coach"] ?? "",
+        first_name: parsedJson["first_name"] ?? "",
         coderName: name,
-        eligible: parsedJson["eligible"],
-        profilePictureURL: parsedJson["coder_pic_url"]);
+        eligible: parsedJson["eligible"] ?? "",
+        profilePictureURL: parsedJson["coder_pic_url"] ?? "");
   }
   @override
   String toString() {

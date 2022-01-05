@@ -3,6 +3,7 @@ import 'package:coder_fair/constants/app_colors.dart';
 import 'package:coder_fair/widgets/vimeoplayer/src/quality_links.dart';
 import "package:flutter/material.dart";
 import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class CustomVideo extends StatefulWidget {
   final String videoId;
@@ -55,13 +56,24 @@ class _CustomVideoState extends State<CustomVideo>
       looping: false,
     );
     chewieController?.setVolume(0);
-    playerWidget = Theme(
-      data: ThemeData(
-        progressIndicatorTheme: ProgressIndicatorTheme.of(context)
-            .copyWith(color: AppColor.buttonGreen),
-      ),
-      child: Chewie(
-        controller: chewieController!,
+    playerWidget = VisibilityDetector(
+      onVisibilityChanged: (visibilityInfo) {
+        var visiblePercentage = visibilityInfo.visibleFraction * 100;
+        debugPrint(
+            'Widget ${visibilityInfo.key} is ${visiblePercentage}% visible');
+        if (visiblePercentage == 0) {
+          chewieController?.pause();
+        }
+      },
+      key: Key("${widget.videoId}${chewieController.hashCode}"),
+      child: Theme(
+        data: ThemeData(
+          progressIndicatorTheme: ProgressIndicatorTheme.of(context)
+              .copyWith(color: AppColor.buttonGreen),
+        ),
+        child: Chewie(
+          controller: chewieController!,
+        ),
       ),
     );
     if (mounted) {

@@ -18,20 +18,27 @@ class APIClient {
       : "https://coder-fair-default-rtdb.firebaseio.com/";
   var query = usingEmulator ? "?ns=coder-fair" : "";
   var authEmulatorDomain = usingEmulator ? "localhost:9099/" : "";
+
+  var coderDetails = {};
   // fetchStudents function which fetches students projects from Firebase RTDBMS
   Future<Map<String, List<Student>>> fetchStudents() async {
+    Stopwatch stopwatch = new Stopwatch()..start();
+
     var response = await client
         .get(Uri.parse("${baseDomain}project_categories.json${query}"));
+    var coders =
+        await client.get(Uri.parse("${baseDomain}coder_detail.json${query}"));
+    coderDetails = jsonDecode(coders.body);
+    print('fetchStudent() executed in ${stopwatch.elapsed}');
+
     Map<String, dynamic> categories = json.decode(response.body);
     Map<String, List<Student>> result = {};
 
     for (MapEntry k in categories.entries) {
       List<Student> l = [];
       for (var element in k.value) {
-        var response = await client
-            .get(Uri.parse("${baseDomain}coder_detail/$element.json${query}"));
-        var decoded = json.decode(response.body);
-        l.add(Student.fromJson(decoded, "$element"));
+        print(element);
+        l.add(Student.fromJson(coderDetails[element], "$element"));
       }
       result[k.key] = l;
     }
