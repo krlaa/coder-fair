@@ -69,7 +69,7 @@ class HomeScreenController extends GetxController {
     loadingStudentNames = true;
 
     categories = await client.fetchStudents();
-    print('loadingstudent() executed in ${stopwatch.elapsed}');
+    print('doSomething() executed in ${stopwatch.elapsed}');
 
     listOfControllers =
         categories.values.map((e) => CarouselController()).toList();
@@ -91,7 +91,6 @@ class HomeScreenController extends GetxController {
       // categories1.add(category);
       categories[entry.key] = entry.value;
     }
-    print('doSomething() executed in ${stopwatch.elapsed}');
   }
 
   loadStudent(category, index) async {
