@@ -71,7 +71,7 @@ class _CardScreenState extends State<CardScreen> {
           child: Container(
               width: Device.width >= 900 ? 45.w : 90.w,
               height: 90.h,
-              color: Colors.white,
+              color: AppColor.black,
               child: widget.cat[widget.currentPosition].loadFull
                   ? Container(
                       child: Column(
@@ -115,6 +115,7 @@ class _CardScreenState extends State<CardScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               IconButton(
+                                                  color: AppColor.white,
                                                   splashRadius: 20,
                                                   onPressed: () => Get.back(),
                                                   icon: Icon(Icons.close)),
@@ -127,7 +128,15 @@ class _CardScreenState extends State<CardScreen> {
                                                       scrollDirection:
                                                           Axis.horizontal,
                                                       child: Text(
-                                                        "coach: ${widget.cat[now].codeCoach} | coder: ${widget.cat[now].coderName}",
+                                                        "Coach: ${widget.cat[now].codeCoach} | Coder: ${widget.cat[now].coderName}",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Raleway',
+                                                            color:
+                                                                AppColor.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal),
                                                         maxLines: 1,
                                                         textAlign:
                                                             TextAlign.center,
@@ -169,7 +178,7 @@ class _CardScreenState extends State<CardScreen> {
                                                         ? FloatingActionButton(
                                                             backgroundColor:
                                                                 AppColor
-                                                                    .buttonGreen,
+                                                                    .accentBlue,
                                                             child: Icon(Icons
                                                                 .navigate_before_outlined),
                                                             heroTag: widget
@@ -234,7 +243,7 @@ class _CardScreenState extends State<CardScreen> {
                                                         ? FloatingActionButton(
                                                             backgroundColor:
                                                                 AppColor
-                                                                    .buttonGreen,
+                                                                    .accentBlue,
                                                             heroTag: widget
                                                                     .cat[now]
                                                                     .hashCode -
@@ -281,7 +290,13 @@ class _CardScreenState extends State<CardScreen> {
                                                   count: widget.cat[now]
                                                       .listOfProjects.length),
                                               Text(
-                                                  "${currentIndex + 1} of ${widget.cat[now].listOfProjects.length} projects")
+                                                "${currentIndex + 1} of ${widget.cat[now].listOfProjects.length} projects",
+                                                style: TextStyle(
+                                                    fontFamily: 'Raleway',
+                                                    color: AppColor.white,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              )
                                             ],
                                           ),
                                         ),
@@ -338,18 +353,19 @@ class _CardScreenState extends State<CardScreen> {
                                                           100,
                                                       backgroundColor:
                                                           Colors.grey,
-                                                      color: Colors.green,
+                                                      color:
+                                                          AppColor.buttonGreen,
                                                     )),
                                                 Text(
-                                                  widget
-                                                      .cat[widget
-                                                          .currentPosition]
-                                                      .listOfProjects[
-                                                          currentIndex]
-                                                      .status,
-                                                  style: TextStyle(
-                                                      color: Colors.green),
-                                                )
+                                                    widget
+                                                        .cat[widget
+                                                            .currentPosition]
+                                                        .listOfProjects[
+                                                            currentIndex]
+                                                        .status,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Raleway',
+                                                        color: AppColor.white))
                                               ],
                                             ),
                                             SizedBox(
@@ -366,32 +382,69 @@ class _CardScreenState extends State<CardScreen> {
                                                     widget.cat[now].eligible
                                                         ? () {
                                                             Get.defaultDialog(
+                                                                cancel:
+                                                                    RawMaterialButton(
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            18.0),
+                                                                    side: BorderSide(
+                                                                        color: Colors
+                                                                            .red),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Get.back();
+                                                                  },
+                                                                  child: Text(
+                                                                      "Cancel"),
+                                                                ),
+                                                                confirm:
+                                                                    RawMaterialButton(
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            18.0),
+                                                                    side: BorderSide(
+                                                                        color: Colors
+                                                                            .red),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    controller.updateLikedCategory(
+                                                                        widget
+                                                                            .cat[
+                                                                                now]
+                                                                            .listOfProjects[
+                                                                                currentIndex]
+                                                                            .identifier,
+                                                                        widget
+                                                                            .cat[now]
+                                                                            .listOfProjects[currentIndex]
+                                                                            .likedCategory);
+                                                                    widget
+                                                                        .cat[
+                                                                            now]
+                                                                        .listOfProjects[
+                                                                            currentIndex]
+                                                                        .liked = true;
+                                                                    setState(
+                                                                        () {});
+                                                                    Get.back();
+                                                                  },
+                                                                  child: Text(
+                                                                      "Ok"),
+                                                                ),
+                                                                buttonColor:
+                                                                    AppColor
+                                                                        .accentPurple,
                                                                 barrierDismissible:
                                                                     false,
                                                                 onCancel: () {},
-                                                                onConfirm: () {
-                                                                  controller.updateLikedCategory(
-                                                                      widget
-                                                                          .cat[
-                                                                              now]
-                                                                          .listOfProjects[
-                                                                              currentIndex]
-                                                                          .identifier,
-                                                                      widget
-                                                                          .cat[
-                                                                              now]
-                                                                          .listOfProjects[
-                                                                              currentIndex]
-                                                                          .likedCategory);
-                                                                  widget
-                                                                      .cat[now]
-                                                                      .listOfProjects[
-                                                                          currentIndex]
-                                                                      .liked = true;
-                                                                  setState(
-                                                                      () {});
-                                                                  Get.back();
-                                                                },
+                                                                onConfirm:
+                                                                    () {},
                                                                 title:
                                                                     "Like this Project",
                                                                 backgroundColor:
@@ -410,8 +463,6 @@ class _CardScreenState extends State<CardScreen> {
                                                                         RadioListTile(
                                                                             selected: widget.cat[now].listOfProjects[currentIndex].likedCategory ==
                                                                                 "complexity",
-                                                                            tileColor: Colors
-                                                                                .white,
                                                                             title:
                                                                                 Text(
                                                                               "complexity",
@@ -491,9 +542,10 @@ class _CardScreenState extends State<CardScreen> {
                                         ),
                                         Text('Description:',
                                             style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w600)),
+                                              fontFamily: 'Raleway',
+                                              fontSize: 16,
+                                              color: AppColor.white,
+                                            )),
                                         description(
                                           widget
                                               .cat[widget.currentPosition]
@@ -506,6 +558,7 @@ class _CardScreenState extends State<CardScreen> {
                                           Text(
                                             "NOTE: ${widget.cat[widget.currentPosition].listOfProjects[currentIndex].coderName} started after October 1, 2021, we cant wait to see what they will code for the next CoderFair",
                                             style: TextStyle(
+                                              fontFamily: 'Raleway',
                                               color: Colors.red,
                                             ),
                                             textAlign: TextAlign.center,
@@ -521,7 +574,12 @@ class _CardScreenState extends State<CardScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 if (widget.currentPosition != 0)
-                                  TextButton(
+                                  RawMaterialButton(
+                                      fillColor: AppColor.accentPurple,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                      ),
                                       onPressed: () {
                                         currentIndex = 0;
 
@@ -531,10 +589,18 @@ class _CardScreenState extends State<CardScreen> {
                                             curve: Curves.easeIn);
                                         setState(() {});
                                       },
-                                      child: Text("Prev coder")),
+                                      child: Text("Prev coder",
+                                          style: TextStyle(
+                                              color: AppColor.white,
+                                              fontFamily: 'Raleway'))),
                                 if (widget.currentPosition !=
                                     widget.cat.length - 1)
-                                  TextButton(
+                                  RawMaterialButton(
+                                      fillColor: AppColor.accentPurple,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                      ),
                                       onPressed: () {
                                         currentIndex = 0;
 
@@ -545,7 +611,10 @@ class _CardScreenState extends State<CardScreen> {
 
                                         setState(() {});
                                       },
-                                      child: Text("Next coder"))
+                                      child: Text("Next coder",
+                                          style: TextStyle(
+                                              fontFamily: 'Raleway',
+                                              color: AppColor.white)))
                               ],
                             ),
                           ),
@@ -563,24 +632,32 @@ class _CardScreenState extends State<CardScreen> {
     return Text(
       title,
       style: TextStyle(
-          fontFamily: 'RobotoSlab',
+          fontFamily: 'Raleway',
           fontWeight: FontWeight.bold,
           fontSize: 24,
-          color: Colors.black),
+          color: AppColor.white),
     );
   }
 
   version(version) {
     return Text(
       'Version: $version',
-      style: TextStyle(fontSize: 16, color: Colors.black),
+      style: TextStyle(
+        fontSize: 16,
+        color: AppColor.white,
+        fontFamily: 'Raleway',
+      ),
     );
   }
 
   language(language) {
     return Text(
       'Language: $language',
-      style: TextStyle(fontSize: 16, color: Colors.black),
+      style: TextStyle(
+        fontSize: 16,
+        color: AppColor.yellow,
+        fontFamily: 'Raleway',
+      ),
     );
   }
 
@@ -599,14 +676,15 @@ class _CardScreenState extends State<CardScreen> {
           child: SingleChildScrollView(
             controller: scrollController,
             child: Container(
-              margin: EdgeInsets.only(right: 15),
+              margin: EdgeInsets.only(right: 15, top: 10),
               child: Text(
                 '$desc',
                 overflow: TextOverflow.clip,
                 style: TextStyle(
+                    height: 1.3,
                     fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal),
+                    color: AppColor.white,
+                    fontWeight: FontWeight.w400),
               ),
             ),
           ),
