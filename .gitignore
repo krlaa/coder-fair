@@ -54,4 +54,6 @@ app.*.map.json
 # Enviroment files
 *.env
 
+lib/secrets.dart
+
 db.json

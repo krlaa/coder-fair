@@ -11,12 +11,22 @@ class Project {
   String videoURL;
   String language;
   String description;
+  String coderName;
+  String version;
+  String status;
+  String identifier;
+  late bool _liked = false;
+  late String _likedCategory = "";
 
   Project(
       {required this.title,
       required this.videoURL,
       required this.language,
-      required this.description});
+      required this.description,
+      required this.coderName,
+      required this.version,
+      required this.status,
+      required this.identifier});
 
   Map<String, dynamic> toMap() {
     return {
@@ -27,19 +37,28 @@ class Project {
     };
   }
 
-  factory Project.fromMap(Map<String, dynamic> map, String title) {
+  factory Project.fromMap(Map<String, dynamic> map, String key, String name) {
     return Project(
-      title: title,
-      videoURL: map['video_url'],
-      language: map['language'],
-      description: map['desc'],
-    );
+        identifier: key,
+        title: "${map['title']}",
+        videoURL: "${map['video_url']}",
+        language: map['language'],
+        status: "${map['status']}",
+        description: map['description'],
+        coderName: name,
+        version: "${map['version']}.0");
   }
 
   String toJson() => json.encode(toMap());
 
   @override
   String toString() {
-    return 'Project(title: $title)';
+    return 'Project(title: $title, videoURL: $videoURL, language: $language, description: $description, coderName: $coderName, version: $version, status: $status, identifier: $identifier, _liked: $_liked, _likedCategory: $_likedCategory)';
   }
+
+  get liked => _liked;
+  set liked(value) => _liked = value;
+
+  get likedCategory => _likedCategory;
+  set likedCategory(value) => _likedCategory = value;
 }

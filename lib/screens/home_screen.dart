@@ -1,179 +1,274 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:coder_fair/constants/extenstions.dart';
 import 'package:coder_fair/controllers/home_screen_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:coder_fair/controllers/login_screen_controller.dart';
+import 'package:coder_fair/models/student_model.dart';
+import 'package:coder_fair/screens/login_screen.dart';
+import 'package:coder_fair/utils/blend_mask.dart';
+import 'package:coder_fair/widgets/carousel.dart';
+import 'package:coder_fair/widgets/summer_camp_dialog.dart';
+import "package:flutter/material.dart";
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:coder_fair/screens/stacked_card_carousel.dart';
+import 'package:coder_fair/constants/app_colors.dart';
+import 'dart:html' as html;
 
-class HomeScreen extends GetView<HomeScreenController> {
+import 'card_screen.dart';
+
+class HomeScreen extends StatefulWidget {
   @override
-  Widget build(
-    BuildContext context,
-  ) {
-    YoutubePlayerController _controller = YoutubePlayerController(
-      initialVideoId: 'K18cpp_-gP8',
-      params: YoutubePlayerParams(
-        autoPlay: true,
-        showControls: false,
-        showFullscreenButton: true,
-      ),
-    );
-    return LayoutBuilder(builder: (context, constraints) {
-      print(controller.categories);
-      return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => controller.changeExpanded(true),
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late HomeScreenController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = Get.put(HomeScreenController());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        return true;
+      },
+      child: Scaffold(
+        // extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          // leadingWidth: 160,
+          centerTitle: false,
+          automaticallyImplyLeading: false,
+          actions: [
+            PopupMenuButton(
+              child: Icon(Icons.menu),
+              color: AppColor.buttonGreen,
+              onSelected: (value) {
+                if (value == 1) {
+                  Get.offAll(LoginScreen());
+                }
+                if (value == 2) {
+                  Get.dialog(SummerCampDialog());
+                }
+              },
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    value: 1,
+                    child: Text("Sign Out"),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: Text("Summer Camps"),
+                  ),
+                ];
+              },
+            ),
+          ],
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          toolbarHeight: 120, // Set this height
+          title: Image.asset(
+            "images/cf-logo.png",
+            height: 50,
           ),
-          body: SafeArea(
-            child: DefaultTextStyle(
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 15.sp),
-              child: Row(
+        ),
+        endDrawer: SizedBox(
+          width: 90.w,
+          child: Drawer(
+            child: ListTile(
+              title: Text("Sign Out"),
+            ),
+          ),
+        ),
+
+        extendBodyBehindAppBar: true,
+        backgroundColor: AppColor.black,
+        body: DefaultTextStyle(
+            style: TextStyle(fontFamily: 'Raleway', color: AppColor.h2Blk),
+            child: Container(
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisSize: MainAxisSize.min,
                 children: [
-                  Flexible(
-                      flex: 4,
-                      child: Obx(() {
-                        if (!controller.loadingStudentNames.value) {
-                          return Scrollbar(
-                            isAlwaysShown: true,
-                            showTrackOnHover: true,
-                            child: ListView.builder(
-                              itemCount: controller.categories.length,
-                              itemBuilder: (context, index) {
-                                var cat = controller.categories.values
-                                    .toList()[index];
-                                print(controller
-                                    .listOfControllers[index].hashCode);
-                                return Row(
-                                  children: [
-                                    Flexible(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                              '${controller.categories.keys.toList()[index]}'),
-                                          CarouselSlider.builder(
-                                              carouselController: controller
-                                                  .listOfControllers[index],
-                                              itemCount: cat.length,
-                                              itemBuilder:
-                                                  (context, index1, realIndex) {
-                                                return Material(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  elevation: 8,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15)),
-                                                    child: Center(
-                                                        child:
-                                                            Text(cat[index1])),
-                                                  ),
-                                                );
+                  SizedBox(
+                    height: 120,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                        "Hello\n${controller.loginState.currentUser.full_name.split(' ')[0]}👋",
+                        style: Theme.of(context).textTheme.headline5?.copyWith(
+                            fontFamily: 'Raleway', color: AppColor.white)),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.all(25),
+                      decoration: BoxDecoration(
+                          color: AppColor.darkGrey,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Row(
+                        children: [
+                          Flexible(flex: 1, child: Container()),
+                          Flexible(
+                            flex: 1,
+                            child: Material(
+                              elevation: 10,
+                              color: Colors.transparent,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: AppColor.mediumGrey,
+                                    borderRadius: BorderRadius.circular(15)),
+                                padding: EdgeInsets.all(20),
+                                child: Obx(() {
+                                  List keys =
+                                      controller.categories.keys.toList();
+                                  if (!controller.loadingStudentNames) {
+                                    return DefaultTabController(
+                                        length: keys.length,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            TabBar(
+                                              labelColor: AppColor.white,
+                                              unselectedLabelColor:
+                                                  AppColor.white,
+                                              // indicatorSize: TabBarIndicatorSize.label,
+                                              indicator: BoxDecoration(
+                                                color: AppColor.accentBlue,
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                              ),
+                                              onTap: (value) {
+                                                controller.currentCategory =
+                                                    controller.categories.keys
+                                                        .toList()[value];
                                               },
-                                              options: CarouselOptions(
-                                                  onPageChanged:
-                                                      (index, reason) {
-                                                    controller.loadStudent(
-                                                        cat[index]);
-                                                  },
-                                                  viewportFraction: 0.3,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  height: 200,
-                                                  initialPage: 0,
-                                                  enlargeCenterPage: true,
-                                                  enableInfiniteScroll:
-                                                      cat.length > 2)),
-                                        ],
-                                      ),
-                                    ),
-                                    FloatingActionButton(onPressed: () {
-                                      CarouselController x =
-                                          controller.listOfControllers[index];
-                                      x.nextPage(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.linear);
-                                    })
-                                  ],
-                                );
-                              },
-                            ),
-                          );
-                        } else {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            backgroundColor: Colors.white,
-                            color: Colors.white,
-                          ));
-                        }
-                      })),
-                  if (constraints.maxWidth > 1250)
-                    Flexible(
-                        flex: 3,
-                        child: Expanded(
-                          child: Obx(
-                            () => Container(
-                                color: Colors.green,
-                                child: !controller.loadingStudentInfo.value
-                                    ? Column(
-                                        children: [
-                                          Text(
-                                              "${controller.currentStudent.value.codeCoach}"),
-                                          YoutubePlayerControllerProvider(
-                                              // Provides controller to all the widget below it.
-                                              controller: _controller,
-                                              child: YoutubePlayerIFrame(
-                                                controller: _controller,
-                                                aspectRatio: 16 / 15,
-                                              )),
-                                          YoutubePlayerControllerProvider(
-                                              // Provides controller to all the widget below it.
-                                              controller: _controller,
-                                              child: YoutubeValueBuilder(
-                                                controller:
-                                                    _controller, // This can be omitted, if using `YoutubePlayerControllerProvider`
-                                                builder: (context, value) {
-                                                  return IconButton(
-                                                    icon: Icon(
-                                                      value.playerState ==
-                                                              PlayerState
-                                                                  .playing
-                                                          ? Icons.pause
-                                                          : Icons.play_arrow,
-                                                    ),
-                                                    onPressed: value.isReady
-                                                        ? () {
-                                                            context.ytController
-                                                                .play();
-                                                            value.playerState ==
-                                                                    PlayerState
-                                                                        .playing
-                                                                ? context
-                                                                    .ytController
-                                                                    .pause()
-                                                                : context
-                                                                    .ytController
-                                                                    .play();
-                                                          }
-                                                        : null,
-                                                  );
-                                                },
-                                              ))
-                                        ],
-                                      )
-                                    : Center(
+                                              tabs: keys
+                                                  .map((x) => genericTab("$x"))
+                                                  .toList(),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                width: Device.width >= 1200
+                                                    ? 40.w
+                                                    : 90.w,
+                                                child: TabBarView(
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    children: keys
+                                                        .asMap()
+                                                        .entries
+                                                        .map((entry) {
+                                                          return ValueBuilder<
+                                                                  List?>(
+                                                              initialValue: controller
+                                                                  .categories
+                                                                  .values
+                                                                  .toList()[
+                                                                      entry.key]
+                                                                  .where((x) => (x
+                                                                              .eligible ==
+                                                                          true ||
+                                                                      controller
+                                                                          .loginState
+                                                                          .currentUser
+                                                                          .coders
+                                                                          .contains(x
+                                                                              .coderName)))
+                                                                  .toList(),
+                                                              builder: (value,
+                                                                  update) {
+                                                                return Column(
+                                                                  children: [
+                                                                    TextFormField(
+                                                                        autofillHints: [
+                                                                          "hi"
+                                                                        ],
+                                                                        onChanged:
+                                                                            (x) {
+                                                                          if (x
+                                                                              .isEmpty) {
+                                                                            update(controller.categories.values.toList()[entry.key].where((x) => (x.eligible == true || controller.loginState.currentUser.coders.contains(x.coderName))).toList());
+                                                                          } else {
+                                                                            update(controller.categories.values.toList()[entry.key]!.where((element) {
+                                                                              Student j = element;
+                                                                              return j.coderName.toLowerCase().contains(x.toLowerCase()) || j.codeCoach.toLowerCase().contains(x.toLowerCase());
+                                                                            }).toList());
+                                                                          }
+                                                                        }),
+                                                                    Expanded(
+                                                                      child:
+                                                                          Container(
+                                                                        // color: Colors.black,
+                                                                        width:
+                                                                            375,
+                                                                        child:
+                                                                            CarouselBuilderWithIndicator(
+                                                                          categoryName: controller
+                                                                              .categories
+                                                                              .keys
+                                                                              .toList()[entry.key],
+                                                                          cat:
+                                                                              value!,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              });
+                                                        })
+                                                        .toList()
+                                                        .cast<Widget>()),
+                                              ),
+                                            )
+                                          ],
+                                        ));
+                                  } else {
+                                    return Center(
                                         child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                        ),
-                                      )),
+                                            color: AppColor.buttonGreen));
+                                  }
+                                }),
+                              ),
+                            ),
                           ),
-                        ))
+                          Flexible(flex: 1, child: Container()),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ));
-    });
+            )),
+      ),
+    );
   }
+}
+
+Widget genericTab(String tabTitle) {
+  return Tooltip(
+    message: tabTitle,
+    child: Tab(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              tabTitle.sanatize(),
+              style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 15),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

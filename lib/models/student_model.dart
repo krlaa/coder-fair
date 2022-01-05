@@ -1,6 +1,9 @@
 import 'dart:convert';
-import 'user_model.dart';
+
+import 'package:collection/collection.dart';
+
 import 'project_model.dart';
+import 'user_model.dart';
 
 /// Represents a student. Contains necessary information to identify within the app as well details about their project(s)
 ///
@@ -13,26 +16,74 @@ class Student {
   String coderName;
   String profilePictureURL;
   List<Project> listOfProjects;
+  String first_name;
   String codeCoach;
+  bool loadFull;
+  bool eligible;
+  late bool seen = false;
 
-  Student({
-    this.coderName = "",
-    this.profilePictureURL = "",
-    this.listOfProjects = const [],
-    this.codeCoach = "",
-  });
+  Student(
+      {this.coderName = "",
+      this.first_name = "",
+      this.profilePictureURL = "",
+      this.listOfProjects = const [],
+      this.codeCoach = "",
+      this.loadFull = false,
+      this.eligible = false});
 
-  Map<String, dynamic> toMap() {
-    return {
-      'coderName': coderName,
-      'profilePictureURL': profilePictureURL,
-      'listOfProjects': listOfProjects.map((x) => x.toMap()).toList(),
-      'codeCoach': codeCoach,
-    };
+  set seenStudent(value) => this.seen = value;
+
+  factory Student.fromJson(Map<String, dynamic> parsedJson, String name) {
+    return Student(
+        codeCoach: parsedJson["coach"],
+        first_name: parsedJson["first_name"],
+        coderName: name,
+        eligible: parsedJson["eligible"],
+        profilePictureURL: parsedJson["coder_pic_url"]);
+  }
+  @override
+  String toString() {
+    return 'Student(firstName: $first_name, profilePictureURL: $profilePictureURL, listOfProjects: $listOfProjects, codeCoach: $codeCoach, loadFull: $loadFull)';
+  }
+
+  Student copyWith(
+      {String? coderName,
+      String? profilePictureURL,
+      List<Project>? listOfProjects,
+      String? codeCoach,
+      String? first_name,
+      bool? loadFull,
+      bool? eligible}) {
+    return Student(
+      eligible: eligible ?? this.eligible,
+      first_name: first_name ?? this.first_name,
+      coderName: coderName ?? this.coderName,
+      profilePictureURL: profilePictureURL ?? this.profilePictureURL,
+      listOfProjects: listOfProjects ?? this.listOfProjects,
+      codeCoach: codeCoach ?? this.codeCoach,
+      loadFull: loadFull ?? this.loadFull,
+    );
   }
 
   @override
-  String toString() {
-    return 'Student(coderName: $coderName,  listOfProjects: $listOfProjects, codeCoach: $codeCoach, )';
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
+
+    return other is Student &&
+        other.coderName == coderName &&
+        other.profilePictureURL == profilePictureURL &&
+        listEquals(other.listOfProjects, listOfProjects) &&
+        other.codeCoach == codeCoach &&
+        other.loadFull == loadFull;
+  }
+
+  @override
+  int get hashCode {
+    return coderName.hashCode ^
+        profilePictureURL.hashCode ^
+        listOfProjects.hashCode ^
+        codeCoach.hashCode ^
+        loadFull.hashCode;
   }
 }

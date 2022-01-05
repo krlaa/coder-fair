@@ -9,7 +9,25 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:coder_fair/utils/blend_mask.dart';
 
-class LoginScreen extends GetView<LoginScreenController> {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late LoginScreenController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.find<LoginScreenController>();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Size _size = MediaQuery.of(context).size;
@@ -17,20 +35,12 @@ class LoginScreen extends GetView<LoginScreenController> {
       style: TextStyle(fontFamily: 'Raleway'),
       child: Scaffold(
           body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            lightBlue,
-            darkBlue,
-          ],
-        )),
+        decoration: BoxDecoration(color: AppColor.black),
 
         // alignment: Alignment.center,
         child: Stack(
           children: [
-            blendMask(),
+            // blendMask(),
             bodySection(context),
           ],
         ),
@@ -56,13 +66,31 @@ class LoginScreen extends GetView<LoginScreenController> {
 
   Center bodySection(BuildContext context) {
     return Center(
-      child: SingleChildScrollView(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          tcsLogo(),
-          tampa2022(),
-          cfLogo(),
-          buildForm(context),
-        ]),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: EdgeInsets.all(20),
+          width: 400,
+
+          // decoration: BoxDecoration(
+          //     gradient: LinearGradient(
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          //   colors: [
+          //     AppColor.lightBlue,
+          //     AppColor.darkBlue,
+          //   ],
+          // )),
+          child: SingleChildScrollView(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              tcsLogo(),
+              tampa2022(),
+              cfLogo(),
+              buildForm(context),
+            ]),
+          ),
+        ),
       ),
     );
   }
@@ -96,7 +124,7 @@ class LoginScreen extends GetView<LoginScreenController> {
         'Tampa 2022',
         style: TextStyle(
             fontFamily: 'RobotoSlab',
-            fontSize: 20.sp,
+            fontSize: 20,
             // fontWeight: FontWeight.bold,
             color: Colors.white),
       ),
@@ -111,7 +139,7 @@ class LoginScreen extends GetView<LoginScreenController> {
         child: Obx(() => Column(
               children: [
                 Container(
-                  width: 60.w,
+                  width: 75.w,
                   child: TextFormField(
                     controller: controller.email,
                     keyboardType: TextInputType.emailAddress,
@@ -120,27 +148,24 @@ class LoginScreen extends GetView<LoginScreenController> {
                       AutofillHints.username
                     ],
                     textInputAction: TextInputAction.next,
-                    style: TextStyle(fontSize: 15.sp),
+                    style: TextStyle(
+                      color: AppColor.white,
+                      fontSize: 18,
+                    ),
                     decoration: InputDecoration(
-                      fillColor: Colors.white,
                       filled: true,
                       hintText: "Email",
-                      hintStyle: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 15.sp,
-                        color: Colors.grey,
-                      ),
                     ),
                     validator: (value) {
                       if (value == null || !GetUtils.isEmail(value)) {
-                        return 'Please enter valid email';
+                        return '!!! Please enter valid email';
                       }
                     },
                   ),
                 ),
                 Padding(padding: EdgeInsets.all(10.0)),
                 Container(
-                  width: 60.w,
+                  width: 75.w,
                   child: TextFormField(
                     onChanged: (val) {
                       if (val.length == 0) {
@@ -154,28 +179,23 @@ class LoginScreen extends GetView<LoginScreenController> {
                     ],
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter a password';
+                        return '!!! Please enter a password';
                       }
                     },
-                    style: TextStyle(fontSize: 15.sp),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: AppColor.white,
+                    ),
                     decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
                       hintText: "Password",
-                      hintStyle: TextStyle(
-                        fontFamily: 'Raleway',
-                        fontSize: 15.sp,
-                        color: Colors.grey,
-                      ),
                       suffixIcon: !controller.loadedFromSS
                           ? IconButton(
                               splashRadius: 20,
                               icon: Icon(
-                                // Based on passwordVisible state choose the icon
                                 controller.obscurePassword
                                     ? Icons.visibility
                                     : Icons.visibility_off,
-                                color: Theme.of(context).primaryColorDark,
+                                color: AppColor.accentGreen,
                               ),
                               onPressed: () {
                                 controller.obscurePassword =
@@ -191,7 +211,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: SizedBox(
-                    width: 60.w,
+                    width: 75.w,
                     child: ElevatedButton(
                       onPressed: () {
                         // Validate returns true if the form is valid, or false otherwise.
@@ -201,12 +221,15 @@ class LoginScreen extends GetView<LoginScreenController> {
                         } else {
                           Get.snackbar(
                             "Error",
-                            "Nope",
+                            "Email or Password was not correct or entered. Please try again",
+                            backgroundColor: AppColor.mediumGrey,
+                            colorText: AppColor.white,
+                            borderRadius: 5,
                           );
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: buttonGreen,
+                        primary: AppColor.buttonGreen,
                         padding:
                             EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       ),
@@ -214,12 +237,17 @@ class LoginScreen extends GetView<LoginScreenController> {
                           ? Text('Login',
                               style: TextStyle(
                                 fontFamily: 'Raleway',
-                                fontSize: 15.sp,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ))
-                          : CircularProgressIndicator(
-                              color: Colors.white,
+                          : SizedBox(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.0,
+                              ),
+                              height: 15.0,
+                              width: 15.0,
                             ),
                     ),
                   ),
@@ -236,7 +264,7 @@ class LoginScreen extends GetView<LoginScreenController> {
       child: Text("Forgot Password?",
           style: TextStyle(
             fontFamily: 'Raleway',
-            fontSize: 14.sp,
+            fontSize: 18,
             color: Colors.white,
           )),
       onPressed: () {
@@ -248,24 +276,28 @@ class LoginScreen extends GetView<LoginScreenController> {
             titleStyle: TextStyle(
               fontFamily: 'RobotoSlab',
               fontWeight: FontWeight.bold,
-              fontSize: 17,
-              color: h2Blk,
+              fontSize: 18,
+              color: AppColor.h2Blk,
             ),
             content: Center(
               child: Wrap(
                 alignment: WrapAlignment.center,
                 children: [
                   Text("Contact theCoderSchool at: ",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontFamily: 'Raleway', fontSize: 14, color: h2Blk)),
+                          fontFamily: 'Raleway',
+                          fontSize: 18,
+                          color: AppColor.h2Blk)),
                   InkWell(
                       child: Text("(813) 422-5566",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: 'Raleway',
-                              fontSize: 14,
-                              color: darkBlue)),
+                              fontSize: 18,
+                              color: AppColor.accentBlue)),
                       onTap: () async {
-                        if (!await launch("8134225566"))
+                        if (!await launch("tel: 813-422-5566"))
                           throw 'Could not launch 8134225566';
                       }),
                 ],
@@ -277,26 +309,31 @@ class LoginScreen extends GetView<LoginScreenController> {
 
   Container rememberPassword() {
     return Container(
-      width: 60.0.w,
+      width: 75.w,
       child: Obx(
-        () => CheckboxListTile(
-            activeColor: buttonGreen,
-            dense: true,
-            contentPadding: EdgeInsets.only(top: 15),
-            tileColor: Colors.white,
-            selectedTileColor: Colors.white,
-            controlAffinity: ListTileControlAffinity.leading,
-            title: Text(
-              'Remember Password?',
-              maxLines: 2,
-              style: TextStyle(
-                fontFamily: 'Raleway',
-                fontSize: 14.sp,
-                color: Colors.white,
+        () => Theme(
+          // For Color Change,
+          data: ThemeData(unselectedWidgetColor: AppColor.white),
+          child: CheckboxListTile(
+              autofocus: false,
+              activeColor: AppColor.buttonGreen,
+              dense: true,
+              contentPadding: EdgeInsets.only(top: 15),
+              tileColor: Colors.white,
+              selectedTileColor: Colors.white,
+              controlAffinity: ListTileControlAffinity.leading,
+              title: Text(
+                'Remember Password?',
+                maxLines: 2,
+                style: TextStyle(
+                  fontFamily: 'Raleway',
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            value: controller.rememberPassword,
-            onChanged: (val) => controller.rememberPassword = val),
+              value: controller.rememberPassword,
+              onChanged: (val) => controller.rememberPassword = val),
+        ),
       ),
     );
   }
