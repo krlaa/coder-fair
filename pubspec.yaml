@@ -62,6 +62,7 @@ flutter:
     - images/bg-1.jpg
     - images/3-in-1.png
     - images/carousel_card_bg.png
+    - images/final_metaverse.jpg
 
   fonts:
     - family: Raleway

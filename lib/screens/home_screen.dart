@@ -7,13 +7,13 @@ import 'package:coder_fair/screens/login_screen.dart';
 import 'package:coder_fair/utils/blend_mask.dart';
 import 'package:coder_fair/widgets/carousel.dart';
 import 'package:coder_fair/widgets/summer_camp_dialog.dart';
+import 'package:coder_fair/widgets/table.dart';
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:coder_fair/screens/stacked_card_carousel.dart';
 import 'package:coder_fair/constants/app_colors.dart';
 import 'dart:html' as html;
-
 import 'card_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +23,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late HomeScreenController controller;
+
+  ScrollController sc = ScrollController();
 
   @override
   void initState() {
@@ -46,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             PopupMenuButton(
               child: Icon(Icons.menu),
-              color: AppColor.buttonGreen,
+              color: AppColor.mediumGrey,
               onSelected: (value) {
                 if (value == 1) {
                   Get.offAll(LoginScreen());
@@ -59,11 +61,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 return [
                   PopupMenuItem(
                     value: 1,
-                    child: Text("Sign Out"),
+                    child: Text("Sign Out",
+                        style: TextStyle(
+                            color: AppColor.white, fontFamily: 'Raleway')),
                   ),
                   PopupMenuItem(
                     value: 2,
-                    child: Text("Summer Camps"),
+                    child: Text("Summer Camps",
+                        style: TextStyle(
+                            color: AppColor.white, fontFamily: 'Raleway')),
                   ),
                 ];
               },
@@ -81,7 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
           width: 90.w,
           child: Drawer(
             child: ListTile(
-              title: Text("Sign Out"),
+              title: Text("Sign Out",
+                  style:
+                      TextStyle(color: AppColor.white, fontFamily: 'Raleway')),
             ),
           ),
         ),
@@ -89,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
         extendBodyBehindAppBar: true,
         backgroundColor: AppColor.black,
         body: DefaultTextStyle(
-            style: TextStyle(fontFamily: 'Raleway', color: AppColor.h2Blk),
+            style: TextStyle(fontFamily: 'Raleway', color: AppColor.white),
             child: Container(
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.start,
@@ -100,9 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 120,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.only(left: 30.0),
                     child: Text(
-                        "Hello\n${controller.loginState.currentUser.full_name.split(' ')[0]}👋",
+                        "Hello,\n${controller.loginState.currentUser.full_name.split(' ')[0]} 👋",
                         style: Theme.of(context).textTheme.headline5?.copyWith(
                             fontFamily: 'Raleway', color: AppColor.white)),
                   ),
@@ -114,7 +122,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(15)),
                       child: Row(
                         children: [
-                          Flexible(flex: 1, child: Container()),
+                          Flexible(
+                              flex: 1,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 30),
+                                    Text("Upcoming Events",
+                                        style: TextStyle(
+                                            fontFamily: 'Raleway',
+                                            color: AppColor.white,
+                                            fontSize: 24)),
+                                    SizedBox(height: 50),
+                                    Container(
+                                      child: Image.asset(
+                                          'images/final_metaverse.jpg'),
+                                    ),
+                                  ],
+                                ),
+                              )),
                           Flexible(
                             flex: 1,
                             child: Material(
@@ -186,22 +214,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   update) {
                                                                 return Column(
                                                                   children: [
-                                                                    TextFormField(
-                                                                        autofillHints: [
-                                                                          "hi"
-                                                                        ],
-                                                                        onChanged:
-                                                                            (x) {
-                                                                          if (x
-                                                                              .isEmpty) {
-                                                                            update(controller.categories.values.toList()[entry.key].where((x) => (x.eligible == true || controller.loginState.currentUser.coders.contains(x.coderName))).toList());
-                                                                          } else {
-                                                                            update(controller.categories.values.toList()[entry.key]!.where((element) {
-                                                                              Student j = element;
-                                                                              return j.coderName.toLowerCase().contains(x.toLowerCase()) || j.codeCoach.toLowerCase().contains(x.toLowerCase());
-                                                                            }).toList());
-                                                                          }
-                                                                        }),
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          top:
+                                                                              20,
+                                                                          bottom:
+                                                                              20),
+                                                                      child:
+                                                                          TextFormField(
+                                                                              style: TextStyle(
+                                                                                  color: AppColor
+                                                                                      .white,
+                                                                                  fontWeight: FontWeight
+                                                                                      .w400),
+                                                                              autofillHints: [
+                                                                                "Search for coder\'s \'Coder Name\'"
+                                                                              ],
+                                                                              onChanged: (x) {
+                                                                                if (x.isEmpty) {
+                                                                                  update(controller.categories.values.toList()[entry.key].where((x) => (x.eligible == true || controller.loginState.currentUser.coders.contains(x.coderName))).toList());
+                                                                                } else {
+                                                                                  update(controller.categories.values.toList()[entry.key]!.where((element) {
+                                                                                    Student j = element;
+                                                                                    return j.coderName.toLowerCase().contains(x.toLowerCase()) || j.codeCoach.toLowerCase().contains(x.toLowerCase());
+                                                                                  }).toList());
+                                                                                }
+                                                                              }),
+                                                                    ),
                                                                     Expanded(
                                                                       child:
                                                                           Container(
@@ -238,7 +278,26 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                          Flexible(flex: 1, child: Container()),
+                          Flexible(
+                              flex: 1,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 30),
+                                    Text("Metaverse Camp Schedule",
+                                        style: TextStyle(
+                                            fontFamily: 'Raleway',
+                                            color: AppColor.white,
+                                            fontSize: 24)),
+                                    SizedBox(height: 50),
+                                    SizedBox(
+                                      child: CustomSchedule(sc: sc),
+                                    ),
+                                  ],
+                                ),
+                              )),
                         ],
                       ),
                     ),
@@ -263,7 +322,7 @@ Widget genericTab(String tabTitle) {
             alignment: Alignment.center,
             child: Text(
               tabTitle.sanatize(),
-              style: TextStyle(fontFamily: 'RobotoSlab', fontSize: 15),
+              style: TextStyle(fontFamily: 'Raleway', fontSize: 16),
               textAlign: TextAlign.center,
             ),
           ),
