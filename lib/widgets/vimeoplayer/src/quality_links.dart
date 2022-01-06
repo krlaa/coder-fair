@@ -18,6 +18,12 @@ class QualityLinks {
     try {
       var response = await http.post(Uri.parse('https://ogzhcm.deta.dev/proxy'),
           body: {"link": "https://player.vimeo.com/video/$videoId/config"});
+      // var response = await http.get(
+      //     Uri.parse(
+      //       "https://player.vimeo.com/video/$videoId/config",
+      //     ),
+      //     headers: {"Access-Control-Allow-Origin": "*"});
+      print(response.body);
       var jsonData =
           jsonDecode(response.body)['request']['files']['progressive'];
 
@@ -25,6 +31,7 @@ class QualityLinks {
           key: (item) => "${item['quality']}", value: (item) => item['url']);
       return videoList;
     } catch (error) {
+      print(error.toString());
       return null;
     }
   }

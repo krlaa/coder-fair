@@ -43,7 +43,7 @@ class Student {
   }
   @override
   String toString() {
-    return 'Student(firstName: $first_name, profilePictureURL: $profilePictureURL, listOfProjects: $listOfProjects, codeCoach: $codeCoach, loadFull: $loadFull)';
+    return 'loadFull: $loadFull)';
   }
 
   Student copyWith(

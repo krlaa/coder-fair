@@ -15,7 +15,7 @@ class APIClient {
   var client = http.Client();
   var baseDomain = usingEmulator
       ? "http://localhost:9000/"
-      : "https://coder-fair-default-rtdb.firebaseio.com/";
+      : "https://codertest-4078b-default-rtdb.firebaseio.com/";
   var query = usingEmulator ? "?ns=coder-fair" : "";
   var authEmulatorDomain = usingEmulator ? "localhost:9099/" : "";
 

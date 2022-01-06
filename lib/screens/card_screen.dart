@@ -50,6 +50,17 @@ class _CardScreenState extends State<CardScreen> {
     for (var item in widget.cat) {
       carousel_controllerList.add(CarouselController());
     }
+    pageController.addListener(() async {
+      for (var i = 0; i < 4; i++)
+        if (pageController.page!.toInt() + i < widget.cat.length) {
+          if (!widget.cat[pageController.page!.toInt() + i].loadFull) {
+            print("loading...");
+            await loadHere(pageController.page!.toInt() + i);
+            print(widget.cat);
+            setState(() {});
+          }
+        }
+    });
   }
 
   loadIfNull() async {
@@ -58,6 +69,14 @@ class _CardScreenState extends State<CardScreen> {
       widget.cat[widget.currentPosition] = await controller.loadAndReturn(
           widget.categoryName, widget.cat[widget.currentPosition]);
       setState(() {});
+    }
+  }
+
+  loadHere(index) async {
+    controller = Get.find();
+    if (!widget.cat[index].loadFull) {
+      widget.cat[index] = await controller.loadAndReturn(
+          widget.categoryName, widget.cat[index]);
     }
   }
 
@@ -97,6 +116,7 @@ class _CardScreenState extends State<CardScreen> {
                                 },
                                 itemCount: widget.cat.length,
                                 itemBuilder: (context, now) {
+                                  // loadHere(now);
                                   return Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 15.sp),
@@ -277,10 +297,6 @@ class _CardScreenState extends State<CardScreen> {
                                                       dotColor:
                                                           AppColor.lightGrey),
                                                   onDotClicked: (index) {
-                                                    print(
-                                                        " this is the current postion ${widget.currentPosition}");
-                                                    print(
-                                                        " this is the current index in ${widget.currentPosition}");
                                                     currentIndex = index;
                                                     carousel_controllerList[now]
                                                         .animateToPage(index);
