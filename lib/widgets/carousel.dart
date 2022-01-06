@@ -81,7 +81,7 @@ class _CarouselBuilderWithIndicatorState
                             duration: Duration(milliseconds: 300),
                             child: _index != 0
                                 ? FloatingActionButton(
-                                    backgroundColor: AppColor.buttonGreen,
+                                    backgroundColor: AppColor.accentBlue,
                                     child: RotatedBox(
                                         quarterTurns: 1,
                                         child: Icon(
@@ -166,13 +166,16 @@ class _CarouselBuilderWithIndicatorState
                                                                     .spaceAround,
                                                             children: [
                                                               Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceEvenly,
                                                                 children: [
                                                                   Padding(
                                                                     padding: const EdgeInsets
                                                                             .only(
-                                                                        left:
-                                                                            20,
-                                                                        top: 5),
+                                                                        left: 5,
+                                                                        top:
+                                                                            10),
                                                                     child:
                                                                         CircleAvatar(
                                                                       radius:
@@ -185,6 +188,11 @@ class _CarouselBuilderWithIndicatorState
                                                                       ),
                                                                     ),
                                                                   ),
+                                                                  Image.asset(
+                                                                    'images/tcs-logo-white.png',
+                                                                    width: 100,
+                                                                    height: 50,
+                                                                  )
                                                                 ],
                                                               ),
                                                               Row(
@@ -195,26 +203,39 @@ class _CarouselBuilderWithIndicatorState
                                                                   FittedBox(
                                                                     fit: BoxFit
                                                                         .fitHeight,
-                                                                    child: Icon(entry.value.seen ||
-                                                                            listOfSeen.containsKey(entry
-                                                                                .value.coderName)
-                                                                        ? Icons
-                                                                            .visibility
-                                                                        : Icons
-                                                                            .visibility_off),
+                                                                    child: Icon(
+                                                                      entry.value.seen ||
+                                                                              listOfSeen.containsKey(entry
+                                                                                  .value.coderName)
+                                                                          ? Icons
+                                                                              .visibility
+                                                                          : Icons
+                                                                              .visibility_off,
+                                                                      color: AppColor
+                                                                          .white,
+                                                                    ),
                                                                   ),
                                                                 ],
                                                               ),
-                                                              Text(loginState
-                                                                      .currentUser
-                                                                      .coders
-                                                                      .contains(entry
-                                                                          .value
-                                                                          .coderName)
-                                                                  ? entry.value
-                                                                      .first_name
-                                                                  : entry.value
-                                                                      .coderName),
+                                                              Text(
+                                                                loginState
+                                                                        .currentUser
+                                                                        .coders
+                                                                        .contains(entry
+                                                                            .value
+                                                                            .coderName)
+                                                                    ? entry
+                                                                        .value
+                                                                        .first_name
+                                                                    : entry
+                                                                        .value
+                                                                        .coderName,
+                                                                style: TextStyle(
+                                                                    color: AppColor
+                                                                        .white,
+                                                                    fontFamily:
+                                                                        'Raleway'),
+                                                              ),
                                                             ],
                                                           )),
                                                         ),
@@ -280,7 +301,7 @@ class _CarouselBuilderWithIndicatorState
                         child: AnimatedSwitcher(
                           child: _index != widget.cat.length - 1
                               ? FloatingActionButton(
-                                  backgroundColor: AppColor.buttonGreen,
+                                  backgroundColor: AppColor.accentBlue,
                                   child: RotatedBox(
                                       quarterTurns: 3,
                                       child:
