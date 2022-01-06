@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:coder_fair/models/role_model.dart';
 import 'package:coder_fair/models/user_model.dart';
 import 'package:coder_fair/screens/home_screen.dart';
+import 'package:coder_fair/utils/layout_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'api_controller.dart';
@@ -57,6 +58,11 @@ class LoginScreenController extends GetxController {
     _loadedFromSS.value = false;
   }
 
+  void resetPasswords(email) async {
+    print(email);
+    client.resetPassword(email);
+  }
+
   // Sign in function to sign in the user
   // isLoading is set to true so that the UI responds to processing of data
   // TODO: Create specific snackbar to react to custom errors.
@@ -78,7 +84,7 @@ class LoginScreenController extends GetxController {
     }
     formKey.currentState?.dispose();
     formKey = GlobalKey<FormState>();
-    await Get.to(HomeScreen());
+    await Get.to(AdaptiveHomeScreen());
   }
 
   @override

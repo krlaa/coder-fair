@@ -15,7 +15,7 @@ class APIClient {
   var client = http.Client();
   var baseDomain = usingEmulator
       ? "http://localhost:9000/"
-      : "https://codertest-4078b-default-rtdb.firebaseio.com/";
+      : "https://coder-fair-default-rtdb.firebaseio.com/";
   var query = usingEmulator ? "?ns=coder-fair" : "";
   var authEmulatorDomain = usingEmulator ? "localhost:9099/" : "";
 
@@ -105,7 +105,7 @@ class APIClient {
               'http${usingEmulator ? '' : 's'}://${authEmulatorDomain}identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(body));
-
+      print(response.body);
       return UserPayload.fromJson(response.body);
     } catch (e) {
       print(e.toString());
@@ -131,6 +131,28 @@ class APIClient {
           headers: {'Content-Type': 'application/json'},
           body: json.encode(likedCategory));
     } catch (e) {
+      throw Error;
+    }
+  }
+
+  void resetPassword(email) async {
+    // defines body of payload for signing in user
+    final body = {
+      "requestType": "PASSWORD_RESET",
+      'email': email,
+    };
+    // response from post request
+    var response;
+    try {
+      print(usingEmulator);
+      response = await client.post(
+          Uri.parse(
+              'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${API_KEY}'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(body));
+      print(response.body);
+    } catch (e) {
+      print(e.toString());
       throw Error;
     }
   }

@@ -25,7 +25,7 @@ class _CustomVideoState extends State<CustomVideo>
   void initState() {
     super.initState();
 
-    loadVideo();
+    if (mounted) loadVideo();
   }
 
   @override

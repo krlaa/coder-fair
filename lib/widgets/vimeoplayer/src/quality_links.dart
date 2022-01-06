@@ -23,7 +23,7 @@ class QualityLinks {
       //       "https://player.vimeo.com/video/$videoId/config",
       //     ),
       //     headers: {"Access-Control-Allow-Origin": "*"});
-      print(response.body);
+      // print(response.body);
       var jsonData =
           jsonDecode(response.body)['request']['files']['progressive'];
 

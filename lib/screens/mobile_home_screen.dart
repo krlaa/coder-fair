@@ -9,10 +9,9 @@ import 'package:coder_fair/utils/blend_mask.dart';
 import 'package:coder_fair/utils/custom_progress_indicator.dart';
 import 'package:coder_fair/utils/generic_tab.dart';
 import 'package:coder_fair/widgets/carousel.dart';
-import 'package:coder_fair/widgets/metaverse_schedule.dart';
+import 'package:coder_fair/widgets/mobile_info_overlay.dart';
 import 'package:coder_fair/widgets/summer_camp_dialog.dart';
 import 'package:coder_fair/widgets/table.dart';
-import 'package:coder_fair/widgets/upcoming_events.dart';
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -21,12 +20,14 @@ import 'package:coder_fair/constants/app_colors.dart';
 import 'dart:html' as html;
 import 'card_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class MobileHomeScreen extends StatefulWidget {
+  const MobileHomeScreen({Key? key}) : super(key: key);
+
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _MobileHomeScreenState createState() => _MobileHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MobileHomeScreenState extends State<MobileHomeScreen> {
   late HomeScreenController controller;
 
   ScrollController sc = ScrollController();
@@ -36,6 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     controller = Get.put(HomeScreenController());
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Get.dialog(SummerCampDialog());
+    });
   }
 
   @override
@@ -45,36 +49,59 @@ class _HomeScreenState extends State<HomeScreen> {
         return true;
       },
       child: Scaffold(
-        // extendBodyBehindAppBar: true,
         appBar: GlobalAppBar(),
-
         extendBodyBehindAppBar: true,
         backgroundColor: AppColor.black,
         body: DefaultTextStyle(
             style: TextStyle(fontFamily: 'Raleway', color: AppColor.white),
             child: Container(
+              margin: EdgeInsets.all(25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: kToolbarHeight + 15,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: Text(
-                        "Hello,\n${controller.loginState.currentUser.full_name.split(' ')[0]} 👋",
-                        style: Theme.of(context).textTheme.headline5?.copyWith(
-                            fontFamily: 'Raleway', color: AppColor.white)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          "Hello,\n${controller.loginState.currentUser.full_name.split(' ')[0]} 👋",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5
+                              ?.copyWith(
+                                  fontFamily: 'Raleway',
+                                  color: AppColor.white)),
+                      RawMaterialButton(
+                          fillColor: AppColor.accentPurple,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          onPressed: () {
+                            Get.dialog(MobileInfo());
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: SizedBox(
+                              child: Text("Metaverse Camp Info",
+                                  style: TextStyle(
+                                      color: AppColor.white,
+                                      fontFamily: 'Raleway')),
+                            ),
+                          ))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.all(25),
                       decoration: BoxDecoration(
                           color: AppColor.darkGrey,
                           borderRadius: BorderRadius.circular(15)),
                       child: Row(
                         children: [
-                          Flexible(flex: 1, child: UpcomingEvents()),
                           Flexible(
                             flex: 1,
                             child: Material(
@@ -112,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               tabs: keys
                                                   .map((x) => GenericTab(
                                                         title: x,
-                                                        fontSize: 16,
+                                                        fontSize: 14,
                                                       ))
                                                   .toList(),
                                             ),
@@ -156,28 +183,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               20,
                                                                           bottom:
                                                                               20),
-                                                                      child:
-                                                                          TextFormField(
-                                                                              style: TextStyle(
-                                                                                  color: AppColor
-                                                                                      .white,
-                                                                                  fontWeight: FontWeight
-                                                                                      .w400,
-                                                                                  fontSize:
-                                                                                      18),
-                                                                              autofillHints: [
-                                                                                "Search for coder\'s \'Coder Name\'"
-                                                                              ],
-                                                                              onChanged: (x) {
-                                                                                if (x.isEmpty) {
-                                                                                  update(controller.categories.values.toList()[entry.key].where((x) => (x.eligible == true || controller.loginState.currentUser.coders.contains(x.coderName))).toList());
-                                                                                } else {
-                                                                                  update(controller.categories.values.toList()[entry.key]!.where((element) {
-                                                                                    Student j = element;
-                                                                                    return j.coderName.toLowerCase().contains(x.toLowerCase()) || j.codeCoach.toLowerCase().contains(x.toLowerCase());
-                                                                                  }).toList());
-                                                                                }
-                                                                              }),
+                                                                      child: TextFormField(
+                                                                          decoration: InputDecoration(
+                                                                            filled:
+                                                                                true,
+                                                                            hintStyle:
+                                                                                TextStyle(
+                                                                              fontSize: 16,
+                                                                              color: Colors.grey,
+                                                                            ),
+                                                                            hintText:
+                                                                                "Search \'Coder Name\'",
+                                                                          ),
+                                                                          style: TextStyle(color: AppColor.white, fontWeight: FontWeight.w400, fontSize: 18),
+                                                                          autofillHints: [],
+                                                                          onChanged: (x) {
+                                                                            if (x.isEmpty) {
+                                                                              update(controller.categories.values.toList()[entry.key].where((x) => (x.eligible == true || controller.loginState.currentUser.coders.contains(x.coderName))).toList());
+                                                                            } else {
+                                                                              update(controller.categories.values.toList()[entry.key]!.where((element) {
+                                                                                Student j = element;
+                                                                                return j.coderName.toLowerCase().contains(x.toLowerCase()) || j.codeCoach.toLowerCase().contains(x.toLowerCase());
+                                                                              }).toList());
+                                                                            }
+                                                                          }),
                                                                     ),
                                                                     Expanded(
                                                                       child:
@@ -213,7 +242,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                          Flexible(flex: 1, child: MetaverseSchedule()),
                         ],
                       ),
                     ),

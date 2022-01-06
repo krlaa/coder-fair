@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     // Size _size = MediaQuery.of(context).size;
     return DefaultTextStyle(
-      style: TextStyle(fontFamily: 'Raleway'),
+      style: TextStyle(fontFamily: 'Raleway', color: AppColor.white),
       child: Scaffold(
           body: Container(
         decoration: BoxDecoration(color: AppColor.black),
@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Center tampa2022() {
     return Center(
       child: Text(
-        'Tampa 2022',
+        'Tampa January 2022',
         style: TextStyle(
             fontFamily: 'RobotoSlab',
             fontSize: 20,
@@ -268,40 +268,71 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.white,
           )),
       onPressed: () {
+        var reset = false;
+
         Get.defaultDialog(
+            backgroundColor: AppColor.black,
             radius: 5,
             titlePadding: EdgeInsets.all(20),
-            contentPadding: EdgeInsets.all(40),
-            title: "Forgot your password?",
+            contentPadding: EdgeInsets.all(20),
+            title: "Forgot your password?\nEnter your email below to reset",
             titleStyle: TextStyle(
-              fontFamily: 'RobotoSlab',
-              fontWeight: FontWeight.bold,
+              fontFamily: 'Raleway',
+              fontWeight: FontWeight.normal,
               fontSize: 18,
-              color: AppColor.h2Blk,
+              color: AppColor.white,
             ),
-            content: Center(
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                children: [
-                  Text("Contact theCoderSchool at: ",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontFamily: 'Raleway',
-                          fontSize: 18,
-                          color: AppColor.h2Blk)),
-                  InkWell(
-                      child: Text("(813) 422-5566",
-                          textAlign: TextAlign.center,
+            content: Container(
+              width: 400,
+              child: ValueBuilder<String?>(
+                  initialValue: "",
+                  builder: (snapshot, updater) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextFormField(
                           style: TextStyle(
-                              fontFamily: 'Raleway',
-                              fontSize: 18,
-                              color: AppColor.accentBlue)),
-                      onTap: () async {
-                        if (!await launch("tel: 813-422-5566"))
-                          throw 'Could not launch 8134225566';
-                      }),
-                ],
-              ),
+                            fontSize: 18,
+                            color: AppColor.white,
+                          ),
+                          onChanged: (value) => updater(value),
+                          decoration: InputDecoration(
+                              hintText: "Enter your email below to reset"),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        StatefulBuilder(builder: (context, _setstate) {
+                          return ElevatedButton(
+                              onPressed: () async {
+                                controller.resetPasswords(snapshot);
+                                await Future.delayed(
+                                    Duration(milliseconds: 300));
+
+                                _setstate(() {
+                                  reset = true;
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: AppColor.buttonGreen,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 50, vertical: 20),
+                              ),
+                              child: Text(
+                                  !reset
+                                      ? 'Reset'
+                                      : "Thank you!\nYou should get an email on how to reset your password",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: 'Raleway',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  )));
+                        }),
+                      ],
+                    );
+                  }),
             ));
       },
     );

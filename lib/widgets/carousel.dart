@@ -67,32 +67,39 @@ class _CarouselBuilderWithIndicatorState
         duration: Duration(milliseconds: 300),
         child: widget.cat.isEmpty
             ? Center(
-                child: Text("Nothing here"),
+                child: Text(
+                  "Nothing here",
+                  style: TextStyle(
+                      fontFamily: 'Raleway',
+                      color: AppColor.white,
+                      fontSize: 25),
+                ),
               )
             : Row(
                 // TODO: In this row add the two widgets for the side and set the visibility with if statement Device.width>=1920
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Flexible(
-                      flex: 1,
-                      child: Container(
-                        width: 60,
-                        child: AnimatedSwitcher(
-                            duration: Duration(milliseconds: 300),
-                            child: _index != 0
-                                ? FloatingActionButton(
-                                    backgroundColor: AppColor.accentBlue,
-                                    child: RotatedBox(
-                                        quarterTurns: 1,
-                                        child: Icon(
-                                            Icons.navigate_before_outlined)),
-                                    mini: true,
-                                    onPressed: () {
-                                      carouselController.previousPage();
-                                    },
-                                  )
-                                : Container()),
-                      )),
+                  if (MediaQuery.of(context).size.width > 1220)
+                    Flexible(
+                        flex: 1,
+                        child: Container(
+                          width: 60,
+                          child: AnimatedSwitcher(
+                              duration: Duration(milliseconds: 300),
+                              child: _index != 0
+                                  ? FloatingActionButton(
+                                      backgroundColor: AppColor.accentBlue,
+                                      child: RotatedBox(
+                                          quarterTurns: 1,
+                                          child: Icon(
+                                              Icons.navigate_before_outlined)),
+                                      mini: true,
+                                      onPressed: () {
+                                        carouselController.previousPage();
+                                      },
+                                    )
+                                  : Container()),
+                        )),
                   Flexible(
                     flex: 5,
                     child: SizedBox(
@@ -111,6 +118,7 @@ class _CarouselBuilderWithIndicatorState
                                     widget.cat.asMap().entries.toList()[index];
 
                                 return Stack(
+                                  alignment: AlignmentDirectional.center,
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
@@ -165,76 +173,92 @@ class _CarouselBuilderWithIndicatorState
                                                                 MainAxisAlignment
                                                                     .spaceAround,
                                                             children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceEvenly,
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left: 5,
-                                                                        top:
-                                                                            10),
-                                                                    child:
-                                                                        CircleAvatar(
-                                                                      radius:
-                                                                          35,
-                                                                      foregroundImage:
-                                                                          NetworkImage(
-                                                                        entry
-                                                                            .value
-                                                                            .profilePictureURL,
+                                                              Flexible(
+                                                                flex: 7,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceEvenly,
+                                                                  children: [
+                                                                    Flexible(
+                                                                        fit: FlexFit
+                                                                            .tight,
+                                                                        flex: 1,
+                                                                        child:
+                                                                            CircleAvatar(
+                                                                          radius:
+                                                                              35,
+                                                                          child:
+                                                                              ClipOval(
+                                                                            child:
+                                                                                Image.network(
+                                                                              entry.value.profilePictureURL,
+                                                                            ),
+                                                                          ),
+                                                                        )),
+                                                                    Flexible(
+                                                                        fit: FlexFit
+                                                                            .tight,
+                                                                        flex: 1,
+                                                                        child:
+                                                                            SizedBox(
+                                                                          child:
+                                                                              Image.asset(
+                                                                            'images/tcs-logo-white.png',
+                                                                            scale:
+                                                                                2.7,
+                                                                          ),
+                                                                        ))
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              Flexible(
+                                                                fit: FlexFit
+                                                                    .tight,
+                                                                flex: 1,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceEvenly,
+                                                                  children: [
+                                                                    Flexible(
+                                                                      fit: FlexFit
+                                                                          .tight,
+                                                                      flex: 1,
+                                                                      child:
+                                                                          FittedBox(
+                                                                        fit: BoxFit
+                                                                            .fitHeight,
+                                                                        child:
+                                                                            Text(
+                                                                          loginState.currentUser.coders.contains(entry.value.coderName)
+                                                                              ? entry.value.first_name
+                                                                              : entry.value.coderName,
+                                                                          style: TextStyle(
+                                                                              color: AppColor.white,
+                                                                              fontFamily: 'Raleway'),
+                                                                        ),
                                                                       ),
                                                                     ),
-                                                                  ),
-                                                                  Image.asset(
-                                                                    'images/tcs-logo-white.png',
-                                                                    width: 100,
-                                                                    height: 50,
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  FittedBox(
-                                                                    fit: BoxFit
-                                                                        .fitHeight,
-                                                                    child: Icon(
-                                                                      entry.value.seen ||
-                                                                              listOfSeen.containsKey(entry
-                                                                                  .value.coderName)
-                                                                          ? Icons
-                                                                              .visibility
-                                                                          : Icons
-                                                                              .visibility_off,
-                                                                      color: AppColor
-                                                                          .white,
+                                                                    Flexible(
+                                                                      fit: FlexFit
+                                                                          .tight,
+                                                                      flex: 1,
+                                                                      child:
+                                                                          Icon(
+                                                                        entry.value.seen ||
+                                                                                listOfSeen.containsKey(entry.value.coderName)
+                                                                            ? Icons.visibility
+                                                                            : Icons.visibility_off,
+                                                                        color: AppColor
+                                                                            .white,
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              Text(
-                                                                loginState
-                                                                        .currentUser
-                                                                        .coders
-                                                                        .contains(entry
-                                                                            .value
-                                                                            .coderName)
-                                                                    ? entry
-                                                                        .value
-                                                                        .first_name
-                                                                    : entry
-                                                                        .value
-                                                                        .coderName,
-                                                                style: TextStyle(
-                                                                    color: AppColor
-                                                                        .white,
-                                                                    fontFamily:
-                                                                        'Raleway'),
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ],
                                                           )),
@@ -280,13 +304,6 @@ class _CarouselBuilderWithIndicatorState
                                   onPageChanged: (index, reason) {
                                     setState(() {
                                       _index = index;
-                                      controller.paginateStudents(
-                                          (index),
-                                          controller.categories.keys.toList()[
-                                              controller.categories.keys
-                                                  .toList()
-                                                  .indexOf(
-                                                      widget.categoryName)]);
                                     });
                                   },
                                   scrollDirection: Axis.vertical)),
@@ -294,27 +311,28 @@ class _CarouselBuilderWithIndicatorState
                       ),
                     ),
                   ),
-                  Flexible(
-                      flex: 1,
-                      child: Container(
-                        width: 60,
-                        child: AnimatedSwitcher(
-                          child: _index != widget.cat.length - 1
-                              ? FloatingActionButton(
-                                  backgroundColor: AppColor.accentBlue,
-                                  child: RotatedBox(
-                                      quarterTurns: 3,
-                                      child:
-                                          Icon(Icons.navigate_before_outlined)),
-                                  mini: true,
-                                  onPressed: () {
-                                    carouselController.nextPage();
-                                  },
-                                )
-                              : Container(),
-                          duration: Duration(milliseconds: 300),
-                        ),
-                      )),
+                  if (MediaQuery.of(context).size.width > 1220)
+                    Flexible(
+                        flex: 1,
+                        child: Container(
+                          width: 60,
+                          child: AnimatedSwitcher(
+                            child: _index != widget.cat.length - 1
+                                ? FloatingActionButton(
+                                    backgroundColor: AppColor.accentBlue,
+                                    child: RotatedBox(
+                                        quarterTurns: 3,
+                                        child: Icon(
+                                            Icons.navigate_before_outlined)),
+                                    mini: true,
+                                    onPressed: () {
+                                      carouselController.nextPage();
+                                    },
+                                  )
+                                : Container(),
+                            duration: Duration(milliseconds: 300),
+                          ),
+                        )),
                 ],
               ));
   }

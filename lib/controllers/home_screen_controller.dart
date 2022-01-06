@@ -203,7 +203,6 @@ class HomeScreenController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-
     await fetchStudents();
 
     await Future.forEach(categories.keys.toList(), (String x) async {
