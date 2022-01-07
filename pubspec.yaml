@@ -67,8 +67,8 @@ flutter:
   fonts:
     - family: Raleway
       fonts:
-        - asset: fonts/Raleway-Regular.ttf
         - asset: fonts/Raleway-Bold.ttf
+
     - family: RobotoSlab
       fonts:
         - asset: fonts/RobotoSlab-Regular.ttf
