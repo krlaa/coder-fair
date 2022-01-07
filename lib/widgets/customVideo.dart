@@ -30,6 +30,7 @@ class _CustomVideoState extends State<CustomVideo>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return playerWidget;
   }
 

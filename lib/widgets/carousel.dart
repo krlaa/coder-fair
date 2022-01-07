@@ -62,6 +62,7 @@ class _CarouselBuilderWithIndicatorState
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AnimatedSwitcher(
         switchOutCurve: Curves.easeIn,
         duration: Duration(milliseconds: 300),

@@ -57,3 +57,6 @@ app.*.map.json
 lib/secrets.dart
 
 db.json
+./macos
+
+.dart_tool\ */

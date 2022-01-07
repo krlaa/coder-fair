@@ -1,25 +1,15 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:coder_fair/constants/extenstions.dart';
+import 'package:coder_fair/constants/app_colors.dart';
 import 'package:coder_fair/controllers/home_screen_controller.dart';
-import 'package:coder_fair/controllers/login_screen_controller.dart';
 import 'package:coder_fair/models/student_model.dart';
-import 'package:coder_fair/screens/login_screen.dart';
 import 'package:coder_fair/utils/app_bar.dart';
-import 'package:coder_fair/utils/blend_mask.dart';
 import 'package:coder_fair/utils/custom_progress_indicator.dart';
 import 'package:coder_fair/utils/generic_tab.dart';
 import 'package:coder_fair/widgets/carousel.dart';
 import 'package:coder_fair/widgets/metaverse_schedule.dart';
-import 'package:coder_fair/widgets/summer_camp_dialog.dart';
-import 'package:coder_fair/widgets/table.dart';
 import 'package:coder_fair/widgets/upcoming_events.dart';
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:coder_fair/screens/stacked_card_carousel.dart';
-import 'package:coder_fair/constants/app_colors.dart';
-import 'dart:html' as html;
-import 'card_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -156,28 +146,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               20,
                                                                           bottom:
                                                                               20),
-                                                                      child:
-                                                                          TextFormField(
-                                                                              style: TextStyle(
-                                                                                  color: AppColor
-                                                                                      .white,
-                                                                                  fontWeight: FontWeight
-                                                                                      .w400,
-                                                                                  fontSize:
-                                                                                      18),
-                                                                              autofillHints: [
-                                                                                "Search for coder\'s \'Coder Name\'"
-                                                                              ],
-                                                                              onChanged: (x) {
-                                                                                if (x.isEmpty) {
-                                                                                  update(controller.categories.values.toList()[entry.key].where((x) => (x.eligible == true || controller.loginState.currentUser.coders.contains(x.coderName))).toList());
-                                                                                } else {
-                                                                                  update(controller.categories.values.toList()[entry.key]!.where((element) {
-                                                                                    Student j = element;
-                                                                                    return j.coderName.toLowerCase().contains(x.toLowerCase()) || j.codeCoach.toLowerCase().contains(x.toLowerCase());
-                                                                                  }).toList());
-                                                                                }
-                                                                              }),
+                                                                      child: TextFormField(
+                                                                          style: TextStyle(color: AppColor.white, fontWeight: FontWeight.w400, fontSize: 18),
+                                                                          decoration: InputDecoration(
+                                                                            filled:
+                                                                                true,
+                                                                            hoverColor:
+                                                                                AppColor.black,
+                                                                            hintStyle:
+                                                                                TextStyle(
+                                                                              fontSize: 16,
+                                                                              color: Colors.grey,
+                                                                            ),
+                                                                            hintText:
+                                                                                "Search \'Coder Name\'",
+                                                                          ),
+                                                                          onChanged: (x) {
+                                                                            if (x.isEmpty) {
+                                                                              update(controller.categories.values.toList()[entry.key].where((x) => (x.eligible == true || controller.loginState.currentUser.coders.contains(x.coderName))).toList());
+                                                                            } else {
+                                                                              update(controller.categories.values.toList()[entry.key]!.where((element) {
+                                                                                Student j = element;
+                                                                                return j.coderName.toLowerCase().contains(x.toLowerCase()) || j.codeCoach.toLowerCase().contains(x.toLowerCase());
+                                                                              }).toList());
+                                                                            }
+                                                                          }),
                                                                     ),
                                                                     Expanded(
                                                                       child:

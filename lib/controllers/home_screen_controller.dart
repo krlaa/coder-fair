@@ -1,22 +1,11 @@
-// ignore_for_file: unused_import, duplicate_import
-
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:coder_fair/constants/app_colors.dart';
 import 'package:coder_fair/controllers/login_screen_controller.dart';
 import 'package:coder_fair/models/category_model.dart';
-import 'package:coder_fair/models/project_model.dart';
-import 'package:coder_fair/models/role_model.dart';
 import 'package:coder_fair/models/student_model.dart';
-import 'package:coder_fair/screens/card_screen.dart';
-import 'package:coder_fair/screens/login_screen.dart';
-import 'package:coder_fair/widgets/summer_camp_dialog.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 import 'api_controller.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreenController extends GetxController {
   var client = APIClient();
@@ -75,20 +64,20 @@ class HomeScreenController extends GetxController {
         categories.values.map((e) => CarouselController()).toList();
     for (var entry in categories.entries) {
       List<Student> shuffledList = entry.value;
-      // shuffledList.shuffle();
+      shuffledList.shuffle();
 
       List<Student> newList = [];
-      // for (var student in shuffledList) {
-      //   var alteredStudent = student;
+      for (var student in shuffledList) {
+        var alteredStudent = student;
 
-      //   if (_loginState.currentUser.coders.contains(student.coderName)) {
-      //     newList.insert(0, alteredStudent);
-      //   } else {
-      //     newList.add(alteredStudent);
-      //   }
-      // }
-      // var category = Category(name: entry.key, values: newList);
-      // categories1.add(category);
+        if (_loginState.currentUser.coders.contains(student.coderName)) {
+          newList.insert(0, alteredStudent);
+        } else {
+          newList.add(alteredStudent);
+        }
+      }
+      var category = Category(name: entry.key, values: newList);
+      categories1.add(category);
       categories[entry.key] = entry.value;
     }
   }

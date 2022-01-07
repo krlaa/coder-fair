@@ -1,14 +1,11 @@
 import 'dart:convert';
 
 import 'package:coder_fair/constants/general_constants.dart';
-import 'package:coder_fair/secrets.dart';
-import 'package:http/http.dart' as http;
-
 import 'package:coder_fair/models/project_model.dart';
 import 'package:coder_fair/models/student_model.dart';
 import 'package:coder_fair/models/user_model.dart';
-import 'package:http/retry.dart';
-import 'package:universal_io/io.dart';
+import 'package:coder_fair/secrets.dart';
+import 'package:http/http.dart' as http;
 
 class APIClient {
   // Opens a http client

@@ -39,6 +39,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     widget._pageController.addListener(() {
       if (mounted) {
         setState(() {

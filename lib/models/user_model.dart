@@ -26,6 +26,7 @@ class User {
     return User(
         role: Role.fromString(map['role']),
         coders: map['coder'],
+        // TODO: change to name
         full_name: map['full_name'],
         token: info);
   }

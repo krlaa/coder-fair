@@ -33,9 +33,6 @@ class LoginScreenController extends GetxController {
   TextEditingController password = TextEditingController();
 
   // Form
-  var _formKey = GlobalKey<FormState>();
-  get formKey => _formKey;
-  set formKey(value) => _formKey = value;
 
   // show or hide password
   var _obscurePassword = true.obs;
@@ -82,9 +79,8 @@ class LoginScreenController extends GetxController {
     } finally {
       _isLoading(false);
     }
-    formKey.currentState?.dispose();
-    formKey = GlobalKey<FormState>();
-    await Get.to(AdaptiveHomeScreen());
+
+    await Get.offAll(AdaptiveHomeScreen());
   }
 
   @override
@@ -98,37 +94,16 @@ class LoginScreenController extends GetxController {
     }
   }
 
-  // Ensure the key is available to write to
-  Future<void> ensureKey() async {
-    var containsEncryptionKey =
-        await secureStorage.read(key: 'youshallnotpass');
-    if (containsEncryptionKey != null && containsEncryptionKey.isEmpty ||
-        containsEncryptionKey == null) {
-      var key = Hive.generateSecureKey();
-      await secureStorage.write(
-          key: 'youshallnotpass', value: base64UrlEncode(key));
-    }
-  }
-
   // inserts the secrets to the encrypted box
   Future<void> insertSecret() async {
-    await ensureKey();
-    var encryptionKey =
-        base64Url.decode((await secureStorage.read(key: 'youshallnotpass'))!);
-    var encryptedBox = await Hive.openBox('vaultBox',
-        encryptionCipher: HiveAesCipher(encryptionKey));
+    var encryptedBox = await Hive.openBox('vaultBox');
     encryptedBox.put('email', email.text);
     encryptedBox.put('password', password.text);
   }
 
   // Gets the secret then sets the text fields to the appropriate information. Disables the password visibility toggle to ensure people cannot obtain password easily
   Future<void> getSecret() async {
-    await ensureKey();
-    var encryptionKey =
-        base64Url.decode((await secureStorage.read(key: 'youshallnotpass'))!);
-    //
-    var encryptedBox = await Hive.openBox('vaultBox',
-        encryptionCipher: HiveAesCipher(encryptionKey));
+    var encryptedBox = await Hive.openBox('vaultBox');
     email.text = encryptedBox.get('email');
     password.text = encryptedBox.get('password');
     _loadedFromSS.value = true;
@@ -138,6 +113,5 @@ class LoginScreenController extends GetxController {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    formKey.currentState?.dispose();
   }
 }

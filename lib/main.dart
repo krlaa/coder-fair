@@ -1,5 +1,3 @@
-import 'package:coder_fair/screens/home_screen.dart';
-
 import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -8,9 +6,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import 'constants/app_colors.dart';
-import 'controllers/home_screen_controller.dart';
-import 'controllers/login_screen_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,9 +38,7 @@ class MyApp extends StatelessWidget {
     return ResponsiveSizer(
       builder: (_, __, ___) => GetMaterialApp(
         scrollBehavior: AppScrollBehavior(),
-        onInit: () {
-          Get.put(LoginScreenController());
-        },
+        onInit: () {},
         theme: ThemeData(
             inputDecorationTheme: InputDecorationTheme(
               helperStyle: TextStyle(color: Colors.white),

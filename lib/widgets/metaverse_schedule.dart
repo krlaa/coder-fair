@@ -27,7 +27,6 @@ class MetaverseSchedule extends StatelessWidget {
               child: CustomSchedule(),
             ),
             SizedBox(height: 10),
-            Text("ST = South Tampa | NT = New Tampa | CW = Carrollwood")
           ],
         ),
       ),

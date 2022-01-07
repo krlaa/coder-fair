@@ -3,13 +3,11 @@ import 'package:coder_fair/widgets/upcoming_events.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import 'metaverse_schedule.dart';
 
 class MobileInfo extends StatelessWidget {
-  const MobileInfo({Key? key}) : super(key: key);
-
+  MobileInfo({Key? key}) : super(key: key);
+  final ScrollController sc = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -41,8 +39,10 @@ class MobileInfo extends StatelessWidget {
               )),
               child: Container(
                 child: Scrollbar(
+                  controller: sc,
                   showTrackOnHover: true,
                   child: SingleChildScrollView(
+                    controller: sc,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,

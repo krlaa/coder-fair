@@ -1,11 +1,9 @@
 import 'package:coder_fair/constants/app_colors.dart';
 import 'package:coder_fair/controllers/login_screen_controller.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:coder_fair/utils/blend_mask.dart';
 
@@ -16,11 +14,12 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late LoginScreenController controller;
+  var _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    controller = Get.find<LoginScreenController>();
+    controller = Get.put(LoginScreenController());
   }
 
   @override
@@ -133,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Form buildForm(BuildContext context) {
     return Form(
-      key: controller.formKey,
+      key: _formKey,
       autovalidateMode: AutovalidateMode.disabled,
       child: AutofillGroup(
         child: Obx(() => Column(
@@ -215,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         // Validate returns true if the form is valid, or false otherwise.
-                        if (controller.formKey.currentState!.validate()) {
+                        if (_formKey.currentState!.validate()) {
                           TextInput.finishAutofillContext(shouldSave: true);
                           controller.signIn();
                         } else {

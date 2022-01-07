@@ -1,8 +1,7 @@
-import 'package:coder_fair/controllers/api_controller.dart';
-import 'package:coder_fair/models/student_model.dart';
-
-import 'package:flutter_test/flutter_test.dart';
 import 'dart:io' as io;
+
+import 'package:coder_fair/controllers/api_controller.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() async {
   // Map x = {"3": "CodeBat4", "4": "CodeBat5", "5": "CodeBat6"};

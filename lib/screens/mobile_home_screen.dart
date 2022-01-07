@@ -1,24 +1,15 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:coder_fair/constants/extenstions.dart';
+import 'package:coder_fair/constants/app_colors.dart';
 import 'package:coder_fair/controllers/home_screen_controller.dart';
-import 'package:coder_fair/controllers/login_screen_controller.dart';
 import 'package:coder_fair/models/student_model.dart';
-import 'package:coder_fair/screens/login_screen.dart';
 import 'package:coder_fair/utils/app_bar.dart';
-import 'package:coder_fair/utils/blend_mask.dart';
 import 'package:coder_fair/utils/custom_progress_indicator.dart';
 import 'package:coder_fair/utils/generic_tab.dart';
 import 'package:coder_fair/widgets/carousel.dart';
 import 'package:coder_fair/widgets/mobile_info_overlay.dart';
 import 'package:coder_fair/widgets/summer_camp_dialog.dart';
-import 'package:coder_fair/widgets/table.dart';
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:coder_fair/screens/stacked_card_carousel.dart';
-import 'package:coder_fair/constants/app_colors.dart';
-import 'dart:html' as html;
-import 'card_screen.dart';
 
 class MobileHomeScreen extends StatefulWidget {
   const MobileHomeScreen({Key? key}) : super(key: key);
@@ -185,6 +176,8 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
                                                                               20),
                                                                       child: TextFormField(
                                                                           decoration: InputDecoration(
+                                                                            hoverColor:
+                                                                                AppColor.black,
                                                                             filled:
                                                                                 true,
                                                                             hintStyle:
