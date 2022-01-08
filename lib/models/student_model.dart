@@ -16,12 +16,14 @@ class Student {
   List<Project> listOfProjects;
   String first_name;
   String codeCoach;
+  int age;
   bool loadFull;
   bool eligible;
   late bool seen = false;
 
   Student(
-      {this.coderName = "",
+      {this.age = 0,
+      this.coderName = "",
       this.first_name = "",
       this.profilePictureURL = "",
       this.listOfProjects = const [],
@@ -33,6 +35,7 @@ class Student {
 
   factory Student.fromJson(Map<String, dynamic> parsedJson, String name) {
     return Student(
+        age: parsedJson["age"],
         codeCoach: parsedJson["coach"] ?? "",
         first_name: parsedJson["first_name"] ?? "",
         coderName: name,
@@ -51,8 +54,10 @@ class Student {
       String? codeCoach,
       String? first_name,
       bool? loadFull,
-      bool? eligible}) {
+      bool? eligible,
+      int? age}) {
     return Student(
+      age: age ?? this.age,
       eligible: eligible ?? this.eligible,
       first_name: first_name ?? this.first_name,
       coderName: coderName ?? this.coderName,

@@ -78,7 +78,7 @@ class HomeScreenController extends GetxController {
       }
       var category = Category(name: entry.key, values: newList);
       categories1.add(category);
-      categories[entry.key] = entry.value;
+      categories[entry.key] = newList;
     }
   }
 

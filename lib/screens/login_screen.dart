@@ -295,8 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: AppColor.white,
                           ),
                           onChanged: (value) => updater(value),
-                          decoration: InputDecoration(
-                              hintText: "Enter your email below to reset"),
+                          decoration: InputDecoration(hintText: "Email"),
                         ),
                         SizedBox(
                           height: 20,

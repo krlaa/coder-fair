@@ -91,6 +91,7 @@ class _CardScreenState extends State<CardScreen> {
                       child: Column(children: [
                         Expanded(
                           child: PageView.builder(
+                              scrollDirection: Axis.vertical,
                               physics: NeverScrollableScrollPhysics(),
                               controller: pageController,
                               onPageChanged: (index) {
@@ -350,13 +351,13 @@ class _CardScreenState extends State<CardScreen> {
                                                     height: 10,
                                                   ),
                                                   projTitle(
-                                                    widget
-                                                        .cat[widget
-                                                            .currentPosition]
-                                                        .listOfProjects[
-                                                            currentIndex]
-                                                        .title,
-                                                  ),
+                                                      widget
+                                                          .cat[widget
+                                                              .currentPosition]
+                                                          .listOfProjects[
+                                                              currentIndex]
+                                                          .title,
+                                                      widget.cat[now].age),
                                                   SizedBox(
                                                     height: 10,
                                                   ),
@@ -668,9 +669,9 @@ class _CardScreenState extends State<CardScreen> {
                     )))));
   }
 
-  projTitle(title) {
+  projTitle(title, age) {
     return Text(
-      title,
+      "$title | age: $age",
       style: TextStyle(
           fontFamily: 'Raleway',
           fontWeight: FontWeight.bold,

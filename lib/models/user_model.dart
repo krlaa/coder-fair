@@ -25,7 +25,7 @@ class User {
   factory User.fromMap(Map<String, dynamic> map, UserPayload info) {
     return User(
         role: Role.fromString(map['role']),
-        coders: map['coder'],
+        coders: map['coder'] ?? List.empty(),
         // TODO: change to name
         full_name: map['full_name'],
         token: info);

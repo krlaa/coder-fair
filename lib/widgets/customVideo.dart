@@ -56,6 +56,9 @@ class _CustomVideoState extends State<CustomVideo>
       autoPlay: true,
       looping: false,
     );
+    if (mounted) {
+      chewieController?.setVolume(0);
+    }
     playerWidget = VisibilityDetector(
       onVisibilityChanged: (visibilityInfo) {
         var visiblePercentage = visibilityInfo.visibleFraction * 100;
