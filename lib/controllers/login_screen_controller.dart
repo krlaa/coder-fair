@@ -71,16 +71,23 @@ class LoginScreenController extends GetxController {
       await insertSecret();
     }
     try {
+      print(password.text);
       currentUser =
           await client.fetchUser(email: email.text, password: password.text);
     } catch (e) {
       Get.snackbar("Uh oh", "Looks like something went wrong");
+      print(e.toString());
       throw Error();
     } finally {
       _isLoading(false);
+      if (currentUser.role.name != "invalid")
+        await Get.offAll(AdaptiveHomeScreen());
     }
+  }
 
-    await Get.offAll(AdaptiveHomeScreen());
+  reset() {
+    currentUser =
+        User(role: Role.none(), coders: [], token: UserPayload.none());
   }
 
   @override

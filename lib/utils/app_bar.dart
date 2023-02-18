@@ -1,4 +1,5 @@
 import 'package:coder_fair/constants/app_colors.dart';
+import 'package:coder_fair/controllers/login_screen_controller.dart';
 import 'package:coder_fair/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,8 @@ class GlobalAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginScreenController controller = Get.find();
+
     return AppBar(
       // leadingWidth: 160,
       centerTitle: false,
@@ -20,7 +23,8 @@ class GlobalAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColor.mediumGrey,
           onSelected: (value) {
             if (value == 1) {
-              Get.offAll(LoginScreen());
+              controller.reset();
+              Get.to(LoginScreen());
             }
           },
           itemBuilder: (context) {

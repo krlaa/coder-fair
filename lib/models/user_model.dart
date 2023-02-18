@@ -18,13 +18,14 @@ class User {
   User({
     this.coders = const [],
     required this.role,
-    this.full_name = "",
+    this.full_name = "Coder",
     required this.token,
   });
 
   factory User.fromMap(Map<String, dynamic> map, UserPayload info) {
+    var x = map['role'] ?? "";
     return User(
-        role: Role.fromString(map['role']),
+        role: x != "" ? Role.fromString(x) : Role.parent('parent'),
         coders: map['coder'] ?? List.empty(),
         // TODO: change to name
         full_name: map['full_name'],

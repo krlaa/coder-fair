@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:coder_fair/constants/general_constants.dart';
 import 'package:coder_fair/models/project_model.dart';
+import 'package:coder_fair/models/role_model.dart';
 import 'package:coder_fair/models/student_model.dart';
 import 'package:coder_fair/models/user_model.dart';
 import 'package:coder_fair/secrets.dart';
@@ -42,7 +43,7 @@ class APIClient {
     return result;
   }
 
-  Future<Student> loadInfo(Student student, String uuid) async {
+  Future<Student> loadInfo(Student student, [uuid]) async {
     var coderList = (await client.get(
         Uri.parse("${baseDomain}coders/${student.coderName}.json${query}")));
     var coderProjects = json.decode(coderList.body);
@@ -53,18 +54,21 @@ class APIClient {
           Uri.parse("${baseDomain}project_detail/${element}.json${query}")));
 
       var x = json.decode(projectDetail.body);
-      var likedDetail = (await client
-          .get(Uri.parse("${baseDomain}like/${element}/${uuid}.json${query}")));
-
-      var likedInfo = json.decode(likedDetail.body);
 
       var project = Project.fromMap(x, "$element", student.coderName);
-
-      if (likedInfo.runtimeType == Null) {
+      if (uuid == "") {
         project.liked = false;
       } else {
-        project.liked = true;
-        project.likedCategory = likedInfo;
+        var likedDetail = (await client.get(
+            Uri.parse("${baseDomain}like/${element}/${uuid}.json${query}")));
+
+        var likedInfo = json.decode(likedDetail.body);
+        if (likedInfo.runtimeType == Null) {
+          project.liked = false;
+        } else {
+          project.liked = true;
+          project.likedCategory = likedInfo;
+        }
       }
 
       j.add(project);
@@ -75,13 +79,29 @@ class APIClient {
   // fetchUser function fetches the user details from the Firebase RTDBMS
   Future<User> fetchUser(
       {required String email, required String password}) async {
-    UserPayload info = await signIn(email, password);
+    UserPayload info;
+    try {
+      info = await signIn(email, password);
+    } catch (e) {
+      return User(
+        role: Role.none(),
+        coders: [],
+        token: UserPayload.none(),
+      );
+    }
     var response = await client.get(
       Uri.parse(
           "${baseDomain}user/${info.uid}.json${query}?auth=${info.token}"),
       // headers: {"Authorization": "Bearer ${info.token}"}
     );
-    print(response.body);
+    print("This is resonse : ${response.body}");
+    if (response.body == "null" && info.uid != "") {
+      return User(
+        role: Role.parent('parent'),
+        coders: [],
+        token: UserPayload.none(),
+      );
+    }
     return User.fromJson(response.body, info);
   }
 
@@ -103,6 +123,9 @@ class APIClient {
           headers: {'Content-Type': 'application/json'},
           body: json.encode(body));
       print(response.body);
+      if (response.statusCode != 200) {
+        return UserPayload.none();
+      }
       return UserPayload.fromJson(response.body);
     } catch (e) {
       print(e.toString());
@@ -173,7 +196,7 @@ class UserPayload {
   UserPayload.none(
       {this.token = "",
       this.uid = "",
-      this.refreshToken = "",
+      this.refreshToken = "",  
       this.email = "",
       this.expiresIn = 0});
   UserPayload copyWith({

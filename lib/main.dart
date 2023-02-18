@@ -37,6 +37,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveSizer(
       builder: (_, __, ___) => GetMaterialApp(
+        color: AppColor.black,
+        debugShowCheckedModeBanner: false,
         scrollBehavior: AppScrollBehavior(),
         onInit: () {},
         theme: ThemeData(

@@ -185,6 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 18,
                       color: AppColor.white,
                     ),
+                    textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
                       hintText: "Password",
                       suffixIcon: !controller.loadedFromSS
